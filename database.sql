@@ -1,5 +1,3 @@
-CREATE DATABASE yourdbname;
-
 USE yourdbname;
 
 CREATE TABLE users (
