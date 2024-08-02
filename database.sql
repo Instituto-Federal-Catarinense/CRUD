@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE Wesley;
 
-USE yourdbname;
+USE Wesley;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
