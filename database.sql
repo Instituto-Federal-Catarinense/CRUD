@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE CRUD;
 
-USE yourdbname;
+USE CRUD;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,3 +8,4 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') NOT NULL
 );
+
