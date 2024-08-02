@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE CRUDdiogo;
 
-USE yourdbname;
+USE CRUDdiogo;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
