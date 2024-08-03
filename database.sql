@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE crud;
 
-USE yourdbname;
+USE crud;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
