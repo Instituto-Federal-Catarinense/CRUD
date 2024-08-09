@@ -8,9 +8,9 @@ CREATE TABLE users (
 );
 
 
-CREATE TABLE time (
+CREATE TABLE horario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    time number(8) NOT NULL,
+    horario numeric(8) NOT NULL,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') NOT NULL
 );

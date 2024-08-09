@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const User = {
-    create: (user, callback) => {
-        const query = 'INSERT INTO users (horario, password, role) VALUES (?, ?, ?)';
-        db.query(query, [time.horario, user.password, user.role], (err, results) => {
+const time = {
+    create: (time, callback) => {
+        const query = 'INSERT INTO horario (horario, password, role) VALUES (?, ?, ?)';
+        db.query(query, [time.horario, time.password, time.role], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -12,7 +12,7 @@ const User = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM users WHERE id = ?';
+        const query = 'SELECT * FROM time WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -22,7 +22,7 @@ const User = {
     },
 
     findByHorario: (horario, callback) => {
-        const query = 'SELECT * FROM users WHERE horario = ?';
+        const query = 'SELECT * FROM time WHERE horario = ?';
         db.query(query, [horario], (err, results) => {
             if (err) {
                 return callback(err);
@@ -31,9 +31,9 @@ const User = {
         });
     },
 
-    update: (id, user, callback) => {
-        const query = 'UPDATE users SET horario = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [time.horario, user.password, user.role, id], (err, results) => {
+    update: (id, time, callback) => {
+        const query = 'UPDATE horario SET horario = ?, password = ?, role = ? WHERE id = ?';
+        db.query(query, [time.horario, time.password, time.role, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -42,7 +42,7 @@ const User = {
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM users WHERE id = ?';
+        const query = 'DELETE FROM time WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -52,7 +52,7 @@ const User = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM users';
+        const query = 'SELECT * FROM time';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -63,4 +63,4 @@ const User = {
 };
 
 
-module.exports = User;
+module.exports = time;
