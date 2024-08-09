@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE BeatSync;
 
-USE yourdbname;
+USE BeatSync;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
