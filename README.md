@@ -1,3 +1,5 @@
+# Assinatura Eduardo Quartiero Marangon e Jamili Luísa de Oliveira
+
 # User Management System
 
 Este é um sistema de gerenciamento de usuários desenvolvido com Node.js, Express e MySQL. Ele permite a criação, leitura, atualização e exclusão (CRUD) de usuários, com uma interface web para administradores e usuários.
