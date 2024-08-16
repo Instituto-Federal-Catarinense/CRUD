@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const quiz = {
-    create: (quiz, callback) => {
-        const query = 'INSERT INTO quiz (id, pergunta, alternativa1, alternativa2, alternativa3, alternativa4, resposta) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        db.query(query, [quiz.id, quiz.pergunta, quiz.alternativa1, quiz.alternativa2, quiz.alternativa3, quiz.alternativa4, quiz.resposta], (err, results) => {
+const usuario = {
+    create: (usuario, callback) => {
+        const query = 'INSERT INTO usuario (id, nome, idade, senha, pontuacao) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [usuario.id, usuario.nome, usuario.idade, usuario.senha, usuario.pontuacao], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -12,7 +12,7 @@ const quiz = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM quiz WHERE id = ?';
+        const query = 'SELECT * FROM usuario WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -21,9 +21,9 @@ const quiz = {
         });
     },
 
-    update: (id, quiz, callback) => {
-        const query = 'UPDATE quiz SET pergunta = ?, alternativa1 = ?, alternativa2 = ?, alternativa3 = ?, alternativa4 = ?, resposta = ? WHERE id = ?';
-        db.query(query, [quiz.pergunta, quiz.alternativa1, quiz.alternativa2, quiz.alternativa3, quiz.alternativa4, quiz.resposta, id], (err, results) => {
+    update: (id, usuario, callback) => {
+        const query = 'UPDATE usuario SET nome = ?, idade = ?, senha = ?, pontuacao = ? WHERE id = ?';
+        db.query(query, [usuario.nome, usuario.idade, usuario.senha, usuario.pontuacao, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -32,7 +32,7 @@ const quiz = {
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM quiz WHERE id = ?';
+        const query = 'DELETE FROM usuario WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -42,7 +42,7 @@ const quiz = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM quiz';
+        const query = 'SELECT * FROM usuario';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -52,4 +52,4 @@ const quiz = {
     },
 };
 
-module.exports = quiz;
+module.exports = usuario;
