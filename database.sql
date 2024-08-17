@@ -1,6 +1,6 @@
-CREATE DATABASE yourdbname;
+CREATE DATABASE Gabriel;
 
-USE yourdbname;
+USE Gabriel;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
