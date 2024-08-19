@@ -1,0 +1,21 @@
+const db = require('../config/db');
+
+const Product = {
+    create: (product, callback) => {
+        const query = 'INSERT INTO products (name, price) VALUES (?, ?)';
+        db.query(query, [product.name, product.price], (err, results) => {
+            if (err) return callback(err);
+            callback(null, results.insertId);
+        });
+    },
+
+    getAll: (callback) => {
+        const query = 'SELECT * FROM products';
+        db.query(query, (err, results) => {
+            if (err) return callback(err);
+            callback(null, results);
+        });
+    }
+};
+
+module.exports = Product;
