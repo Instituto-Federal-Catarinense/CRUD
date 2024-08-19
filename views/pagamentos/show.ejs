@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Pagamento</title>
+</head>
+<body>
+    <h1>Detalhes do Pagamento</h1>
+    <p>ID: <%= pagamento.id %></p>
+    <p>Appointment ID: <%= pagamento.appointment_id %></p>
+    <p>Amount: <%= pagamento.amount %></p>
+    <p>Payment Method: <%= pagamento.payment_method %></p>
+    <p>Status: <%= pagamento.status %></p>
+    <p>Transaction Date: <%= pagamento.transaction_date %></p>
+    <a href="/pagamentos/<%= pagamento.id %>/edit">Editar</a>
+    <form action="/pagamentos/<%= pagamento.id %>?_method=DELETE" method="POST">
+        <button type="submit">Deletar</button>
+    </form>
+    <a href="/pagamentos">Voltar</a>
+</body>
+</html>
