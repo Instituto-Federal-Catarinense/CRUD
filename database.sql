@@ -14,4 +14,3 @@ CREATE TABLE products (
     price DECIMAL(10, 2) NOT NULL,
     category VARCHAR(255)
 );
-//*showdebola
