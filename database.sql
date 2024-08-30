@@ -1,6 +1,6 @@
-CREATE DATABASE CRUD;
+create database crud;
 
-USE CRUD;
+use crud;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -9,18 +9,10 @@ CREATE TABLE users (
     role ENUM('admin', 'user') NOT NULL
 );
 
-//crie a tabela produtos com os campos id, nome, descricao e preco
-CREATE TABLE produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao TEXT NOT NULL,
-    preco DECIMAL(10,2) NOT NULL,
-    quantidade INT NOT NULL,
-    categoria INT NOT NULL,
-    FOREIGN KEY (categoria) REFERENCES categorias(id)
-);
-
-CREATE TABLE categorias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
+CREATE TABLE products (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name varchar(225) NOT NULL,
+    price DECIMAL (10,2) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
