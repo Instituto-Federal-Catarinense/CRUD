@@ -8,7 +8,7 @@ const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8888;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -26,3 +26,5 @@ app.use('/categorias', categoriaRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+//localhost:8888
