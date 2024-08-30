@@ -8,7 +8,7 @@ const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6464;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
