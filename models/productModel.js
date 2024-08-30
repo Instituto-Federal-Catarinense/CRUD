@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const User = {
-    create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username , user.password, user.role], (err, results) => {
+const Product = {
+    create: (product, callback) => {
+        const query = 'INSERT INTO products (name, price, category) VALUES (?, ?, ?)';
+        db.query(query, [product.name, product.price, product.category], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -11,8 +11,9 @@ const User = {
         });
     },
 
+    // Encontra um produto por ID
     findById: (id, callback) => {
-        const query = 'SELECT * FROM users WHERE id = ?';
+        const query = 'SELECT * FROM products WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -21,19 +22,10 @@ const User = {
         });
     },
 
-    findByUsername: (username, callback) => {
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
-
-    update: (_id, user, callback) => {
-        const query = 'UPDATE users SET users = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.nome, user.senha, user.admin, _id], (err, results) => {
+    // Atualiza um produto existente
+    update: (id, product, callback) => {
+        const query = 'UPDATE products SET name = ?, price = ?, category = ? WHERE id = ?';
+        db.query(query, [product.name, product.price, product.category, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -41,8 +33,9 @@ const User = {
         });
     },
 
+    // Deleta um produto por ID
     delete: (id, callback) => {
-        const query = 'DELETE FROM users WHERE id = ?';
+        const query = 'DELETE FROM products WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -51,8 +44,9 @@ const User = {
         });
     },
 
+    // Obtém todos os produtos
     getAll: (callback) => {
-        const query = 'SELECT * FROM users';
+        const query = 'SELECT * FROM products';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -62,5 +56,4 @@ const User = {
     },
 };
 
-
-module.exports = User;
+module.exports = Product;
