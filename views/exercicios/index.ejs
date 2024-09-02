@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Exercícios</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Exercícios</h1>
+        <a href="/exercicios/create" class="btn btn-primary">Adicionar Novo Exercício</a>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Exercício 1</th>
+                    <th>Exercício 2</th>
+                    <th>Exercício 3</th>
+                    <th>Exercício 4</th>
+                    <th>Repetições</th>
+                    <th>Séries</th>
+                    <th>Duração</th>
+                    <th>Aplicabilidade</th>
+                    <th>Música</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% exercicios.forEach((exercicio, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= exercicio.exercicio1 %></td>
+                        <td><%= exercicio.exercicio2 %></td>
+                        <td><%= exercicio.exercicio3 %></td>
+                        <td><%= exercicio.exercicio4 %></td>
+                        <td><%= exercicio.repeticao %></td>
+                        <td><%= exercicio.serie %></td>
+                        <td><%= exercicio.duracao %></td>
+                        <td><%= exercicio.aplicabilidade %></td>
+                        <td><%= exercicio.musicas %></td>
+                        <td>
+                            <a href="/exercicios/<%= exercicio.id %>" class="btn btn-info">Visualizar</a>
+                            <a href="/exercicios/<%= exercicio.id %>/edit" class="btn btn-warning">Editar</a>
+                            <form action="/exercicios/<%= exercicio.id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>

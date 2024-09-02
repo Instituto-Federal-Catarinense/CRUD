@@ -1,0 +1,6 @@
+<ul>
+    <% musicas.forEach(musica => { %>
+        <li><a href="/musicas/<%= musica.id %>"><%= musica.nome %></a></li>
+    <% }) %>
+</ul>
+<a href="/musicas/create">Adicionar Nova Música</a>

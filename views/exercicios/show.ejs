@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Exercício</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes do Exercício</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>Exercício 1</th>
+                <td><%= exercicio.exercicio1 %></td>
+            </tr>
+            <tr>
+                <th>Exercício 2</th>
+                <td><%= exercicio.exercicio2 %></td>
+            </tr>
+            <tr>
+                <th>Exercício 3</th>
+                <td><%= exercicio.exercicio3 %></td>
+            </tr>
+            <tr>
+                <th>Exercício 4</th>
+                <td><%= exercicio.exercicio4 %></td>
+            </tr>
+            <tr>
+                <th>Repetições</th>
+                <td><%= exercicio.repeticao %></td>
+            </tr>
+            <tr>
+                <th>Séries</th>
+                <td><%= exercicio.serie %></td>
+            </tr>
+            <tr>
+                <th>Duração</th>
+                <td><%= exercicio.duracao %></td>
+            </tr>
+            <tr>
+                <th>Aplicabilidade</th>
+                <td><%= exercicio.aplicabilidade %></td>
+            </tr>
+            <tr>
+                <th>Música</th>
+                <td><%= exercicio.musicas %></td>
+            </tr>
+        </table>
+        <a href="/exercicios/<%= exercicio.id %>/edit" class="btn btn-warning">Editar</a>
+        <form action="/exercicios/<%= exercicio.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="/exercicios" class="btn btn-secondary">Voltar para Lista</a>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>

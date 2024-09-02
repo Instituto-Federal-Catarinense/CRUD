@@ -1,0 +1,29 @@
+<form action="/musicas" method="POST">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" required><br>
+
+    <label for="genero1">1º Gênero:</label> 
+    <select class="form-control" id="genero1" name="genero1" required>
+        <option value="1">Rock</option>
+        <option value="2">Phonk</option>
+        <option value="3">Metal</option>
+    </select>
+
+    <label for="genero2">2º Gênero:</label> 
+    <select class="form-control" id="genero2" name="genero2" required>
+        <option value="4">Gospel</option>
+        <option value="5">Sertanejo</option>
+        <option value="6">Funk</option>
+    </select>
+
+    <label for="genero3">3º Gênero:</label> 
+    <select class="form-control" id="genero3" name="genero3" required>
+        <option value="7">Clássico</option>
+        <option value="8">Pagode</option>
+        <option value="9">Outro</option>
+    </select><br>
+
+    <div>
+        <button type="submit">Criar Música</button>
+    </div>
+</form>

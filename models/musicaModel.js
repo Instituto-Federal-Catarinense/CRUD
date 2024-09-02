@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const Categoria = {
-    create: (categoria, callback) => {
-        const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
+const musica = {
+    create: (musica, callback) => {
+        const query = 'INSERT INTO musicas (nome, genero1, genero2, genero3) VALUES (?, ?, ?, ?)';
+        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -12,7 +12,7 @@ const Categoria = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM categorias WHERE id = ?';
+        const query = 'SELECT * FROM musicas WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -21,19 +21,9 @@ const Categoria = {
         });
     },
 
-    findByCategorianame: (nome, callback) => {
-        const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
-
-    update: (id, categoria, callback) => {
-        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
+    update: (id, musica, callback) => {
+        const query = 'UPDATE musicas SET nome = ?, genero1 = ?, genero2 = ?, genero3 = ? WHERE id = ?';
+        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -42,7 +32,7 @@ const Categoria = {
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM categorias WHERE id = ?';
+        const query = 'DELETE FROM musicas WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -52,15 +42,14 @@ const Categoria = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM categorias';
+        const query = 'SELECT * FROM musicas';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
             }
             callback(null, results);
         });
-    },
+    }
 };
 
-
-module.exports = Categoria;
+module.exports = musica;

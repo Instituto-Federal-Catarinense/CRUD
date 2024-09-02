@@ -1,0 +1,27 @@
+<form action="/musicas/<%= musica.id %>?_method=PUT" method="POST">
+    <label for="nome">Nome</label>
+    <input type="text" name="nome" id="nome" value="<%= musica.nome %>" required><br>
+
+    <label for="genero1">1º Gênero:</label> 
+    <select class="form-control" id="genero1" name="genero1" required>
+        <option value="1" <%= musica.genero1 == 1 ? 'selected' : '' %>>Rock</option>
+        <option value="2" <%= musica.genero1 == 2 ? 'selected' : '' %>>Phonk</option>
+        <option value="3" <%= musica.genero1 == 3 ? 'selected' : '' %>>Metal</option>
+    </select>
+
+    <label for="genero2">2º Gênero:</label> 
+    <select class="form-control" id="genero2" name="genero2" required>
+        <option value="4" <%= musica.genero2 == 4 ? 'selected' : '' %>>Gospel</option>
+        <option value="5" <%= musica.genero2 == 5 ? 'selected' : '' %>>Sertanejo</option>
+        <option value="6" <%= musica.genero2 == 6 ? 'selected' : '' %>>Funk</option>
+    </select>
+
+    <label for="genero3">3º Gênero:</label> 
+    <select class="form-control" id="genero3" name="genero3" required>
+        <option value="7" <%= musica.genero3 == 7 ? 'selected' : '' %>>Clássico</option>
+        <option value="8" <%= musica.genero3 == 8 ? 'selected' : '' %>>Pagode</option>
+        <option value="9" <%= musica.genero3 == 9 ? 'selected' : '' %>>Outro</option>
+    </select><br>
+
+    <button type="submit">Atualizar Música</button>
+</form>

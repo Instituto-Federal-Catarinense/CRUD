@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Exercícios em Cartões</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Exercícios em Cartões</h1>
+        <a href="/exercicios/create" class="btn btn-primary">Adicionar Novo Exercício</a>
+        <div class="row mt-3">
+            <% exercicios.forEach(exercicio => { %>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Exercício: <%= exercicio.exercicio1 %></h5>
+                            <p class="card-text"><strong>Repetições:</strong> <%= exercicio.repeticao %></p>
+                            <p class="card-text"><strong>Séries:</strong> <%= exercicio.serie %></p>
+                            <p class="card-text"><strong>Duração:</strong> <%= exercicio.duracao %></p>
+                            <p class="card-text"><strong>Música:</strong> <%= exercicio.musicas %></p>
+                            <a href="/exercicios/<%= exercicio.id %>" class="btn btn-info">Visualizar</a>
+                            <a href="/exercicios/<%= exercicio.id %>/edit" class="btn btn-warning">Editar</a>
+                            <form action="/exercicios/<%= exercicio.id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>

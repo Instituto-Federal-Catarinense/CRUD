@@ -1,0 +1,8 @@
+<h1><%= musica.nome %></h1>
+<p>Gênero 1: <%= musica.genero1 %></p>
+<p>Gênero 2: <%= musica.genero2 %></p>
+<p>Gênero 3: <%= musica.genero3 %></p>
+<a href="/musicas/<%= musica.id %>/edit">Editar</a>
+<form action="/musicas/<%= musica.id %>?_method=DELETE" method="POST">
+    <button type="submit">Excluir</button>
+</form>
