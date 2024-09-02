@@ -2,11 +2,12 @@ const db = require('../config/db');
 
 const exercicio = {
     create: (exercicio, callback) => {
+        // Atualizado para usar o campo 'exercicio' em vez de 'exercicio1', 'exercicio2', etc.
         const query = `
-            INSERT INTO exercicios (exercicio1, exercicio2, exercicio3, exercicio4, repeticao, serie, duracao, aplicabilidade, musicas) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO exercicios (exercicio, repeticao, serie, duracao, aplicabilidade, musicas) 
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-        db.query(query, [exercicio.exercicio1, exercicio.exercicio2, exercicio.exercicio3, exercicio.exercicio4, exercicio.repeticao, exercicio.serie, exercicio.duracao, exercicio.aplicabilidade, exercicio.musica], (err, results) => {
+        db.query(query, [exercicio.exercicio, exercicio.repeticao, exercicio.serie, exercicio.duracao, exercicio.aplicabilidade, exercicio.musicas], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -25,11 +26,12 @@ const exercicio = {
     },
 
     update: (id, exercicio, callback) => {
+        // Atualizado para usar o campo 'exercicio'
         const query = `
-            UPDATE exercicios SET exercicio1 = ?, exercicio2 = ?, exercicio3 = ?, exercicio4 = ?, repeticao = ?, serie = ?, duracao = ?, aplicabilidade = ?, musicas = ? 
+            UPDATE exercicios SET exercicio = ?, repeticao = ?, serie = ?, duracao = ?, aplicabilidade = ?, musicas = ? 
             WHERE id = ?
         `;
-        db.query(query, [exercicio.exercicio1, exercicio.exercicio2, exercicio.exercicio3, exercicio.exercicio4, exercicio.repeticao, exercicio.serie, exercicio.duracao, exercicio.aplicabilidade, exercicio.musica, id], (err, results) => {
+        db.query(query, [exercicio.exercicio, exercicio.repeticao, exercicio.serie, exercicio.duracao, exercicio.aplicabilidade, exercicio.musicas, id], (err, results) => {
             if (err) {
                 return callback(err);
             }

@@ -15,11 +15,12 @@
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h5 class="card-title">Exercício: <%= exercicio.exercicio1 %></h5>
+                            <h5 class="card-title">Exercício: <%= exercicio.exercicio %></h5>
                             <p class="card-text"><strong>Repetições:</strong> <%= exercicio.repeticao %></p>
                             <p class="card-text"><strong>Séries:</strong> <%= exercicio.serie %></p>
                             <p class="card-text"><strong>Duração:</strong> <%= exercicio.duracao %></p>
-                            <p class="card-text"><strong>Música:</strong> <%= exercicio.musicas %></p>
+                            <p class="card-text"><strong>Aplicabilidade:</strong> <%= exercicio.aplicabilidade %></p>
+                            <p class="card-text"><strong>Música:</strong> <%= exercicio.musica_nome %></p>
                             <a href="/exercicios/<%= exercicio.id %>" class="btn btn-info">Visualizar</a>
                             <a href="/exercicios/<%= exercicio.id %>/edit" class="btn btn-warning">Editar</a>
                             <form action="/exercicios/<%= exercicio.id %>?_method=DELETE" method="POST" style="display:inline;">

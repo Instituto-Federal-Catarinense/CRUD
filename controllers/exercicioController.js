@@ -3,16 +3,14 @@ const Exercicio = require('../models/exercicioModel');
 
 const exercicioController = {
     createExercicio: (req, res) => {
+        // Atualizado para usar apenas o campo 'exercicio'
         const newExercicio = {
-            exercicio1: req.body.exercicio1,
-            exercicio2: req.body.exercicio2,
-            exercicio3: req.body.exercicio3,
-            exercicio4: req.body.exercicio4,
+            exercicio: req.body.exercicio,  // Corrigido para 'exercicio'
             repeticao: req.body.repeticao,
             serie: req.body.serie,
             duracao: req.body.duracao,
             aplicabilidade: req.body.aplicabilidade,
-            musica: req.body.musica
+            musicas: req.body.musicas  // Corrigido para 'musicas'
         };
 
         Exercicio.create(newExercicio, (err, exercicioId) => {
@@ -83,16 +81,14 @@ const exercicioController = {
 
     updateExercicio: (req, res) => {
         const exercicioId = req.params.id;
+        // Atualizado para usar apenas o campo 'exercicio'
         const updatedExercicio = {
-            exercicio1: req.body.exercicio1,
-            exercicio2: req.body.exercicio2,
-            exercicio3: req.body.exercicio3,
-            exercicio4: req.body.exercicio4,
+            exercicio: req.body.exercicio,  // Corrigido para 'exercicio'
             repeticao: req.body.repeticao,
             serie: req.body.serie,
             duracao: req.body.duracao,
             aplicabilidade: req.body.aplicabilidade,
-            musica: req.body.musica
+            musicas: req.body.musicas  // Corrigido para 'musicas'
         };
 
         Exercicio.update(exercicioId, updatedExercicio, (err) => {

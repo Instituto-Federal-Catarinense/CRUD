@@ -1,21 +1,13 @@
 <h1>Cadastrar novo exercício</h1>
 <form action="/exercicios" method="POST">
-    <div class="form-group">
-        <label for="exercicio1">1º Exercício:</label>
-        <input type="text" class="form-control" id="exercicio1" name="exercicio1" required>
-    </div>
-    <div class="form-group">
-        <label for="exercicio2">2º Exercício:</label>
-        <input type="text" class="form-control" id="exercicio2" name="exercicio2" required>
-    </div>
-    <div class="form-group">
-        <label for="exercicio3">3º Exercício:</label>
-        <input type="text" class="form-control" id="exercicio3" name="exercicio3" required>
-    </div>
-    <div class="form-group">
-        <label for="exercicio4">4º Exercício:</label>
-        <input type="text" class="form-control" id="exercicio4" name="exercicio4" required>
-    </div>
+    <label for="exercicio">Tipo de Treino:</label> 
+    <select class="form-control" id="exercicio" name="exercicio" required>
+        <option value="Braço">Braço</option>
+        <option value="Perna">Perna Completo</option>
+        <option value="Ombro e Abdomen">Ombro e Abdomen</option>
+        <option value="Costas">Costas</option>
+        <option value="Peito">Peito</option>
+    </select>
     <div class="form-group">
         <label for="repeticao">Repetições:</label>
         <input type="number" class="form-control" id="repeticao" name="repeticao" required>
@@ -33,8 +25,8 @@
         <input type="text" class="form-control" id="aplicabilidade" name="aplicabilidade" required>
     </div>
     <div class="form-group">
-        <label for="musica">Música:</label>
-        <select class="form-control" id="musica" name="musica" required>
+        <label for="musicas">Música:</label>
+        <select class="form-control" id="musicas" name="musicas" required>
             <% musicas.forEach(musica => { %>
                 <option value="<%= musica.id %>"><%= musica.nome %></option>
             <% }) %>

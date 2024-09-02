@@ -14,10 +14,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Exercício 1</th>
-                    <th>Exercício 2</th>
-                    <th>Exercício 3</th>
-                    <th>Exercício 4</th>
+                    <th>Exercício</th>
                     <th>Repetições</th>
                     <th>Séries</th>
                     <th>Duração</th>
@@ -30,15 +27,12 @@
                 <% exercicios.forEach((exercicio, index) => { %>
                     <tr>
                         <td><%= index + 1 %></td>
-                        <td><%= exercicio.exercicio1 %></td>
-                        <td><%= exercicio.exercicio2 %></td>
-                        <td><%= exercicio.exercicio3 %></td>
-                        <td><%= exercicio.exercicio4 %></td>
+                        <td><%= exercicio.exercicio %></td>
                         <td><%= exercicio.repeticao %></td>
                         <td><%= exercicio.serie %></td>
                         <td><%= exercicio.duracao %></td>
                         <td><%= exercicio.aplicabilidade %></td>
-                        <td><%= exercicio.musicas %></td>
+                        <td><%= exercicio.musica_nome %></td> <!-- Mostrar o nome da música usando join com tabela musicas -->
                         <td>
                             <a href="/exercicios/<%= exercicio.id %>" class="btn btn-info">Visualizar</a>
                             <a href="/exercicios/<%= exercicio.id %>/edit" class="btn btn-warning">Editar</a>
