@@ -36,20 +36,18 @@ const produtoController = {
     },
     
     getAllProdutos: (req, res) => {
-        Produto.getAll((err, produtos) => {
+        const categoria = req.query.categoria || null;
+        
+        Produto.getAll(categoria, (err, produtos) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('produtos/index', { produtos });
-        });
-    },
-
-    getAllProdutos2: (req, res) => {
-        Produto.getAll((err, produtos) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('produtos/list', { produtos });
+            Categoria.getAll((err, categorias) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('produtos/index', { produtos, categorias, categoriaSelecionada: categoria });
+            });
         });
     },
 

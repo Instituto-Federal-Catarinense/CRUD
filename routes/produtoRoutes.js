@@ -5,7 +5,6 @@ const router = express.Router();
 router.get('/', produtoController.getAllProdutos);
 router.get('/new', produtoController.renderCreateForm);
 router.post('/', produtoController.createProduto);
-router.get('/list', produtoController.getAllProdutos2);
 router.get('/:id', produtoController.getProdutoById);
 router.get('/:id/edit', produtoController.renderEditForm);
 router.put('/:id', produtoController.updateProduto);

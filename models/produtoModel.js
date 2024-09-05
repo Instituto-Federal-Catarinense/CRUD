@@ -41,17 +41,21 @@ const Produto = {
         });
     },
 
-    getAll: (callback) => {
-        const query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
+    getAll: (categoria, callback) => {
+        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
         
-        db.query(query, (err, results) => {
+        if (categoria) {
+            query += ' WHERE produtos.categoria = ?';
+        }
+    
+        db.query(query, [categoria], (err, results) => {
             if (err) {
                 return callback(err);
             }
             callback(null, results);
         });
-    }
-
+    },
+    
 };
 
 module.exports = Produto;
