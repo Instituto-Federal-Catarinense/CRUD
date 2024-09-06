@@ -1,5 +1,3 @@
-//crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
-
 const Venda = require('../models/vendaModel');
 
 const vendaController = {
@@ -8,7 +6,7 @@ const vendaController = {
             data: req.body.data,
             valor: req.body.valor,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            venda_id: req.body.venda_id,
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -66,7 +64,7 @@ const vendaController = {
             data: req.body.data,
             valor: req.body.valor,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            venda_id: req.body.venda_id,
         };
 
         Venda.update(vendaId, updatedVenda, (err, result) => {
