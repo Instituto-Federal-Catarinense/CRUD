@@ -9,6 +9,7 @@ const vendaController = {
             valor: req.body.valor,
             quantidade: req.body.quantidade,
             produto_id: req.body.produto_id,
+            users_id: req.body.users_id,
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -67,6 +68,7 @@ const vendaController = {
             valor: req.body.valor,
             quantidade: req.body.quantidade,
             produto_id: req.body.produto_id,
+            users_id: req.body.users_id,
         };
 
         Venda.update(vendaId, updatedVenda, (err, result) => {

@@ -9,6 +9,11 @@ CREATE TABLE users (
     role ENUM('admin', 'user') NOT NULL
 );
 
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
+
 //crie a tabela produtos com os campos id, nome, descricao e preco
 CREATE TABLE produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,7 +25,11 @@ CREATE TABLE produtos (
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
 
-CREATE TABLE categorias (
+CREATE TABLE venda (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
-);
+    quantidade INT NOT NULL,
+    valor INT NOT NULL,
+    data_venda DATE NOT NULL,
+    FOREIGN KEY (users) REFERENCES users(id)
+    FOREIGN KEY (produtos) REFERENCES produtos(id)
+ );
