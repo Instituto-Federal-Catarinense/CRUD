@@ -1,27 +1,72 @@
-<form action="/musicas/<%= musica.id %>?_method=PUT" method="POST">
-    <label for="nome">Nome</label>
-    <input type="text" name="nome" id="nome" value="<%= musica.nome %>" required><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Música</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Música</h1>
+        <form action="/musicas/<%= musica.id %>?_method=PUT" method="POST">
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" id="nome" value="<%= musica.nome %>" required class="form-control"><br>
 
-    <label for="genero1">1º Gênero:</label> 
-    <select class="form-control" id="genero1" name="genero1" required>
-        <option value="1" <%= musica.genero1 == 1 ? 'selected' : '' %>>Rock</option>
-        <option value="2" <%= musica.genero1 == 2 ? 'selected' : '' %>>Phonk</option>
-        <option value="3" <%= musica.genero1 == 3 ? 'selected' : '' %>>Metal</option>
-    </select>
+            <label for="genero1">1º Gênero:</label>
+            <select class="form-control" id="genero1" name="genero1" required>
+                <option value="Pop" <%= musica.genero1 ==  1 ? 'selected' : '' %>>Pop</option>
+                <option value="Rock" <%= musica.genero1 == 2 ? 'selected' : '' %>>Rock</option>
+                <option value="Hip-Hop/Rap" <%= musica.genero1 == 3 ? 'selected' : '' %>>Hip-Hop/Rap</option>
+                <option value="Eletrônica/Dance-(EDM)" <%= musica.genero1 == 4 ? 'selected' : '' %>>Eletrônica/Dance-(EDM)</option>
+                <option value="R&B" <%= musica.genero1 == 5 ? 'selected' : '' %>>R&B</option>
+                <option value="Country" <%= musica.genero1 == 6 ? 'selected' : '' %>>Country</option>
+                <option value="Reggae" <%= musica.genero1 == 7 ? 'selected' : '' %>>Reggae</option>
+                <option value="Jazz" <%= musica.genero1 == 8 ? 'selected' : '' %>>Jazz</option>
+                <option value="Clássica" <%= musica.genero1 == 9 ? 'selected' : '' %>>Clássica</option>
+                <option value="Heavy-Metal" <%= musica.genero1 == 10 ? 'selected' : '' %>>Heavy-Metal</option>
+                <option value="Blues" <%= musica.genero1 == 11 ? 'selected' : '' %>>Blues</option>
+                <option value="Latina-(Reggaeton,Salsa,Bachata,etc.)" <%= musica.genero1 == 12 ? 'selected' : '' %>>Latina-(Reggaeton,Salsa,Bachata,etc.)</option>
+                <option value="Funk" <%= musica.genero1 == 13 ? 'selected' : '' %>>Funk</option>
+            </select>
 
-    <label for="genero2">2º Gênero:</label> 
-    <select class="form-control" id="genero2" name="genero2" required>
-        <option value="4" <%= musica.genero2 == 4 ? 'selected' : '' %>>Gospel</option>
-        <option value="5" <%= musica.genero2 == 5 ? 'selected' : '' %>>Sertanejo</option>
-        <option value="6" <%= musica.genero2 == 6 ? 'selected' : '' %>>Funk</option>
-    </select>
+            <label for="genero2">2º Gênero:</label>
+            <select class="form-control" id="genero2" name="genero2" required>
+                <option value="Pop" <%= musica.genero2 ==  1 ? 'selected' : '' %>>Pop</option>
+                <option value="Rock" <%= musica.genero2 == 2 ? 'selected' : '' %>>Rock</option>
+                <option value="Hip-Hop/Rap" <%= musica.genero2 == 3 ? 'selected' : '' %>>Hip-Hop/Rap</option>
+                <option value="Eletrônica/Dance-(EDM)" <%= musica.genero2 == 4 ? 'selected' : '' %>>Eletrônica/Dance-(EDM)</option>
+                <option value="R&B" <%= musica.genero2 == 5 ? 'selected' : '' %>>R&B</option>
+                <option value="Country" <%= musica.genero2 == 6 ? 'selected' : '' %>>Country</option>
+                <option value="Reggae" <%= musica.genero2 == 7 ? 'selected' : '' %>>Reggae</option>
+                <option value="Jazz" <%= musica.genero2 == 8 ? 'selected' : '' %>>Jazz</option>
+                <option value="Clássica" <%= musica.genero2 == 9 ? 'selected' : '' %>>Clássica</option>
+                <option value="Heavy-Metal" <%= musica.genero2 == 10 ? 'selected' : '' %>>Heavy-Metal</option>
+                <option value="Blues" <%= musica.genero2 == 11 ? 'selected' : '' %>>Blues</option>
+                <option value="Latina-(Reggaeton,Salsa,Bachata,etc.)" <%= musica.genero2 == 12 ? 'selected' : '' %>>Latina-(Reggaeton,Salsa,Bachata,etc.)</option>
+                <option value="Funk" <%= musica.genero2 == 13 ? 'selected' : '' %>>Funk</option>
+            </select>
 
-    <label for="genero3">3º Gênero:</label> 
-    <select class="form-control" id="genero3" name="genero3" required>
-        <option value="7" <%= musica.genero3 == 7 ? 'selected' : '' %>>Clássico</option>
-        <option value="8" <%= musica.genero3 == 8 ? 'selected' : '' %>>Pagode</option>
-        <option value="9" <%= musica.genero3 == 9 ? 'selected' : '' %>>Outro</option>
-    </select><br>
+            <label for="genero3">3º Gênero:</label>
+            <select class="form-control" id="genero3" name="genero3" required>
+                <option value="Pop" <%= musica.genero3 ==  1 ? 'selected' : '' %>>Pop</option>
+                <option value="Rock" <%= musica.genero3 == 2 ? 'selected' : '' %>>Rock</option>
+                <option value="Hip-Hop/Rap" <%= musica.genero3 == 3 ? 'selected' : '' %>>Hip-Hop/Rap</option>
+                <option value="Eletrônica/Dance-(EDM)" <%= musica.genero3 == 4 ? 'selected' : '' %>>Eletrônica/Dance-(EDM)</option>
+                <option value="R&B" <%= musica.genero3 == 5 ? 'selected' : '' %>>R&B</option>
+                <option value="Country" <%= musica.genero3 == 6 ? 'selected' : '' %>>Country</option>
+                <option value="Reggae" <%= musica.genero3 == 7 ? 'selected' : '' %>>Reggae</option>
+                <option value="Jazz" <%= musica.genero3 == 8 ? 'selected' : '' %>>Jazz</option>
+                <option value="Clássica" <%= musica.genero3 == 9 ? 'selected' : '' %>>Clássica</option>
+                <option value="Heavy-Metal" <%= musica.genero3 == 10 ? 'selected' : '' %>>Heavy-Metal</option>
+                <option value="Blues" <%= musica.genero3 == 11 ? 'selected' : '' %>>Blues</option>
+                <option value="Latina-(Reggaeton,Salsa,Bachata,etc.)" <%= musica.genero3 == 12 ? 'selected' : '' %>>Latina-(Reggaeton,Salsa,Bachata,etc.)</option>
+                <option value="Funk" <%= musica.genero3 == 13 ? 'selected' : '' %>>Funk</option>
+            </select><br>
 
-    <button type="submit">Atualizar Música</button>
-</form>
+            <button type="submit" class="btn btn-primary">Atualizar Música</button>
+        </form>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>

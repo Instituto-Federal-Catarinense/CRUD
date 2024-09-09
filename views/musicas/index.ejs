@@ -1,6 +1,40 @@
-<ul>
-    <% musicas.forEach(musica => { %>
-        <li><a href="/musicas/<%= musica.id %>"><%= musica.nome %></a></li>
-    <% }) %>
-</ul>
-<a href="/musicas/create">Adicionar Nova Música</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Músicas</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Músicas</h1>
+        <a href="/musicas/create" class="btn btn-primary">Adicionar Nova Música</a>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% musicas.forEach((musica, index) => { %>
+                    <tr>
+                        <td><%= index + 1 %></td>
+                        <td><%= musica.nome %></td>
+                        <td>
+                            <a href="/musicas/<%= musica.id %>" class="btn btn-info">Visualizar</a>
+                            <a href="/musicas/<%= musica.id %>/edit" class="btn btn-warning">Editar</a>
+                            <form action="/musicas/<%= musica.id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>

@@ -15,10 +15,6 @@
                 <tr>
                     <th>#</th>
                     <th>Exercício</th>
-                    <th>Repetições</th>
-                    <th>Séries</th>
-                    <th>Duração</th>
-                    <th>Aplicabilidade</th>
                     <th>Música</th>
                     <th>Ações</th>
                 </tr>
@@ -28,10 +24,6 @@
                     <tr>
                         <td><%= index + 1 %></td>
                         <td><%= exercicio.exercicio %></td>
-                        <td><%= exercicio.repeticao %></td>
-                        <td><%= exercicio.serie %></td>
-                        <td><%= exercicio.duracao %></td>
-                        <td><%= exercicio.aplicabilidade %></td>
                         <td><%= exercicio.musica_nome %></td> <!-- Mostrar o nome da música usando join com tabela musicas -->
                         <td>
                             <a href="/exercicios/<%= exercicio.id %>" class="btn btn-info">Visualizar</a>

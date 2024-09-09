@@ -24,6 +24,6 @@
         serie INT NOT NULL,
         duracao time NOT NULL,
         aplicabilidade VARCHAR(255) NOT NULL,
-        musicas TEXT NOT NULL,
-        FOREIGN KEY (musicas) REFERENCES musicas(id)
+        musicas INT NOT NULL,
+        FOREIGN KEY (musicas) REFERENCES musicas(ID)
     );

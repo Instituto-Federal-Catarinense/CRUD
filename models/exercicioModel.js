@@ -39,6 +39,15 @@ const exercicio = {
         });
     },
 
+    filter: (query, params, callback) => {
+        db.query(query, params, (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
+        });
+    },
+
     delete: (id, callback) => {
         const query = 'DELETE FROM exercicios WHERE id = ?';
         db.query(query, [id], (err, results) => {

@@ -21,6 +21,26 @@ const exercicioController = {
         });
     },
 
+    renderFilterPage: (req, res) => {
+        const filtroExercicio = req.query.exercicio;  // Obter o filtro da requisição
+
+        // Se um filtro for passado, aplique-o na consulta
+        let query = 'SELECT * FROM exercicios';
+        const params = [];
+
+        if (filtroExercicio) {
+            query += ' WHERE exercicio = ?';
+            params.push(filtroExercicio);
+        }
+
+        Exercicio.filter(query, params, (err, exercicios) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('exercicios/list', { exercicios });
+        });
+    },
+
     getExercicioById: (req, res) => {
         const exercicioId = req.params.id;
 
@@ -75,6 +95,28 @@ const exercicioController = {
                     return res.status(500).json({ error: err });
                 }
                 res.render('exercicios/edit', { exercicio, musicas });
+            });
+        });
+    },
+
+
+    showExercicio: (req, res) => {
+        const exercicioId = req.params.id;
+
+        Exercicio.findById(exercicioId, (err, exercicio) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            if (!exercicio) {
+                return res.status(404).json({ message: 'Exercício não encontrado' });
+            }
+
+            Musica.findById(exercicio.musicas, (err, musica) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                exercicio.musica_nome = musica.nome;
+                res.render('exercicios/show', { exercicio });
             });
         });
     },

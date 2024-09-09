@@ -1,8 +1,38 @@
-<h1><%= musica.nome %></h1>
-<p>Gênero 1: <%= musica.genero1 %></p>
-<p>Gênero 2: <%= musica.genero2 %></p>
-<p>Gênero 3: <%= musica.genero3 %></p>
-<a href="/musicas/<%= musica.id %>/edit">Editar</a>
-<form action="/musicas/<%= musica.id %>?_method=DELETE" method="POST">
-    <button type="submit">Excluir</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes da Música</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes da Música</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>Nome</th>
+                <td><%= musica.nome %></td>
+            </tr>
+            <tr>
+                <th>Gênero 1</th>
+                <td><%= musica.genero1 %></td>
+            </tr>
+            <tr>
+                <th>Gênero 2</th>
+                <td><%= musica.genero2 %></td>
+            </tr>
+            <tr>
+                <th>Gênero 3</th>
+                <td><%= musica.genero3 %></td>
+            </tr>
+        </table>
+        <a href="/musicas/<%= musica.id %>/edit" class="btn btn-warning">Editar</a>
+        <form action="/musicas/<%= musica.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="/musicas" class="btn btn-secondary">Voltar para Lista</a>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>
