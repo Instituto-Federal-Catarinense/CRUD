@@ -25,3 +25,14 @@ CREATE TABLE categorias (
     nome VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE venda (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produtos INT,
+    users INT,
+    quantidade INT NOT NULL,
+    valor INT NOT NULL,
+    data_venda DATE NOT NULL,
+    FOREIGN KEY (users) REFERENCES users(id),
+    FOREIGN KEY (produtos) REFERENCES produtos(id)
+ );
+
