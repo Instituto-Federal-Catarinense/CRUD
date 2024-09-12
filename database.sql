@@ -26,3 +26,14 @@ CREATE TABLE produtos (
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
 
+CREATE TABLE venda (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    produtos INT,
+    users INT,
+    quantidade INT NOT NULL,
+    valor INT NOT NULL,
+    data_venda DATE NOT NULL,
+    FOREIGN KEY (users) REFERENCES users(id),
+    FOREIGN KEY (produtos) REFERENCES produtos(id)
+ );
+
