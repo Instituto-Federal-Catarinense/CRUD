@@ -30,6 +30,6 @@ CREATE TABLE vendas (
     descricao TEXT NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
     quantidade INT NOT NULL,
-    categoria INT NOT NULL,
-    FOREIGN KEY (produtos) REFERENCES produtos(id)
+    produto INT NOT NULL,
+    FOREIGN KEY (produto) REFERENCES produtos(id)
 );

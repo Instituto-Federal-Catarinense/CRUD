@@ -1,28 +1,30 @@
-<h1>Cadastrar novo venda</h1>
+<!-- views/vendas/create.ejs -->
+<h1>Criar Venda</h1>
+
 <form action="/vendas" method="POST">
     <div class="form-group">
-        <label for="nome">Nome do venda:</label>
+        <label for="nome">Nome</label>
         <input type="text" class="form-control" id="nome" name="nome" required>
     </div>
     <div class="form-group">
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" class="form-control" name="descricao" required></textarea>
+        <label for="descricao">Descrição</label>
+        <input type="text" class="form-control" id="descricao" name="descricao" required>
     </div>
     <div class="form-group">
-        <label for="preco">Preço:</label>
+        <label for="preco">Preço</label>
         <input type="number" class="form-control" id="preco" name="preco" required>
     </div>
     <div class="form-group">
-        <label for="quantidade">Quantidade:</label>
+        <label for="quantidade">Quantidade</label>
         <input type="number" class="form-control" id="quantidade" name="quantidade" required>
     </div>
     <div class="form-group">
-        <label for="categoria">Categoria:</label>
-        <select class="form-control" id="categoria" name="categoria" required>
-            <% categorias.forEach(categoria => { %>
-                <option value="<%= categoria.id %>"><%= categoria.nome %></option>
+        <label for="produto">Produto</label>
+        <select class="form-control" id="produto" name="produto" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produto.id %>"><%= produto.nome %></option>
             <% }) %>
         </select>
     </div>
-    <button type="submit" class="btn btn-primary">Cadastrar</button>
+    <button type="submit" class="btn btn-primary">Salvar</button>
 </form>

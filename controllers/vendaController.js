@@ -1,12 +1,14 @@
 const Venda = require('../models/vendaModel');
+const Produto = require('../models/produtoModel');
 
 const vendaController = {
+
     createVenda: (req, res) => {
         const newVenda = {
             data: req.body.data,
             valor: req.body.valor,
             quantidade: req.body.quantidade,
-            venda_id: req.body.venda_id,
+            produto_id: req.body.produto 
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -41,8 +43,14 @@ const vendaController = {
     },
 
     renderCreateForm: (req, res) => {
-        res.render('vendas/create');
+        Produto.getAll(null, (err, produtos) => { 
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('vendas/create', { produtos });
+        });
     },
+    
 
     renderEditForm: (req, res) => {
         const vendaId = req.params.id;
@@ -54,7 +62,13 @@ const vendaController = {
             if (!venda) {
                 return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/edit', { venda });
+
+            Produto.getAll((err, produtos) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('vendas/edit', { venda, produtos });
+            });
         });
     },
 
@@ -64,7 +78,7 @@ const vendaController = {
             data: req.body.data,
             valor: req.body.valor,
             quantidade: req.body.quantidade,
-            venda_id: req.body.venda_id,
+            produto_id: req.body.produto 
         };
 
         Venda.update(vendaId, updatedVenda, (err, result) => {
@@ -75,6 +89,7 @@ const vendaController = {
         });
     },
 
+    // Delete a sale
     deleteVenda: (req, res) => {
         const vendaId = req.params.id;
 
