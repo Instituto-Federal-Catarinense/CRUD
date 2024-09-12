@@ -1,0 +1,43 @@
+<h1>Cadastrar nova Venda</h1>>
+<form action="/vendas" method="post">
+
+    <div class="form-group"></div>
+        <label for="nome">Nome da Venda:</label>
+        <input type="text" class="form-control" id="nome" name="nome" required>
+    </div>
+
+    <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" class="form-control" name="descricao" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+    </div>
+
+    <div class="form-group">
+        <label for="preco">Valor Total:</label>
+        <input type="number" class="form-control" id="valortotal" name="valortotal" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_usuario">Usuário:</label>
+        <select class="form-control" id="usuario" name="usuario" required>
+            <% users.forEach(user => { %>
+                <option value="<%= users.id %>"><%= users.username %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <div class="form-group"></div>
+        <label for="id_produto">Produto:</label>
+        <select class="form-control" id="produto" name="produto" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produtos.id %>"><%= produtos.nome %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

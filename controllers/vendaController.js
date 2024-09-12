@@ -1,14 +1,16 @@
-//crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
-
 const Venda = require('../models/vendaModel');
+const Categoria = require('../models/categoriaModel');
 
 const vendaController = {
+
     createVenda: (req, res) => {
+
         const newVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
+            nome: req.body.nome,
+            descricao: req.body.descricao,
+            preco: req.body.preco,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            categoria: req.body.categoria
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -32,18 +34,30 @@ const vendaController = {
             res.render('vendas/show', { venda });
         });
     },
-
+    
     getAllVendas: (req, res) => {
-        Venda.getAll((err, vendas) => {
+        const categoria = req.query.categoria || null;
+        
+        Venda.getAll(categoria, (err, vendas) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('vendas/index', { vendas });
+            Categoria.getAll((err, categorias) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('vendas/index', { vendas, categorias, categoriaSelecionada: categoria });
+            });
         });
     },
 
     renderCreateForm: (req, res) => {
-        res.render('vendas/create');
+        Categoria.getAll((err, categorias) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('vendas/create', { categorias });
+        });
     },
 
     renderEditForm: (req, res) => {
@@ -56,20 +70,29 @@ const vendaController = {
             if (!venda) {
                 return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/edit', { venda });
+
+            Categoria.getAll((err, categorias) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('vendas/edit', { venda, categorias });
+            });
         });
     },
 
     updateVenda: (req, res) => {
         const vendaId = req.params.id;
+        
         const updatedVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
+            nome: req.body.nome,
+            descricao: req.body.descricao,
+            preco: req.body.preco,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            categoria: req.body.categoria,
+            categoria: req.body.categoria
         };
 
-        Venda.update(vendaId, updatedVenda, (err, result) => {
+        Venda.update(vendaId, updatedVenda, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
@@ -80,7 +103,7 @@ const vendaController = {
     deleteVenda: (req, res) => {
         const vendaId = req.params.id;
 
-        Venda.delete(vendaId, (err, result) => {
+        Venda.delete(vendaId, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }

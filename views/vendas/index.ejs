@@ -1,0 +1,48 @@
+<h1>Lista de produtos</h1>
+
+<!-- Formulário de filtro por categoria -->
+<form method="GET" action="/vendas">
+    <div class="form-group">
+        <label for="venda">Filtrar por Venda:</label>
+        <select id="venda" name="venda" class="form-control">
+            <option value="">Todas as Vendas</option>
+            <% vendas.forEach(venda => { %>
+                <option value="<%= vendas.id %>" <%= vendaSelecionada == vendas.id ? 'selected' : '' %>><%= vendas.nome %></option>
+            <% }) %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor Total</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% produtos.forEach(produto => { %>
+            <tr>
+                <td><%= produto.id %></td>
+                <td><%= produto.nome %></td>
+                <td><%= produto.descricao %></td>
+                <td><%= produto.preco %></td>
+                <td><%= produto.quantidade %></td>
+                <td><%= produto.categoria_nome %></td>
+                <td>
+                    <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
+                    <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
