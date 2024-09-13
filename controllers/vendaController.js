@@ -9,14 +9,13 @@ const vendaController = {
             valor: req.body.valor,
             quantidade: req.body.quantidade,
             produto_id: req.body.produto_id,
-            users_id: req.body.users_id,
         };
 
         Venda.create(newVenda, (err, vendaId) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/vendas');
+            res.redirect('/venda');
         });
     },
 
@@ -30,7 +29,7 @@ const vendaController = {
             if (!venda) {
                 return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/show', { venda });
+            res.render('venda/show', { venda });
         });
     },
 
@@ -68,7 +67,6 @@ const vendaController = {
             valor: req.body.valor,
             quantidade: req.body.quantidade,
             produto_id: req.body.produto_id,
-            users_id: req.body.users_id,
         };
 
         Venda.update(vendaId, updatedVenda, (err, result) => {
