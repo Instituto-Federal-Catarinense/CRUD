@@ -1,5 +1,3 @@
-//crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
-
 const Venda = require('../models/vendaModel');
 
 const vendaController = {
@@ -69,7 +67,7 @@ const vendaController = {
             produto_id: req.body.produto_id,
         };
 
-        Venda.update(vendaId, updatedVenda, (err, result) => {
+        Venda.update(vendaId, updatedVenda, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
@@ -80,13 +78,24 @@ const vendaController = {
     deleteVenda: (req, res) => {
         const vendaId = req.params.id;
 
-        Venda.delete(vendaId, (err, result) => {
+        Venda.delete(vendaId, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
             res.redirect('/vendas');
         });
-    }
+    },
+
+    searchVendas: (req, res) => {
+        const search = req.query.search || '';
+
+        Venda.searchByProductName(search, (err, vendas) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.json({ vendas });
+        });
+    },
 };
 
 module.exports = vendaController;
