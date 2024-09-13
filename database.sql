@@ -14,7 +14,6 @@ CREATE TABLE categorias (
     nome VARCHAR(255) NOT NULL
 );
 
-//crie a tabela produtos com os campos id, nome, descricao e preco
 CREATE TABLE produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -24,3 +23,18 @@ CREATE TABLE produtos (
     categoria INT NOT NULL,
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
+
+CREATE TABLE vendas (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_produto int,
+    id_usuario int,
+    quantidade int,
+    valor real,
+    data varchar(200)
+    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+    FOREIGN KEY (id_usuario) REFERENCES users(id)
+
+);
+
+
