@@ -1,16 +1,18 @@
 const Venda = require('../models/vendaModel');
 const Categoria = require('../models/categoriaModel');
+const Usuario = require('../models/userModel'); 
+const Produto = require('../models/produtoModel'); 
 
 const vendaController = {
 
     createVenda: (req, res) => {
-
         const newVenda = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
+            id_users: req.body.id_user,
+            id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            categoria: req.body.categoria
+            valor_total: req.body.valor_total,
+            data: req.body.data
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -36,27 +38,35 @@ const vendaController = {
     },
     
     getAllVendas: (req, res) => {
-        const categoria = req.query.categoria || null;
-        
-        Venda.getAll(categoria, (err, vendas) => {
+        Venda.getAll((err, vendas) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            Categoria.getAll((err, categorias) => {
+            Usuario.getAll((err, users) => {
                 if (err) {
                     return res.status(500).json({ error: err });
                 }
-                res.render('vendas/index', { vendas, categorias, categoriaSelecionada: categoria });
+                Produto.getAll((err, produtos) => {
+                    if (err) {
+                        return res.status(500).json({ error: err });
+                    }
+                    res.render('vendas/index', { vendas, users, produtos });
+                });
             });
         });
     },
 
     renderCreateForm: (req, res) => {
-        Categoria.getAll((err, categorias) => {
+        Usuario.getAll((err, users) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('vendas/create', { categorias });
+            Produto.getAll((err, produtos) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('vendas/create', { users, produtos });
+            });
         });
     },
 
@@ -71,11 +81,16 @@ const vendaController = {
                 return res.status(404).json({ message: 'Venda not found' });
             }
 
-            Categoria.getAll((err, categorias) => {
+            Usuario.getAll((err, users) => {
                 if (err) {
                     return res.status(500).json({ error: err });
                 }
-                res.render('vendas/edit', { venda, categorias });
+                Produto.getAll((err, produtos) => {
+                    if (err) {
+                        return res.status(500).json({ error: err });
+                    }
+                    res.render('vendas/edit', { venda, users, produtos });
+                });
             });
         });
     },
@@ -84,12 +99,12 @@ const vendaController = {
         const vendaId = req.params.id;
         
         const updatedVenda = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
+            id_users: req.body.id_user,
+            id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            categoria: req.body.categoria,
-            categoria: req.body.categoria
+            valor_total: req.body.valor_total,
+            data: req.body.data
         };
 
         Venda.update(vendaId, updatedVenda, (err) => {

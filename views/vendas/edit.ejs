@@ -1,43 +1,43 @@
-<h1>Editar produto</h1>
+<h1>Editar venda</h1>
 
-<form action="/vendas/<%= venda.id %>?_method=PUT" method="POST">
-    
+<form action="/vendas/<%= venda.id_venda %>?_method=PUT" method="POST">
     <div class="form-group">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" value="<%= produto.nome %>" required>
-    </div>
-    
-    <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <input type="text" class="form-control" id="descricao" name="descricao" value="<%= produto.descricao %>" required>
-    </div>
-
-    <div class="form-group">
-        <label for="quantidade">Quantidade</label>
-        <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= produto.quantidade %>" required>
-    </div>
-    
-    <div class="form-group"></div>
-        <label for="preco">Valor Total</label>
-        <input type="number" class="form-control" id="preco" name="preco" value="<%= produto.preco %>" required>
-    </div>
-
-    <div class="form-group">
-        <label for="id_usuario">Usuário</label>
-        <select class="form-control" id="user" name="user" required>
-            <% users.forEach(function(user) { %>
-                <option value="<%= user.id %>" <%= users.user == user.id ? 'selected' : '' %>><%= user.nome %></option>
-            <% }); %>
+        <label for="id_usuario">Usuário:</label>
+        <select class="form-control" id="id_usuario" name="id_usuario" required>
+            <% usuarios.forEach(user => { %>
+                <option value="<%= user.id %>" <%= venda.id_users == user.id ? 'selected' : '' %>><%= user.username %></option>
+            <% }) %>
         </select>
     </div>
 
-    <div class="form-group"></div>
-        <label for="id_produto">Produto</label>
-        <select class="form-control" id="produto" name="produto" required>
-            <% produtos.forEach(function(produto) { %>
-                <option value="<%= produtos.id %>" <%= produtos.produto == produtos.id ? 'selected' : '' %>><%= produto.nome %></option>
-            <% }); %>
+    <div class="form-group">
+        <label for="id_produto">Produto:</label>
+        <select class="form-control" id="id_produto" name="id_produto" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produto.id %>" <%= venda.id_produto == produto.id ? 'selected' : '' %>><%= produto.nome %></option>
+            <% }) %>
         </select>
+    </div>
+
+    <div class="form-group">
+        <label for="preco">Valor:</label>
+        <input type="number" class="form-control" id="preco" name="preco" value="<%= venda.preco %>" required step="0.01">
+    </div>
+
+    <div class="form-group">
+        <label for="quantidade">Quantidade:</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= venda.quantidade %>" required>
+    </div>
+
+    <div class="form-group">
+        <label for="valor_total">Valor Total:</label>
+        <input type="number" class="form-control" id="valor_total" name="valor_total" value="<%= venda.valor_total %>" required step="0.01">
+    </div>
+
+    <div class="form-group">
+        <label for="data">Data:</label>
+        <input type="date" class="form-control" id="data" name="data" value="<%= venda.data %>" required>
     </div>
 
     <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

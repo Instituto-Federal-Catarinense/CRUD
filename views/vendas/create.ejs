@@ -1,14 +1,27 @@
-<h1>Cadastrar nova Venda</h1>>
-<form action="/vendas" method="post">
+<h1>Cadastrar nova Venda</h1>
 
-    <div class="form-group"></div>
-        <label for="nome">Nome da Venda:</label>
-        <input type="text" class="form-control" id="nome" name="nome" required>
+<form action="/vendas" method="post">
+    <div class="form-group">
+        <label for="id_usuario">Usuário:</label>
+        <select class="form-control" id="id_usuario" name="id_usuario" required>
+            <% usuarios.forEach(user => { %>
+                <option value="<%= user.id %>"><%= user.username %></option>
+            <% }) %>
+        </select>
     </div>
 
     <div class="form-group">
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" class="form-control" name="descricao" required></textarea>
+        <label for="id_produto">Produto:</label>
+        <select class="form-control" id="id_produto" name="id_produto" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produto.id %>"><%= produto.nome %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="preco">Valor:</label>
+        <input type="number" class="form-control" id="preco" name="preco" required step="0.01">
     </div>
 
     <div class="form-group">
@@ -17,26 +30,13 @@
     </div>
 
     <div class="form-group">
-        <label for="preco">Valor Total:</label>
-        <input type="number" class="form-control" id="valortotal" name="valortotal" required>
+        <label for="valor_total">Valor Total:</label>
+        <input type="number" class="form-control" id="valor_total" name="valor_total" required step="0.01">
     </div>
 
     <div class="form-group">
-        <label for="id_usuario">Usuário:</label>
-        <select class="form-control" id="usuario" name="usuario" required>
-            <% users.forEach(user => { %>
-                <option value="<%= users.id %>"><%= users.username %></option>
-            <% }) %>
-        </select>
-    </div>
-
-    <div class="form-group"></div>
-        <label for="id_produto">Produto:</label>
-        <select class="form-control" id="produto" name="produto" required>
-            <% produtos.forEach(produto => { %>
-                <option value="<%= produtos.id %>"><%= produtos.nome %></option>
-            <% }) %>
-        </select>
+        <label for="data">Data:</label>
+        <input type="date" class="form-control" id="data" name="data" required>
     </div>
 
     <button type="submit" class="btn btn-primary">Cadastrar</button>

@@ -1,8 +1,9 @@
-<h1>Detalhes das Vendas</h1>
-<p>ID: <%= venda.id %></p>
-<p>Nome: <%= venda.nome %></p>
-<p>Descrição: <%= venda.descricao %></p>
+<h1>Detalhes da Venda</h1>
+<p>ID: <%= venda.id_venda %></p>
+<p>Usuário: <%= venda.usuario_nome %></p>
+<p>Produto: <%= venda.produto_nome %></p>
 <p>Quantidade: <%= venda.quantidade %></p>
+<p>Valor: <%= venda.preco %></p>
 <p>Valor Total: <%= venda.valor_total %></p>
-<p>Categoria: <%= venda.categoria_nome %></p> /*-- Arrumar isso daqui --*/
-<a href="/vendas" class="btn btn-primary">Voltar para a Listat</a>
+<p>Data: <%= venda.data %></p>
+<a href="/vendas" class="btn btn-primary">Voltar para a Lista</a>
