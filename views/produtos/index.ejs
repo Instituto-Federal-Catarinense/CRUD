@@ -1,4 +1,19 @@
 <h1>Lista de produtos</h1>
+
+<!-- Formulário de filtro por categoria -->
+<form method="GET" action="/produtos">
+    <div class="form-group">
+        <label for="categoria">Filtrar por Categoria:</label>
+        <select id="categoria" name="categoria" class="form-control">
+            <option value="">Todas as Categorias</option>
+            <% categorias.forEach(categoria => { %>
+                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+            <% }) %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
