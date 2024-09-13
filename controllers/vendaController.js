@@ -15,7 +15,7 @@ const vendaController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/vendas');
+            res.redirect('/venda');
         });
     },
 
@@ -29,7 +29,7 @@ const vendaController = {
             if (!venda) {
                 return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/show', { venda });
+            res.render('venda/show', { venda });
         });
     },
 

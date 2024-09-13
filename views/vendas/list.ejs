@@ -1,0 +1,101 @@
+<h1>Lista de vendas</h1>
+
+<!-- Formulário de Filtros -->
+<form id="filter-form">   
+    <div class="form-group">
+        <label for="users">users:</label>
+        <select class="form-control" id="users" name="users">
+            <option value="">Todas</option>
+            <% venda.forEach(venda => { %>
+                <option value="<%= venda.users %>"><%= venda.users_username %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="produtos">produtos:</label>
+        <select class="form-control" id="produtos" name="produtos">
+            <option value="">Todas</option>
+            <% venda.forEach(venda => { %>
+                <option value="<%= venda.produtos %>"><%= venda.produtos_nome %></option>
+            <% }) %>
+        </select>
+    </div>
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<!-- Controles de Paginação -->
+<div id="pagination-controls">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="page-info">Página 1</span>
+    <button id="next-page">Próxima</button>
+</div>
+
+<script>
+let currentPage = 1;
+
+function loadVenda(page) {
+    $.ajax({
+        url: '/venda',
+        type: 'GET',
+        data: $('#filter-form').serialize() + '&page=' + page,
+        success: function(response) {
+            $('#venda-list').html(response);
+            currentPage = page;
+            updatePaginationControls();
+        },
+        error: function(error) {
+            alert('Erro ao aplicar filtros');
+        }
+    });
+}
+
+function updatePaginationControls() {
+    $('#page-info').text('Página ' + currentPage);
+    $('#prev-page').prop('disabled', currentPage === 1);
+}
+
+$('#filter-form').on('submit', function(e) {
+    e.preventDefault();
+    loadProducts(1);
+});
+
+$('#prev-page').on('click', function() {
+    if (currentPage > 1) {
+        loadVenda(currentPage - 1);
+    }
+});
+
+$('#next-page').on('click', function() {
+    loadVenda(currentPage + 1);
+});
+
+// Carregar a primeira página ao iniciar
+loadVenda(1);
+</script>
+
+<table class="table">
+    <thead>
+        
+        <tr>
+            th>ID</th>
+            <th>Quantidade</th>
+            <th>valor</th>
+            <th>Data_venda</th>
+            <th>users</th>
+            <th>produtos</th>
+        </tr>
+    </thead>
+    <tbody id="venda-list">
+        <% venda.forEach(venda => { %>
+            <tr>
+                <td><%= venda.id %></td>
+                <td><%= venda.quantidade %></td>
+                <td><%= venda.valor %></td>
+                <td><%= venda.data_venda %></td>
+                <td><%= venda.users %></td>
+                <td><%= venda.produtos %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
