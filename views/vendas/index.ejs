@@ -1,0 +1,69 @@
+<h1>Lista de vendas</h1>
+
+<form id="searchForm" method="GET" action="/vendas">
+    <div class="form-group">
+        <label for="search">Buscar Venda:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite a descrição da venda" autocomplete="off">
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody id="vendaTableBody">
+        <% vendas.forEach(venda => { %>
+            <tr>
+                <td><%= venda.id %></td>
+                <td><%= venda.descricao %></td>
+                <td><%= venda.valor %></td>
+                <td><%= venda.data %></td>
+                <td>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">View</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('search').addEventListener('input', function() {
+        const searchValue = this.value;
+
+        fetch(`/vendas/search?search=${encodeURIComponent(searchValue)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('vendaTableBody');
+                tbody.innerHTML = ''; // Clear existing rows
+
+                data.vendas.forEach(venda => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${venda.id}</td>
+                        <td>${venda.descricao}</td>
+                        <td>${venda.valor}</td>
+                        <td>${venda.data}</td>
+                        <td>
+                            <a href="/vendas/${venda.id}" class="btn btn-primary">View</a>
+                            <a href="/vendas/${venda.id}/edit" class="btn btn-warning">Edit</a>
+                            <form action="/vendas/${venda.id}?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
