@@ -3,7 +3,7 @@ const db = require('../config/db');
 const User = {
     create: (user, callback) => {
         const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username , user.password, user.role], (err, results) => {
+        db.query(query, [user.username, user.password, user.role], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -31,9 +31,9 @@ const User = {
         });
     },
 
-    update: (_id, user, callback) => {
-        const query = 'UPDATE users SET users = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.nome, user.senha, user.admin, _id], (err, results) => {
+    update: (id, user, callback) => {
+        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
+        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -60,7 +60,16 @@ const User = {
             callback(null, results);
         });
     },
-};
 
+    searchByName: (name, callback) => {
+        const query = 'SELECT * FROM users WHERE username LIKE ?';
+        db.query(query, [`%${name}%`], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
+        });
+    },    
+};
 
 module.exports = User;
