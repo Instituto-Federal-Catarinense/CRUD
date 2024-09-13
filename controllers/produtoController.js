@@ -1,15 +1,16 @@
 const Produto = require('../models/produtoModel');
+const Categoria = require('../models/categoriaModel');
 
 const produtoController = {
+
     createProduto: (req, res) => {
+
         const newProduto = {
-            Descricao: req.body.Descricao,
-            DataValidade: req.body.DataValidade,
-            DataFabricacao: req.body.DataFabricacao,
-            PrecisaRefrigeracao: req.body.PrecisaRefrigeracao,
-            QuantidadeEstoque: req.body.QuantidadeEstoque,
-            COD: req.body.COD,
-            ItemID: req.body.ItemID
+            nome: req.body.nome,
+            descricao: req.body.descricao,
+            preco: req.body.preco,
+            quantidade: req.body.quantidade,
+            categoria: req.body.categoria
         };
 
         Produto.create(newProduto, (err, produtoId) => {
@@ -33,18 +34,30 @@ const produtoController = {
             res.render('produtos/show', { produto });
         });
     },
-
+    
     getAllProdutos: (req, res) => {
-        Produto.getAll((err, produtos) => {
+        const categoria = req.query.categoria || null;
+        
+        Produto.getAll(categoria, (err, produtos) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('produtos/index', { produtos });
+            Categoria.getAll((err, categorias) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('produtos/index', { produtos, categorias, categoriaSelecionada: categoria });
+            });
         });
     },
 
     renderCreateForm: (req, res) => {
-        res.render('produtos/create');
+        Categoria.getAll((err, categorias) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('produtos/create', { categorias });
+        });
     },
 
     renderEditForm: (req, res) => {
@@ -57,20 +70,25 @@ const produtoController = {
             if (!produto) {
                 return res.status(404).json({ message: 'Produto not found' });
             }
-            res.render('produtos/edit', { produto });
+
+            Categoria.getAll((err, categorias) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('produtos/edit', { produto, categorias });
+            });
         });
     },
 
     updateProduto: (req, res) => {
         const produtoId = req.params.id;
+        
         const updatedProduto = {
-            Descricao: req.body.Descricao,
-            DataValidade: req.body.DataValidade,
-            DataFabricacao: req.body.DataFabricacao,
-            PrecisaRefrigeracao: req.body.PrecisaRefrigeracao,
-            QuantidadeEstoque: req.body.QuantidadeEstoque,
-            COD: req.body.COD,
-            ItemID: req.body.ItemID
+            nome: req.body.nome,
+            descricao: req.body.descricao,
+            preco: req.body.preco,
+            quantidade: req.body.quantidade,
+            categoria: req.body.categoria
         };
 
         Produto.update(produtoId, updatedProduto, (err) => {

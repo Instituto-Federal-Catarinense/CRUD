@@ -1,51 +1,61 @@
-// models/produtoModel.js
-
-const db = require('../db'); // Supondo que você tenha uma instância do banco de dados
+const db = require('../config/db');
 
 const Produto = {
-    create: (newProduto, callback) => {
-        const query = `INSERT INTO Produto (Descricao, DataValidade, DataFabricacao, PrecisaRefrigeracao, QuantidadeEstoque, COD, ItemID)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        const values = [newProduto.Descricao, newProduto.DataValidade, newProduto.DataFabricacao, newProduto.PrecisaRefrigeracao, newProduto.QuantidadeEstoque, newProduto.COD, newProduto.ItemID];
-        db.query(query, values, (err, results) => {
-            if (err) return callback(err);
+    create: (produto, callback) => {
+        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
             callback(null, results.insertId);
         });
     },
 
-    findById: (produtoId, callback) => {
-        const query = 'SELECT * FROM Produto WHERE ProdutoID = ?';
-        db.query(query, [produtoId], (err, results) => {
-            if (err) return callback(err);
+    findById: (id, callback) => {
+        const query = 'SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id WHERE produtos.id = ?';
+        db.query(query, [id], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
             callback(null, results[0]);
         });
     },
 
-    getAll: (callback) => {
-        const query = 'SELECT * FROM Produto';
-        db.query(query, (err, results) => {
-            if (err) return callback(err);
+    update: (id, produto, callback) => {
+        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
+        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
             callback(null, results);
         });
     },
 
-    update: (produtoId, updatedProduto, callback) => {
-        const query = `UPDATE Produto SET Descricao = ?, DataValidade = ?, DataFabricacao = ?, PrecisaRefrigeracao = ?, QuantidadeEstoque = ?, COD = ?, ItemID = ?
-                        WHERE ProdutoID = ?`;
-        const values = [updatedProduto.Descricao, updatedProduto.DataValidade, updatedProduto.DataFabricacao, updatedProduto.PrecisaRefrigeracao, updatedProduto.QuantidadeEstoque, updatedProduto.COD, updatedProduto.ItemID, produtoId];
-        db.query(query, values, (err) => {
-            if (err) return callback(err);
-            callback(null);
+    delete: (id, callback) => {
+        const query = 'DELETE FROM produtos WHERE id = ?';
+        db.query(query, [id], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
         });
     },
 
-    delete: (produtoId, callback) => {
-        const query = 'DELETE FROM Produto WHERE ProdutoID = ?';
-        db.query(query, [produtoId], (err) => {
-            if (err) return callback(err);
-            callback(null);
+    getAll: (categoria, callback) => {
+        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
+        
+        if (categoria) {
+            query += ' WHERE produtos.categoria = ?';
+        }
+    
+        db.query(query, [categoria], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
         });
-    }
+    },
+    
 };
 
 module.exports = Produto;
