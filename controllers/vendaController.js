@@ -11,7 +11,7 @@ const vendaController = {
             id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            valor_total: req.body.valor_total,
+            precototal: req.body.precototal,
             data: req.body.data
         };
 
@@ -78,7 +78,7 @@ const vendaController = {
                 return res.status(500).json({ error: err });
             }
             if (!venda) {
-                return res.status(404).json({ message: 'Venda not found' });
+                return res.status(404).json({ message: 'Venda não encontrado!' });
             }
 
             Usuario.getAll((err, users) => {
@@ -103,7 +103,7 @@ const vendaController = {
             id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            valor_total: req.body.valor_total,
+            precototal: req.body.precototal,
             data: req.body.data
         };
 

@@ -48,14 +48,13 @@ const Produto = {
             query += ' WHERE produtos.categoria = ?';
         }
     
-        db.query(query, [categoria], (err, results) => {
+        db.query(query, categoria ? [categoria] : [], (err, results) => {
             if (err) {
                 return callback(err);
             }
             callback(null, results);
         });
     },
-    
 };
 
 module.exports = Produto;
