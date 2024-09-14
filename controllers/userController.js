@@ -83,6 +83,17 @@ const userController = {
             res.redirect('/users');
         });
     },
+
+    searchUsers: (req, res) => {
+        const search = req.query.search || '';
+
+        User.searchByName(search, (err, users) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.json({ users });
+        });
+    },
 };
 
 module.exports = userController;

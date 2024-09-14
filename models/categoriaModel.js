@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const Product = {
-    create: (product, callback) => {
-        const query = 'INSERT INTO products (name, price, category) VALUES (?, ?, ?)';
-        db.query(query, [product.name, product.price, product.category], (err, results) => {
+const Categoria = {
+    create: (categoria, callback) => {
+        const query = 'INSERT INTO categorias (nome) VALUES (?)';
+        db.query(query, [categoria.nome], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -12,7 +12,7 @@ const Product = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM products WHERE id = ?';
+        const query = 'SELECT * FROM categorias WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -21,9 +21,9 @@ const Product = {
         });
     },
 
-    findByName: (name, callback) => {
-        const query = 'SELECT * FROM products WHERE name = ?';
-        db.query(query, [name], (err, results) => {
+    findByCategorianame: (nome, callback) => {
+        const query = 'SELECT * FROM categorias WHERE nome = ?';
+        db.query(query, [nome], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -31,9 +31,9 @@ const Product = {
         });
     },
 
-    update: (id, product, callback) => {
-        const query = 'UPDATE products SET name = ?, price = ?, category = ? WHERE id = ?';
-        db.query(query, [product.name, product.price, product.category, id], (err, results) => {
+    update: (id, categoria, callback) => {
+        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
+        db.query(query, [categoria.nome,id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -42,7 +42,7 @@ const Product = {
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM products WHERE id = ?';
+        const query = 'DELETE FROM categorias WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -52,7 +52,7 @@ const Product = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM products';
+        const query = 'SELECT * FROM categorias';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -62,4 +62,5 @@ const Product = {
     },
 };
 
-module.exports = Product;
+
+module.exports = Categoria;

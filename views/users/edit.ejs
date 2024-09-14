@@ -1,4 +1,4 @@
-<h1>Edit User</h1>
+<h1>Editar usuário</h1>
 <form action="/users/<%= user.id %>?_method=PUT" method="POST">
     <div class="form-group">
         <label for="username">Username</label>
@@ -15,5 +15,5 @@
             <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
         </select>
     </div>
-    <button type="submit" class="btn btn-warning">Update</button>
+    <button type="submit" class="btn btn-warning">Salvar</button>
 </form>
