@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const Categoria = {
+const categoria = {
     create: (categoria, callback) => {
-        const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
+        const query = 'INSERT INTO categorias (categorianame, password, role) VALUES (?, ?, ?)';
+        db.query(query, [categoria.categorianame, categoria.password, categoria.role], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -21,9 +21,9 @@ const Categoria = {
         });
     },
 
-    findByCategorianame: (nome, callback) => {
-        const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
+    findBycategorianame: (categorianame, callback) => {
+        const query = 'SELECT * FROM categorias WHERE categorianame = ?';
+        db.query(query, [categorianame], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -32,8 +32,8 @@ const Categoria = {
     },
 
     update: (id, categoria, callback) => {
-        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
+        const query = 'UPDATE categorias SET categorianame = ?, password = ?, role = ? WHERE id = ?';
+        db.query(query, [categoria.categorianame, categoria.password, categoria.role, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -63,4 +63,4 @@ const Categoria = {
 };
 
 
-module.exports = Categoria;
+module.exports = categoria;
