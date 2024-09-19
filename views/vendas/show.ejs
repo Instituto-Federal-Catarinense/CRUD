@@ -1,8 +1,7 @@
-<h1>venda Details</h1>
+<h1>Detalhes da Venda</h1>
 <p>ID: <%= venda.id %></p>
-<p>Nome: <%= venda.nome %></p>
-<p>Descrição: <%= venda.descricao %></p>
-<p>Preço: <%= venda.preco %></p>
+<p>Data: <%= venda.data.toISOString().split('T')[0] %></p>
+<p>Valor Total: R$ <%= typeof venda.valor_total === 'number' ? venda.valor_total.toFixed(2) : '0.00' %></p>
 <p>Quantidade: <%= venda.quantidade %></p>
-<p>Produto: <%= venda.produto_nome %></p>
-<a href="/vendas" class="btn btn-primary">Back to List</a>
+<p>Produto: <%= venda.produto_id %></p>
+<a href="/vendas" class="btn btn-primary">Voltar para a lista</a>

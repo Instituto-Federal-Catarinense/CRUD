@@ -1,20 +1,28 @@
 <h1>Editar Venda</h1>
 <form action="/vendas/<%= venda.id %>?_method=PUT" method="POST">
     <div class="form-group">
-        <label for="data">Data da Venda</label>
-        <input type="date" class="form-control" id="data" name="data" value="<%= venda.data %>" required>
+        <label for="data">Data</label>
+        <input type="date" class="form-control" id="data" name="data" value="<%= venda.data.toISOString().split('T')[0] %>" required>
     </div>
     <div class="form-group">
-        <label for="valor">Valor Total</label>
-        <input type="number" step="0.01" class="form-control" id="valor" name="valor" value="<%= venda.valor %>" required>
+        <label for="valor_total">Valor Total</label>
+        <input type="number" step="0.01" class="form-control" id="valor_total" name="valor_total" value="<%= venda.valor_total %>" required>
     </div>
     <div class="form-group">
         <label for="quantidade">Quantidade</label>
         <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= venda.quantidade %>" required>
     </div>
     <div class="form-group">
-        <label for="produto_id">Produto</label>
-        <input type="number" class="form-control" id="produto_id" name="produto_id" value="<%= venda.produto_id %>" required>
+        <label for="produto">Produto</label>
+        <select class="form-control" id="produto" name="produto" required>
+            <% if (produtos && produtos.length > 0) { %>
+                <% produtos.forEach(produto => { %>
+                    <option value="<%= produto.id %>" <%= produto.id === venda.produto_id ? 'selected' : '' %>><%= produto.nome %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="">Nenhum produto disponível</option>
+            <% } %>
+        </select>
     </div>
     <button type="submit" class="btn btn-warning">Salvar</button>
 </form>

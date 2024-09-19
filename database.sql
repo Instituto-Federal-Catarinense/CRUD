@@ -31,5 +31,9 @@ CREATE TABLE vendas (
     preco DECIMAL(10,2) NOT NULL,
     quantidade INT NOT NULL,
     produto INT NOT NULL,
+    users INT NOT NULL,
+    data DATE NOT NULL,
+    valor_total DECIMAL(10, 2),
+    FOREIGN KEY (users) REFERENCES users(id), 
     FOREIGN KEY (produto) REFERENCES produtos(id)
 );

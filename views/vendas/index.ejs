@@ -2,19 +2,24 @@
 
 <form id="searchForm" method="GET" action="/vendas">
     <div class="form-group">
-        <label for="search">Buscar Venda:</label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o ID do produto" autocomplete="off">
+        <label for="search">Buscar Venda ou Produto:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o ID ou Produto ID da venda" autocomplete="off">
     </div>
 </form>
-
+<form id="searchForm" method="GET" action="/users">
+    <div class="form-group">
+        <label for="search">Buscar Usuário:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome do usuário" autocomplete="off">
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
             <th>Data</th>
-            <th>Valor</th>
+            <th>Valor Total</th>
             <th>Quantidade</th>
-            <th>Produto ID</th>
+            <th>Produto</th>
             <th>Ação</th>
         </tr>
     </thead>
@@ -22,8 +27,8 @@
         <% vendas.forEach(venda => { %>
             <tr>
                 <td><%= venda.id %></td>
-                <td><%= venda.data %></td>
-                <td><%= venda.valor %></td>
+                <td><%= venda.data.toISOString().split('T')[0] %></td>
+                <td>R$ <%= typeof venda.valor_total === 'number' ? venda.valor_total.toFixed(2) : '0.00' %></td>
                 <td><%= venda.quantidade %></td>
                 <td><%= venda.produto_id %></td>
                 <td>
@@ -46,14 +51,13 @@
             .then(response => response.json())
             .then(data => {
                 const tbody = document.getElementById('vendaTableBody');
-                tbody.innerHTML = ''; // Clear existing rows
-
+                tbody.innerHTML = ''; 
                 data.vendas.forEach(venda => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${venda.id}</td>
-                        <td>${venda.data}</td>
-                        <td>${venda.valor}</td>
+                        <td>${venda.data.toISOString().split('T')[0]}</td>
+                        <td>R$ ${typeof venda.valor_total === 'number' ? venda.valor_total.toFixed(2) : '0.00'}</td>
                         <td>${venda.quantidade}</td>
                         <td>${venda.produto_id}</td>
                         <td>

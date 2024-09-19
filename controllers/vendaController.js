@@ -1,13 +1,14 @@
 const Venda = require('../models/vendaModel');
-const Produto = require('../models/produtoModel'); // Adicione a importação do modelo Produto
+const Produto = require('../models/produtoModel');
 
 const vendaController = {
     createVenda: (req, res) => {
         const newVenda = {
-            data_venda: req.body.data,
-            valor_total: req.body.valor,
+            data: req.body.data,
+            valor_total: req.body.valor_total, // Alterado para 'valor_total'
             quantidade: req.body.quantidade,
-            id_produto: req.body.produto_id,
+            produto_id: req.body.produto, // Alterado para 'produto_id'
+            users_id: req.body.userId, // Alterado para 'users_id'
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -46,7 +47,7 @@ const vendaController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('vendas/create', { produtos }); // Passa a variável produtos para o template
+            res.render('vendas/create', { produtos });
         });
     },
 
@@ -72,10 +73,11 @@ const vendaController = {
     updateVenda: (req, res) => {
         const vendaId = req.params.id;
         const updatedVenda = {
-            data_venda: req.body.data,
-            valor_total: req.body.valor,
+            data: req.body.data,
+            valor_total: req.body.valor_total, // Alterado para 'valor_total'
             quantidade: req.body.quantidade,
-            id_produto: req.body.produto_id,
+            produto_id: req.body.produto, // Alterado para 'produto_id'
+            users_id: req.body.userId, // Alterado para 'users_id'
         };
 
         Venda.update(vendaId, updatedVenda, (err) => {
