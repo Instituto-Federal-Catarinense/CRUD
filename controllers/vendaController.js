@@ -1,5 +1,4 @@
 const Venda = require('../models/vendaModel');
-const Categoria = require('../models/categoriaModel');
 const Usuario = require('../models/userModel'); 
 const Produto = require('../models/produtoModel'); 
 
@@ -7,7 +6,8 @@ const vendaController = {
 
     createVenda: (req, res) => {
         const newVenda = {
-            id_users: req.body.id_user,
+            id_venda: req.body.id_venda,
+            id_users: req.body.id_users,
             id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
@@ -46,15 +46,20 @@ const vendaController = {
                 if (err) {
                     return res.status(500).json({ error: err });
                 }
-                Produto.getAll((err, produtos) => {
-                    if (err) {
-                        return res.status(500).json({ error: err });
-                    }
-                    res.render('vendas/index', { vendas, users, produtos });
-                });
+            });
+            Produto.getAll((err, produtos) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+
+                console.log('Vendas:', vendas);
+                console.log('Users:', users);
+                console.log('Produtos:', produtos);
+                
+                res.render('vendas/index', { vendas, users, produtos });
             });
         });
-    },
+   },
 
     renderCreateForm: (req, res) => {
         Usuario.getAll((err, users) => {
@@ -99,7 +104,7 @@ const vendaController = {
         const vendaId = req.params.id;
         
         const updatedVenda = {
-            id_users: req.body.id_user,
+            id_users: req.body.id_users,
             id_produto: req.body.id_produto,
             preco: req.body.preco,
             quantidade: req.body.quantidade,

@@ -44,8 +44,11 @@ const Produto = {
     getAll: (categoria, callback) => {
         let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
         
+        const params = [];
+
         if (categoria) {
             query += ' WHERE produtos.categoria = ?';
+            params.push(categoria);
         }
     
         db.query(query, categoria ? [categoria] : [], (err, results) => {

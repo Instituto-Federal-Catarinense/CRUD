@@ -12,16 +12,11 @@ const Venda = {
     },
 
     findById: (id, callback) => {
-        const query = `SELECT vendas.*, produtos.nome AS produto_nome, categorias.nome AS categoria_nome, users.username AS usuario_nome 
-                       FROM vendas 
-                       JOIN produtos ON vendas.id_produto = produtos.id 
-                       JOIN categorias ON produtos.categoria = categorias.id 
-                       JOIN users ON vendas.id_users = users.id 
-                       WHERE vendas.id_venda = ?`;
+        const query = `SELECT vendas.*, produtos.nome AS produto_nome, categorias.nome AS categoria_nome, users.username AS usuario_nome  FROM vendas  JOIN produtos ON vendas.id_produto = produtos.id  JOIN categorias ON produtos.categoria = categorias.id  JOIN users ON vendas.id_users = users.id  WHERE vendas.id_venda = ?`;
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
-            }
+            }   
             callback(null, results[0]);
         });
     },
@@ -47,16 +42,16 @@ const Venda = {
     },
 
     getAll: (callback) => {
-        const query = `SELECT vendas.id_vendas*, produtos.nome AS produto_nome, categorias.nome AS categoria_nome, users.username AS usuario_nome 
-                       FROM vendas  
-                       JOIN produtos ON vendas.id_produto = produtos.id 
-                       JOIN categorias ON produtos.categoria = categorias.id 
-                       JOIN users ON vendas.id_users = users.id`;
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
+        const query = `SELECT vendas.id_venda, produtos.nome AS produto_nome, categorias.nome AS categoria_nome, users.username AS usuario_nome  FROM vendas   JOIN produtos ON vendas.id_produto = produtos.id  JOIN categorias ON produtos.categoria = categorias.id   JOIN users ON vendas.id_users = users.id`;
+
+                       console.log('Executing query:', query);
+
+                       db.query(query, (err, results) => {
+                        if (err) {
+                            console.error('Error executing query:', err);  
+                            return callback(err);
+                        }
+                        callback(null, results);
         });
     },
 };
