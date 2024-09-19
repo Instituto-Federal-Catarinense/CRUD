@@ -1,3 +1,4 @@
+const User = require('../models/userModel'); // Certifique-se de ter um modelo User
 const musica = require('../models/musicaModel');
 
 const musicaController = {
@@ -6,7 +7,8 @@ const musicaController = {
             nome: req.body.nome,
             genero1: req.body.genero1,
             genero2: req.body.genero2,
-            genero3: req.body.genero3
+            genero3: req.body.genero3,
+            userId: req.body.users // Inclua o ID do usuário selecionado
         };
 
         musica.create(newMusica, (err, musicaId) => {
@@ -14,6 +16,15 @@ const musicaController = {
                 return res.status(500).json({ error: err });
             }
             res.redirect('/musicas');
+        });
+    },
+
+    renderCreateForm: (req, res) => {
+        User.getAll((err, users) => { // Obter a lista de usuários
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('musicas/create', { users }); // Passar a lista de usuários para a view
         });
     },
 
@@ -40,13 +51,8 @@ const musicaController = {
         });
     },
 
-    renderCreateForm: (req, res) => {
-        res.render('musicas/create');
-    },
-
     renderEditForm: (req, res) => {
         const musicaId = req.params.id;
-
         musica.findById(musicaId, (err, musica) => {
             if (err) {
                 return res.status(500).json({ error: err });
@@ -54,7 +60,12 @@ const musicaController = {
             if (!musica) {
                 return res.status(404).json({ message: 'Musica not found' });
             }
-            res.render('musicas/edit', { musica });
+            User.getAll((err, users) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('musicas/edit', { musica, users });
+            });
         });
     },
 
@@ -64,7 +75,8 @@ const musicaController = {
             nome: req.body.nome,
             genero1: req.body.genero1,
             genero2: req.body.genero2,
-            genero3: req.body.genero3
+            genero3: req.body.genero3,
+            userId: req.body.users
         };
 
         musica.update(musicaId, updatedMusica, (err) => {

@@ -2,8 +2,8 @@ const db = require('../config/db');
 
 const musica = {
     create: (musica, callback) => {
-        const query = 'INSERT INTO musicas (nome, genero1, genero2, genero3) VALUES (?, ?, ?, ?)';
-        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3], (err, results) => {
+        const query = 'INSERT INTO musicas (nome, genero1, genero2, genero3, userId) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3, musica.userId], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -22,8 +22,8 @@ const musica = {
     },
 
     update: (id, musica, callback) => {
-        const query = 'UPDATE musicas SET nome = ?, genero1 = ?, genero2 = ?, genero3 = ? WHERE id = ?';
-        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3, id], (err, results) => {
+        const query = 'UPDATE musicas SET nome = ?, genero1 = ?, genero2 = ?, genero3 = ?, userId = ? WHERE id = ?';
+        db.query(query, [musica.nome, musica.genero1, musica.genero2, musica.genero3, musica.userId, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -49,7 +49,7 @@ const musica = {
             }
             callback(null, results);
         });
-    }
+    },
 };
 
 module.exports = musica;

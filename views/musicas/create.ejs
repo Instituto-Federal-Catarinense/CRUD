@@ -50,6 +50,16 @@
         <option value="Latina-(Reggaeton,Salsa,Bachata,etc.)">Latina-(Reggaeton,Salsa,Bachata,etc.)</option>
         <option value="Funk">Funk</option>
     </select>
+    <div class="form-group">
+        <label for="users">Usuário:</label>
+        <select class="form-control" id="users" name="users" required>
+            <% users.forEach(user => { %>
+                <option value="<%= user.id %>"><%= user.username %></option>
+            <% }) %>
+        </select>
+    </div>    
+    
+    <br>
     <div>
         <button type="submit">Criar Música</button>
     </div>
