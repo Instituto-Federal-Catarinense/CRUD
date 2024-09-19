@@ -42,7 +42,7 @@
             .then(response => response.json())
             .then(data => {
                 const tbody = document.getElementById('userTableBody');
-                tbody.innerHTML = ''; // Clear existing rowssssssdasdasda
+                tbody.innerHTML = ''; // Clear existing rows
 
                 data.users.forEach(user => {
                     const tr = document.createElement('tr');

@@ -1,9 +1,10 @@
+// models/vendaModel.js
 const db = require('../config/db');
 
 const Venda = {
     create: (venda, callback) => {
-        const query = 'INSERT INTO vendas (data_venda, valor_total, quantidade, id_produto) VALUES (?, ?, ?, ?)';
-        db.query(query, [venda.data_venda, venda.valor_total, venda.quantidade, venda.id_produto], (err, results) => {
+        const query = 'INSERT INTO vendas (user_id, produto_id, quantidade, data_compra) VALUES (?, ?, ?, ?)';
+        db.query(query, [venda.user_id, venda.produto_id, venda.quantidade, venda.data_compra], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -21,9 +22,24 @@ const Venda = {
         });
     },
 
+    getAll: (callback) => {
+        const query = `
+            SELECT vendas.*, users.username AS user_username, produtos.nome AS produto_nome
+            FROM vendas
+            LEFT JOIN users ON vendas.user_id = users.id
+            LEFT JOIN produtos ON vendas.produto_id = produtos.id
+        `;
+        db.query(query, (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
+        });
+    },
+
     update: (id, venda, callback) => {
-        const query = 'UPDATE vendas SET data_venda = ?, valor_total = ?, quantidade = ?, id_produto = ? WHERE id = ?';
-        db.query(query, [venda.data_venda, venda.valor_total, venda.quantidade, venda.id_produto, id], (err, results) => {
+        const query = 'UPDATE vendas SET user_id = ?, produto_id = ?, quantidade = ?, data_compra = ? WHERE id = ?';
+        db.query(query, [venda.user_id, venda.produto_id, venda.quantidade, venda.data_compra, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -39,32 +55,7 @@ const Venda = {
             }
             callback(null, results);
         });
-    },
-
-    getAll: (callback) => {
-        const query = 'SELECT * FROM vendas';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    searchByProductName: (productName, callback) => {
-        const query = `
-            SELECT vendas.* 
-            FROM vendas 
-            JOIN produtos ON vendas.id_produto = produtos.id 
-            WHERE produtos.nome LIKE ?
-        `;
-        db.query(query, [`%${productName}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+    }
 };
 
 module.exports = Venda;

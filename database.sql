@@ -25,12 +25,11 @@ CREATE TABLE produtos (
 );
 
 CREATE TABLE vendas (
-    id INT PRIMARY KEY,
-    id_user INT,
-    id_produto INT,
-    quantidade INT,
-    valor_total FLOAT,
-    data_venda DATE,
-    FOREIGN KEY (id_user) REFERENCES users(id),
-    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    data_compra DATETIME NOT NULL, 
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
 );
