@@ -1,0 +1,33 @@
+<!-- views/index.ejs -->
+<h1>Listagem de Vendas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuário</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Data da Compra</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% vendas.forEach(venda => { %>
+            <tr>
+                <td><%= venda.id %></td>
+                <td><%= venda.user_username ? venda.user_username : 'Desconhecido' %></td>
+                <td><%= venda.produto_nome ? venda.produto_nome : 'Desconhecido' %></td>
+                <td><%= venda.quantidade %></td>
+                <td><%= venda.data_compra ? new Date(venda.data_compra).toLocaleDateString('pt-BR') : 'Desconhecido' %></td>
+                <td>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">Detalhes</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Editar</a>
+                    <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+<a href="/vendas/new" class="btn btn-primary">Nova Venda</a>
