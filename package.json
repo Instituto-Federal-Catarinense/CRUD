@@ -4,7 +4,8 @@
   "description": "Sistema de cadastro de usuários.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,5 +18,8 @@
     "express-ejs-layouts": "^2.5.1",
     "method-override": "^3.0.0",
     "mysql2": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
