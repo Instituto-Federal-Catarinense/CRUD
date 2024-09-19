@@ -1,69 +1,33 @@
-<h1>Lista de vendas</h1>
-
-<form id="searchForm" method="GET" action="/vendas">
-    <div class="form-group">
-        <label for="search">Buscar Venda:</label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Digite a descrição da venda" autocomplete="off">
-    </div>
-</form>
-
+<!-- views/index.ejs -->
+<h1>Listagem de Vendas</h1>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Data</th>
+            <th>Usuário</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Data da Compra</th>
             <th>Ação</th>
         </tr>
     </thead>
-    <tbody id="vendaTableBody">
+    <tbody>
         <% vendas.forEach(venda => { %>
             <tr>
                 <td><%= venda.id %></td>
-                <td><%= venda.descricao %></td>
-                <td><%= venda.valor %></td>
-                <td><%= venda.data %></td>
+                <td><%= venda.user_username ? venda.user_username : 'Desconhecido' %></td>
+                <td><%= venda.produto_nome ? venda.produto_nome : 'Desconhecido' %></td>
+                <td><%= venda.quantidade %></td>
+                <td><%= venda.data_compra ? new Date(venda.data_compra).toLocaleDateString('pt-BR') : 'Desconhecido' %></td>
                 <td>
-                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">View</a>
-                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">Detalhes</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Editar</a>
                     <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Excluir</button>
                     </form>
                 </td>
             </tr>
         <% }) %>
     </tbody>
 </table>
-
-<script>
-    document.getElementById('search').addEventListener('input', function() {
-        const searchValue = this.value;
-
-        fetch(`/vendas/search?search=${encodeURIComponent(searchValue)}`)
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.getElementById('vendaTableBody');
-                tbody.innerHTML = ''; // Clear existing rows
-
-                data.vendas.forEach(venda => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${venda.id}</td>
-                        <td>${venda.descricao}</td>
-                        <td>${venda.valor}</td>
-                        <td>${venda.data}</td>
-                        <td>
-                            <a href="/vendas/${venda.id}" class="btn btn-primary">View</a>
-                            <a href="/vendas/${venda.id}/edit" class="btn btn-warning">Edit</a>
-                            <form action="/vendas/${venda.id}?_method=DELETE" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-</script>
+<a href="/vendas/new" class="btn btn-primary">Nova Venda</a>

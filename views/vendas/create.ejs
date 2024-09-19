@@ -1,16 +1,29 @@
-<h1>Cadastrar nova venda</h1>
+<!-- views/create.ejs -->
+<h1>Cadastrar Nova Venda</h1>
 <form action="/vendas" method="POST">
     <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <input type="text" class="form-control" id="descricao" name="descricao" required>
+        <label for="user_id">Usuário</label>
+        <select class="form-control" id="user_id" name="user_id" required>
+            <% users.forEach(user => { %>
+                <option value="<%= user.id %>"><%= user.username %></option>
+            <% }) %>
+        </select>
     </div>
     <div class="form-group">
-        <label for="valor">Valor</label>
-        <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+        <label for="produto_id">Produto</label>
+        <select class="form-control" id="produto_id" name="produto_id" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produto.id %>"><%= produto.nome %></option>
+            <% }) %>
+        </select>
     </div>
     <div class="form-group">
-        <label for="data">Data</label>
-        <input type="date" class="form-control" id="data" name="data" required>
+        <label for="quantidade">Quantidade</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" required min="1">
+    </div>
+    <div class="form-group">
+        <label for="data_compra">Data da Compra</label>
+        <input type="date" class="form-control" id="data_compra" name="data_compra" required>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
