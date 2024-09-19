@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const Venda = {
     create: (venda, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
+        const query = 'INSERT INTO venda (quantidade, valor, data_venda, users, produtos) VALUES (?, ?, ?, ?, ?)';
         db.query(query, [venda.quantidade, venda.valor, venda.data_venda, venda.users, venda.produtos], (err, results) => {
             if (err) {
                 return callback(err);
@@ -12,7 +12,7 @@ const Venda = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT venda.*, venda.users AS venda_users FROM venda JOIN users ON venda.users = users.id, AS venda_produtos FROM venda JOIN produtos ON venda.produtos = produtos.id = ?';
+        const query = 'SELECT venda.id, venda.quantidade, venda.valor, venda.data_venda, users.name AS venda_users, produtos.name AS venda_produtos FROM venda JOIN users ON venda.users = users.id  JOIN produtos ON venda.produtos = produtos.id;';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -42,7 +42,7 @@ const Venda = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT venda.id, venda.quantidade, venda.descricao, venda.valor, venda.data_venda, AS venda_users FROM venda JOIN users ON venda.users = users.id, AS venda_produtos FROM venda JOIN produtos ON venda.produtos = produtos.id';
+        const query = 'SELECT venda.id, venda.quantidade, venda.valor, venda.data_venda, AS venda_users FROM venda JOIN users ON venda.users = users.id, AS venda_produtos FROM venda JOIN produtos ON venda.produtos = produtos.id';
         
         db.query(query, (err, results) => {
             if (err) {

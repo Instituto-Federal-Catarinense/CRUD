@@ -1,6 +1,8 @@
 //crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
 
 const Venda = require('../models/vendaModel');
+const User = require('../models/userModel');
+const Produto = require('../models/produtoModel');
 
 const vendaController = {
     createVenda: (req, res) => {
