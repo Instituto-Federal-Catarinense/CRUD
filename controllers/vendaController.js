@@ -1,29 +1,45 @@
+// controllers/vendaController.jsssssssss
 const Venda = require('../models/vendaModel');
-const Produto = require('../models/produtoModel'); // Para obter o preço do produto
+const Produto = require('../models/produtoModel');
+const User = require('../models/userModel');
 
 const vendaController = {
-    createVenda: (req, res) => {
-        const newVenda = {
-            usuario_id: req.body.usuario_id,
-            produto_id: req.body.produto_id,
-            quantidade: req.body.quantidade
-        };
-
-        Produto.findById(newVenda.produto_id, (err, produto) => {
+    getAllVendas: (req, res) => {
+        Venda.getAll((err, vendas) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            if (!produto) {
-                return res.status(404).json({ message: 'Produto não encontrado' });
-            }
-            newVenda.preco = produto.preco;
+            res.render('vendas/index', { vendas });
+        });
+    },
 
-            Venda.create(newVenda, (err, vendaId) => {
+    renderCreateForm: (req, res) => {
+        Produto.getAll(null, (err, produtos) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            User.getAll((err, users) => {
                 if (err) {
                     return res.status(500).json({ error: err });
                 }
-                res.redirect('/vendas');
+                res.render('vendas/create', { produtos, users });
             });
+        });
+    },
+
+    createVenda: (req, res) => {
+        const newVenda = {
+            user_id: req.body.user_id,
+            produto_id: req.body.produto_id,
+            quantidade: req.body.quantidade,  // Adicione a quantidade
+            data_compra: req.body.data_compra // Adicione a data da compra
+        };
+
+        Venda.create(newVenda, (err, vendaId) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.redirect('/vendas');
         });
     },
 
@@ -35,23 +51,10 @@ const vendaController = {
                 return res.status(500).json({ error: err });
             }
             if (!venda) {
-                return res.status(404).json({ message: 'Venda não encontrada' });
+                return res.status(404).json({ message: 'Venda not found' });
             }
             res.render('vendas/show', { venda });
         });
-    },
-
-    getAllVendas: (req, res) => {
-        Venda.getAll((err, vendas) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('vendas/index', { vendas });
-        });
-    },
-
-    renderCreateForm: (req, res) => {
-        res.render('vendas/create');
     },
 
     renderEditForm: (req, res) => {
@@ -62,35 +65,36 @@ const vendaController = {
                 return res.status(500).json({ error: err });
             }
             if (!venda) {
-                return res.status(404).json({ message: 'Venda não encontrada' });
+                return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/edit', { venda });
+            Produto.getAll(null, (err, produtos) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                User.getAll((err, users) => {
+                    if (err) {
+                        return res.status(500).json({ error: err });
+                    }
+                    res.render('vendas/edit', { venda, produtos, users });
+                });
+            });
         });
     },
 
     updateVenda: (req, res) => {
         const vendaId = req.params.id;
         const updatedVenda = {
-            usuario_id: req.body.usuario_id,
+            user_id: req.body.user_id,
             produto_id: req.body.produto_id,
-            quantidade: req.body.quantidade
+            quantidade: req.body.quantidade, // Atualize a quantidade
+            data_compra: req.body.data_compra // Atualize a data da compra
         };
 
-        Produto.findById(updatedVenda.produto_id, (err, produto) => {
+        Venda.update(vendaId, updatedVenda, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            if (!produto) {
-                return res.status(404).json({ message: 'Produto não encontrado' });
-            }
-            updatedVenda.preco = produto.preco;
-
-            Venda.update(vendaId, updatedVenda, (err) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-                res.redirect('/vendas');
-            });
+            res.redirect('/vendas');
         });
     },
 
@@ -102,17 +106,6 @@ const vendaController = {
                 return res.status(500).json({ error: err });
             }
             res.redirect('/vendas');
-        });
-    },
-
-    searchVendas: (req, res) => {
-        const search = req.query.search || '';
-
-        Venda.searchByUserId(search, (err, vendas) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.json({ vendas });
         });
     }
 };
