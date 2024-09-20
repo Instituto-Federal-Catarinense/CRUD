@@ -5,7 +5,7 @@ const categoriaController = {
         const newCategoria = {
             nome: req.body.nome
         };
-
+    
         Categoria.create(newCategoria, (err, categoriaId) => {
             if (err) {
                 return res.status(500).json({ error: err });

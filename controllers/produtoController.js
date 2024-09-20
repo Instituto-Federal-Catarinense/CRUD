@@ -34,10 +34,10 @@ const produtoController = {
             res.render('produtos/show', { produto });
         });
     },
-    
+
     getAllProdutos: (req, res) => {
         const categoria = req.query.categoria || null;
-        
+
         Produto.getAll(categoria, (err, produtos) => {
             if (err) {
                 return res.status(500).json({ error: err });
@@ -82,7 +82,7 @@ const produtoController = {
 
     updateProduto: (req, res) => {
         const produtoId = req.params.id;
-        
+
         const updatedProduto = {
             nome: req.body.nome,
             descricao: req.body.descricao,
