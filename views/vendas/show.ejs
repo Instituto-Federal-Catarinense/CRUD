@@ -1,0 +1,8 @@
+<!-- views/show.ejs -->
+<h1>Detalhes da Venda</h1>
+<p>ID: <%= venda.id %></p>
+<p>Usuário: <%= venda.usuario_nome ? venda.usuario_nome : 'Desconhecido' %></p>
+<p>Produto: <%= venda.produto_nome ? venda.produto_nome : 'Desconhecido' %></p>
+<p>Quantidade: <%= venda.quantidade %></p>
+<p>Data da Compra: <%= venda.data_compra ? new Date(venda.data_compra).toLocaleDateString('pt-BR') : 'Desconhecido' %></p>
+<a href="/vendas" class="btn btn-primary">Voltar para a Lista</a>
