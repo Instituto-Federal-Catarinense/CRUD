@@ -1,0 +1,24 @@
+<h1>Registrar Venda</h1>
+<form action="/vendas/<%= venda.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="id_user">ID do Usuário</label>
+        <input type="text" class="form-control" id="id_user" name="id_user" value="<%= vendas.id_user %>" required>
+    </div>
+    <div class="form-group">
+        <label for="id_produto">ID do Produto</label>
+        <input type="text" class="form-control" id="id_produto" name="id_produto" value="<%= vendas.id_produto %>" required>
+    </div>
+    <div class="form-group">
+        <label for="quantidade">Quantidade</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= vendas.quantidade %>" required>
+    </div>
+    <div class="form-group">
+        <label for="valor_total">Valor Total</label>
+        <input type="text" class="form-control" id="valor_total" name="valor_total" value="<%= vendas.valor_total %>" required>
+    </div>
+    <div class="form-group">
+        <label for="data">Data (formato UNIX timestamp)</label>
+        <input type="number" class="form-control" id="data" name="data" value="<%= vendas.data %>" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

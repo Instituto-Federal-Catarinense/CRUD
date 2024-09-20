@@ -1,0 +1,24 @@
+<h1>Registrar Venda</h1>
+<form action="/vendas" method="POST">
+    <div class="form-group">
+        <label for="id_user">ID do Usuário</label>
+        <input type="text" class="form-control" id="id_user" name="id_user" required>
+    </div>
+    <div class="form-group">
+        <label for="id_produto">ID do Produto</label>
+        <input type="text" class="form-control" id="id_produto" name="id_produto" required>
+    </div>
+    <div class="form-group">
+        <label for="quantidade">Quantidade</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+    </div>
+    <div class="form-group">
+        <label for="valor_total">Valor Total</label>
+        <input type="text" class="form-control" id="valor_total" name="valor_total" required>
+    </div>
+    <div class="form-group">
+        <label for="data">Data (formato UNIX timestamp)</label>
+        <input type="number" class="form-control" id="data" name="data" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar Venda</button>
+</form>
