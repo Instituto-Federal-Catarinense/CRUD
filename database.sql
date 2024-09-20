@@ -1,49 +1,42 @@
 -- Criação do banco de dados
-CREATE DATABASE yourdbname;
+CREATE DATABASE IF NOT EXISTS CRUD;
 
--- Seleciona o banco de dados para uso
-USE yourdbname;
+-- Uso do banco de dados
+USE CRUD;
 
--- Criação da tabela de usuários
-CREATE TABLE users (
+-- Tabela para usuários
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('admin', 'user') NOT NULL
 );
 
--- Criação da tabela de compromissos
-CREATE TABLE appointments (
+-- Tabela para categorias
+CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    client_id INT NOT NULL,
-    artist_id INT NOT NULL,
-    date DATE NOT NULL,
-    start_time TIME NOT NULL,
-    end_time TIME NOT NULL,
-    status ENUM('scheduled', 'completed', 'canceled') NOT NULL,
-    notes TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    nome VARCHAR(255) NOT NULL
 );
 
--- Criação da tabela de pagamentos
-CREATE TABLE pagamentos (
+-- Tabela para produtos
+CREATE TABLE IF NOT EXISTS produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    appointment_id INT NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    payment_method ENUM('credit_card', 'debit_card', 'cash', 'online') NOT NULL,
-    status ENUM('pending', 'completed', 'failed', 'refunded') NOT NULL,
-    transaction_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appointments(id)
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    quantidade INT NOT NULL,
+    categoria INT NOT NULL,
+    FOREIGN KEY (categoria) REFERENCES categorias(id) ON DELETE CASCADE
 );
 
--- Inserção de dados de exemplo na tabela de compromissos
-INSERT INTO appointments (client_id, artist_id, date, start_time, end_time, status) 
-VALUES (1, 1, '2024-08-18', '10:00:00', '11:00:00', 'scheduled');
-
--- Inserção de dados de exemplo na tabela de pagamentos
--- (Certifique-se de que o ID de appointment_id existe na tabela appointments)
-INSERT INTO pagamentos (appointment_id, amount, payment_method, status, transaction_date) 
-VALUES (1, 100.00, 'credit_card', 'completed', '2024-08-18T21:12');
+-- Tabela para vendas
+CREATE TABLE IF NOT EXISTS vendas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_user INT,
+    id_produto INT,
+    quantidade INT NOT NULL,
+    valor_total DECIMAL(10,2) NOT NULL,
+    data DATE NOT NULL,
+    FOREIGN KEY (id_user) REFERENCES users(id) ON DELETE SET NULL,
+    FOREIGN KEY (id_produto) REFERENCES produtos(id) ON DELETE CASCADE
+);
