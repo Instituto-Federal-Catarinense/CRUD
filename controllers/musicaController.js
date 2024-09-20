@@ -8,7 +8,7 @@ const musicaController = {
             genero1: req.body.genero1,
             genero2: req.body.genero2,
             genero3: req.body.genero3,
-            userId: req.body.users // Inclua o ID do usuário selecionado
+            userId: req.body.userId // Inclua o ID do usuário selecionado
         };
 
         musica.create(newMusica, (err, musicaId) => {
@@ -76,7 +76,7 @@ const musicaController = {
             genero1: req.body.genero1,
             genero2: req.body.genero2,
             genero3: req.body.genero3,
-            userId: req.body.users
+            userId: req.body.userId
         };
 
         musica.update(musicaId, updatedMusica, (err) => {

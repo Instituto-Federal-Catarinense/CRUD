@@ -4,7 +4,6 @@
 
     CREATE TABLE users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        userId INT NOT NULL,
         username VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
         role ENUM('admin', 'user') NOT NULL
@@ -16,8 +15,8 @@
         genero1 TEXT NOT NULL,
         genero2 TEXT NOT NULL,
         genero3 TEXT NOT NULL,
-        user INT NOT NULL,
-        FOREIGN KEY (users) REFERENCES users(id)
+        userId INT NOT NULL,
+        FOREIGN KEY (userId) REFERENCES users(id)
 );
 
     CREATE TABLE exercicios (

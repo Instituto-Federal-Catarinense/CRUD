@@ -1,5 +1,38 @@
-<h1>User Details</h1>
-<p>ID: <%= user.id %></p>
-<p>Username: <%= user.username %></p>
-<p>Role: <%= user.role %></p>
-<a href="/users" class="btn btn-primary">Back to List</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Usuário</title>
+    <link rel="stylesheet" href="/path/to/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes do Usuário</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>Exercício</th>
+                <td><%= user.username %></td> <!-- Corrigido para "user.user" -->
+            </tr>
+            <tr>
+                <th>Senha</th>
+                <td><%= user.password %></td>
+            </tr>
+            <tr>
+                <th>Exercício</th>
+                <td><%= user.exercicios_exercicio %></td>
+            </tr>
+            <tr>
+                <th>Música</th>
+                <td><%= user.musica_nome %></td> <!-- Corrigido para "user.musica_nome" -->
+            </tr>
+        </table>
+        <a href="/users/<%= user.id %>/edit" class="btn btn-warning">Editar</a>
+        <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Excluir</button>
+        </form>
+        <a href="/users" class="btn btn-secondary">Voltar para Lista</a>
+    </div>
+    <script src="/path/to/bootstrap.js"></script>
+</body>
+</html>
