@@ -23,15 +23,13 @@ CREATE TABLE produtos (
     categoria INT NOT NULL,
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
-
 CREATE TABLE vendas (
-    id_venda INT AUTO_INCREMENT PRIMARY KEY,
-    id_users INT NOT NULL,
-    id_produto INT NOT NULL,
-    preco DECIMAL(10,2) NOT NULL,
-    quantidade INT NOT NULL,
-    precototal DECIMAL(10,2) NOT NULL,
-    data DATE NOT NULL,
-    FOREIGN KEY (id_users) REFERENCES users(id),
+    id INT PRIMARY KEY,
+    id_user INT,
+    id_produto INT,
+    quantidade INT,
+    valor_total FLOAT,
+    data_venda DATE,
+    FOREIGN KEY (id_user) REFERENCES users(id),
     FOREIGN KEY (id_produto) REFERENCES produtos(id)
 );

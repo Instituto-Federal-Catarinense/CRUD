@@ -1,18 +1,12 @@
 const Venda = require('../models/vendaModel');
-const Usuario = require('../models/userModel'); 
-const Produto = require('../models/produtoModel'); 
 
 const vendaController = {
-
     createVenda: (req, res) => {
         const newVenda = {
-            id_venda: req.body.id_venda,
-            id_users: req.body.id_users,
-            id_produto: req.body.id_produto,
-            preco: req.body.preco,
+            data: req.body.data,
+            valor: req.body.valor,
             quantidade: req.body.quantidade,
-            precototal: req.body.precototal,
-            data: req.body.data
+            produto_id: req.body.produto_id,
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -36,43 +30,18 @@ const vendaController = {
             res.render('vendas/show', { venda });
         });
     },
-    
+
     getAllVendas: (req, res) => {
         Venda.getAll((err, vendas) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            Usuario.getAll((err, users) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-            });
-            Produto.getAll((err, produtos) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-
-                console.log('Vendas:', vendas);
-                console.log('Users:', users);
-                console.log('Produtos:', produtos);
-                
-                res.render('vendas/index', { vendas, users, produtos });
-            });
+            res.render('vendas/index', { vendas });
         });
-   },
+    },
 
     renderCreateForm: (req, res) => {
-        Usuario.getAll((err, users) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            Produto.getAll((err, produtos) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-                res.render('vendas/create', { users, produtos });
-            });
-        });
+        res.render('vendas/create');
     },
 
     renderEditForm: (req, res) => {
@@ -83,33 +52,19 @@ const vendaController = {
                 return res.status(500).json({ error: err });
             }
             if (!venda) {
-                return res.status(404).json({ message: 'Venda não encontrado!' });
+                return res.status(404).json({ message: 'Venda not found' });
             }
-
-            Usuario.getAll((err, users) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-                Produto.getAll((err, produtos) => {
-                    if (err) {
-                        return res.status(500).json({ error: err });
-                    }
-                    res.render('vendas/edit', { venda, users, produtos });
-                });
-            });
+            res.render('vendas/edit', { venda });
         });
     },
 
     updateVenda: (req, res) => {
         const vendaId = req.params.id;
-        
         const updatedVenda = {
-            id_users: req.body.id_users,
-            id_produto: req.body.id_produto,
-            preco: req.body.preco,
+            data: req.body.data,
+            valor: req.body.valor,
             quantidade: req.body.quantidade,
-            precototal: req.body.precototal,
-            data: req.body.data
+            produto_id: req.body.produto_id,
         };
 
         Venda.update(vendaId, updatedVenda, (err) => {
@@ -129,7 +84,18 @@ const vendaController = {
             }
             res.redirect('/vendas');
         });
-    }
+    },
+
+    searchVendas: (req, res) => {
+        const search = req.query.search || '';
+
+        Venda.searchByProductName(search, (err, vendas) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.json({ vendas });
+        });
+    },
 };
 
 module.exports = vendaController;
