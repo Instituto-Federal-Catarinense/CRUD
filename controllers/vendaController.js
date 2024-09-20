@@ -5,10 +5,11 @@ const Venda = require('../models/vendaModel');
 const vendaController = {
     createVenda: (req, res) => {
         const newVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
+            id_user: req.body.id_user,
+            id_produto: req.body.id_produto,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            valor_total: req.body.valor_total,
+            data: req.body.data,
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -63,10 +64,11 @@ const vendaController = {
     updateVenda: (req, res) => {
         const vendaId = req.params.id;
         const updatedVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
+            id_user: req.body.id_user,
+            id_produto: req.body.id_produto,
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            valor_total: req.body.valor_total,
+            data: req.body.data,
         };
 
         Venda.update(vendaId, updatedVenda, (err, result) => {
