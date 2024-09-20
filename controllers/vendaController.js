@@ -1,14 +1,14 @@
-//crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
-
 const Venda = require('../models/vendaModel');
+const Produto = require('../models/produtoModel');
 
 const vendaController = {
     createVenda: (req, res) => {
         const newVenda = {
             data: req.body.data,
-            valor: req.body.valor,
+            valor_total: req.body.valor_total, // Alterado para 'valor_total'
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            produto_id: req.body.produto, // Alterado para 'produto_id'
+            users_id: req.body.userId, // Alterado para 'users_id'
         };
 
         Venda.create(newVenda, (err, vendaId) => {
@@ -43,7 +43,12 @@ const vendaController = {
     },
 
     renderCreateForm: (req, res) => {
-        res.render('vendas/create');
+        Produto.getAll(null, (err, produtos) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.render('vendas/create', { produtos });
+        });
     },
 
     renderEditForm: (req, res) => {
@@ -56,7 +61,12 @@ const vendaController = {
             if (!venda) {
                 return res.status(404).json({ message: 'Venda not found' });
             }
-            res.render('vendas/edit', { venda });
+            Produto.getAll(null, (err, produtos) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('vendas/edit', { venda, produtos });
+            });
         });
     },
 
@@ -64,12 +74,13 @@ const vendaController = {
         const vendaId = req.params.id;
         const updatedVenda = {
             data: req.body.data,
-            valor: req.body.valor,
+            valor_total: req.body.valor_total, // Alterado para 'valor_total'
             quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
+            produto_id: req.body.produto, // Alterado para 'produto_id'
+            users_id: req.body.userId, // Alterado para 'users_id'
         };
 
-        Venda.update(vendaId, updatedVenda, (err, result) => {
+        Venda.update(vendaId, updatedVenda, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
@@ -80,13 +91,24 @@ const vendaController = {
     deleteVenda: (req, res) => {
         const vendaId = req.params.id;
 
-        Venda.delete(vendaId, (err, result) => {
+        Venda.delete(vendaId, (err) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
             res.redirect('/vendas');
         });
-    }
+    },
+
+    searchVendas: (req, res) => {
+        const search = req.query.search || '';
+
+        Venda.searchByProductName(search, (err, vendas) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            res.json({ vendas });
+        });
+    },
 };
 
 module.exports = vendaController;
