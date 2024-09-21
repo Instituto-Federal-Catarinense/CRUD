@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
 const Venda = {
-    create: (venda, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
-        db.query(query, [venda.quantidade, venda.valor, venda.data_venda, venda.users, venda.produtos], (err, results) => {
+    createVenda: (venda, callback) => {
+        const query = 'INSERT INTO venda (produtos,  users, quantidade, valor, data_venda) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [venda.produto, venda.user, venda.quantidade, venda.valor, venda.data_venda ], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -12,7 +12,7 @@ const Venda = {
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT venda.*, venda.users AS venda_users FROM venda JOIN users ON venda.users = users.id, AS venda_produtos FROM venda JOIN produtos ON venda.produtos = produtos.id = ?';
+        const query = 'SELECT venda.id, venda.quantidade, venda.valor, venda.data_venda, users.username AS venda_users, produtos.nome AS venda_produtos FROM venda JOIN users ON venda.users = users.id  JOIN produtos ON venda.produtos = produtos.id;';
         db.query(query, [id], (err, results) => {
             if (err) {
                 return callback(err);
@@ -21,9 +21,9 @@ const Venda = {
         });
     },
 
-    update: (id, venda, callback) => {
-        const query = 'UPDATE venda SET quantidade = ?, valor = ?, data_venda = ?, users = ?, produtos = ? WHERE id = ?';
-        db.query(query, [venda.quantidade, venda.valor, venda.data_venda, venda.users, venda.produtos, id], (err, results) => {
+    updateVenda: (id, venda, callback) => {
+        const query = 'UPDATE venda SET produtos = ?, users = ?, quantidade = ?, valor = ?, data_venda = ?,  WHERE id = ?';
+        db.query(query, [venda.produto, venda.user, venda.quantidade, venda.valor, venda.data_venda, id ], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -31,7 +31,7 @@ const Venda = {
         });
     },
 
-    delete: (id, callback) => {
+    deleteVenda: (id, callback) => {
         const query = 'DELETE FROM venda WHERE id = ?';
         db.query(query, [id], (err, results) => {
             if (err) {
@@ -41,8 +41,8 @@ const Venda = {
         });
     },
 
-    getAll: (callback) => {
-        const query = 'SELECT venda.id, venda.quantidade, venda.descricao, venda.valor, venda.data_venda, AS venda_users FROM venda JOIN users ON venda.users = users.id, AS venda_produtos FROM venda JOIN produtos ON venda.produtos = produtos.id';
+    getAllVendas: (callback) => {
+        const query = 'SELECT venda.id, venda.quantidade, venda.valor, venda.data_venda, users.username AS venda_users, produtos.nome AS venda_produtos FROM venda JOIN users ON venda.users = users.id  JOIN produtos ON venda.produtos = produtos.id;';
         
         db.query(query, (err, results) => {
             if (err) {

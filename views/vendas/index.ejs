@@ -3,26 +3,30 @@
     <thead>
         <tr>
             <th>ID</th>
+            <th>produtos</th>
+            <th>users</th>
             <th>Quantidade</th>
             <th>valor</th>
             <th>Data_venda</th>
-            <th>users</th>
-            <th>produtos</th>
+           
+            
         </tr>
     </thead>
     <tbody>
-        <% venda.forEach(venda => { %>
+        <% vendas.forEach(venda => { %>
             <tr>
                 <td><%= venda.id %></td>
+                <td><%= venda.produtos %></td>
+                <td><%= venda.users %></td>
                 <td><%= venda.quantidade %></td>
                 <td><%= venda.valor %></td>
                 <td><%= venda.data_venda %></td>
-                <td><%= venda.users %></td>
-                <td><%= venda.produtos %></td>
+               
+                
                 <td>
-                    <a href="/venda/<%= venda.id %>" class="btn btn-primary">View</a>
-                    <a href="/venda/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/venda/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">View</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
