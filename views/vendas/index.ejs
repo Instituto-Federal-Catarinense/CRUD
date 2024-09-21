@@ -1,10 +1,9 @@
 <h1>Lista de Vendas</h1>
 
-<!-- Formulário de busca -->
 <form id="searchForm" method="GET" action="/vendas">
     <div class="form-group">
         <label for="search">Buscar Venda:</label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o ID do Usuário ou do Produto" autocomplete="off">
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o ID ou Produto ID da venda" autocomplete="off">
     </div>
 </form>
 
@@ -12,11 +11,10 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>ID do Usuário</th>
-            <th>ID do Produto</th>
-            <th>Quantidade</th>
+            <th>Data</th>
             <th>Valor Total</th>
-            <th>Data da Venda</th>
+            <th>Quantidade</th>
+            <th>Produto ID</th>
             <th>Ação</th>
         </tr>
     </thead>
@@ -24,16 +22,15 @@
         <% vendas.forEach(venda => { %>
             <tr>
                 <td><%= venda.id %></td>
-                <td><%= venda.idUser %></td>
-                <td><%= venda.idProduct %></td>
+                <td><%= venda.data.toISOString().split('T')[0] %></td>
+                <td>R$ <%= venda.valor_total.toFixed(2) %></td>
                 <td><%= venda.quantidade %></td>
-                <td><%= venda.valorTotal.toFixed(2) %></td>
-                <td><%= venda.DataVenda.toISOString().split('T')[0] %></td>
+                <td><%= venda.produto_id %></td>
                 <td>
-                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">View</a>
-                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">Ver</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Editar</a>
                     <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Excluir</button>
                     </form>
                 </td>
             </tr>
@@ -49,22 +46,21 @@
             .then(response => response.json())
             .then(data => {
                 const tbody = document.getElementById('vendaTableBody');
-                tbody.innerHTML = ''; // Limpa as linhas existentes
+                tbody.innerHTML = ''; // Clear existing rows
 
                 data.vendas.forEach(venda => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${venda.id}</td>
-                        <td>${venda.idUser}</td>
-                        <td>${venda.idProduct}</td>
+                        <td>${venda.data.toISOString().split('T')[0]}</td>
+                        <td>R$ ${venda.valor_total.toFixed(2)}</td>
                         <td>${venda.quantidade}</td>
-                        <td>${venda.valorTotal.toFixed(2)}</td>
-                        <td>${venda.DataVenda.toISOString().split('T')[0]}</td>
+                        <td>${venda.produto_id}</td>
                         <td>
-                            <a href="/vendas/${venda.id}" class="btn btn-primary">View</a>
-                            <a href="/vendas/${venda.id}/edit" class="btn btn-warning">Edit</a>
+                            <a href="/vendas/${venda.id}" class="btn btn-primary">Ver</a>
+                            <a href="/vendas/${venda.id}/edit" class="btn btn-warning">Editar</a>
                             <form action="/vendas/${venda.id}?_method=DELETE" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger">Excluir</button>
                             </form>
                         </td>
                     `;

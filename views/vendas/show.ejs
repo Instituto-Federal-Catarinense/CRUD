@@ -1,8 +1,7 @@
 <h1>Detalhes da Venda</h1>
 <p>ID: <%= venda.id %></p>
-<p>ID do Usuário: <%= venda.idUser %></p>
-<p>ID do Produto: <%= venda.idProduct %></p>
+<p>Data: <%= venda.data.toISOString().split('T')[0] %></p>
+<p>Valor Total: R$ <%= venda.valor_total.toFixed(2) %></p>
 <p>Quantidade: <%= venda.quantidade %></p>
-<p>Valor Total: R$ <%= venda.valorTotal.toFixed(2) %></p>
-<p>Data da Venda: <%= venda.DataVenda.toISOString().split('T')[0] %></p>
-<a href="/vendas" class="btn btn-primary">Voltar para a Lista</a>
+<p>Produto ID: <%= venda.produto_id %></p>
+<a href="/vendas" class="btn btn-primary">Voltar para a lista</a>
