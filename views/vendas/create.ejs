@@ -1,24 +1,20 @@
 <h1>Cadastrar nova venda</h1>
 <form action="/vendas" method="POST">
     <div class="form-group">
-        <label for="idUser">ID do Usuário</label>
-        <input type="number" class="form-control" id="idUser" name="idUser" required>
+        <label for="data">Data</label>
+        <input type="date" class="form-control" id="data" name="data" required>
     </div>
     <div class="form-group">
-        <label for="idProduct">ID do Produto</label>
-        <input type="number" class="form-control" id="idProduct" name="idProduct" required>
+        <label for="valor_total">Valor Total</label>
+        <input type="number" step="0.01" class="form-control" id="valor_total" name="valor_total" required>
     </div>
     <div class="form-group">
         <label for="quantidade">Quantidade</label>
         <input type="number" class="form-control" id="quantidade" name="quantidade" required>
     </div>
     <div class="form-group">
-        <label for="valorTotal">Valor Total</label>
-        <input type="number" step="0.01" class="form-control" id="valorTotal" name="valorTotal" required>
-    </div>
-    <div class="form-group">
-        <label for="DataVenda">Data da Venda</label>
-        <input type="date" class="form-control" id="DataVenda" name="DataVenda" required>
+        <label for="produto_id">Produto ID</label>
+        <input type="number" class="form-control" id="produto_id" name="produto_id" required>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>

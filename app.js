@@ -6,7 +6,7 @@ const indexRoutes = require('./routes/indexRoutes');
 const userRoutes = require('./routes/userRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
-const vendaRoutes = require('./routes/vendaRoutes'); // Importa as rotas de vendas
+const vendaRoutes = require('./routes/vendaRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +23,7 @@ app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
-app.use('/vendas', vendaRoutes); // Adiciona a rota de vendas
+app.use('/vendas', vendaRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
