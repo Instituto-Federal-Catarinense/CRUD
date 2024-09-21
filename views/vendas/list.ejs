@@ -6,7 +6,7 @@
         <label for="users">users:</label>
         <select class="form-control" id="users" name="users">
             <option value="">Todas</option>
-            <% venda.forEach(venda => { %>
+            <% vendas.forEach(venda => { %>
                 <option value="<%= venda.users %>"><%= venda.users_username %></option>
             <% }) %>
         </select>
@@ -15,7 +15,7 @@
         <label for="produtos">produtos:</label>
         <select class="form-control" id="produtos" name="produtos">
             <option value="">Todas</option>
-            <% venda.forEach(venda => { %>
+            <% vendas.forEach(venda => { %>
                 <option value="<%= venda.produtos %>"><%= venda.produtos_nome %></option>
             <% }) %>
         </select>
@@ -36,7 +36,7 @@ let currentPage = 1;
 
 function loadVenda(page) {
     $.ajax({
-        url: '/venda',
+        url: '/vendas',
         type: 'GET',
         data: $('#filter-form').serialize() + '&page=' + page,
         success: function(response) {
@@ -78,23 +78,25 @@ loadVenda(1);
     <thead>
         
         <tr>
-            th>ID</th>
+            <th>ID</th>
+            <th>produtos</th>
+            <th>users</th>
             <th>Quantidade</th>
             <th>valor</th>
             <th>Data_venda</th>
-            <th>users</th>
-            <th>produtos</th>
         </tr>
     </thead>
     <tbody id="venda-list">
-        <% venda.forEach(venda => { %>
+        <% vendas.forEach(venda => { %>
             <tr>
                 <td><%= venda.id %></td>
+                <td><%= venda.produtos %></td>
+                <td><%= venda.users %></td>
                 <td><%= venda.quantidade %></td>
                 <td><%= venda.valor %></td>
                 <td><%= venda.data_venda %></td>
-                <td><%= venda.users %></td>
-                <td><%= venda.produtos %></td>
+                
+                
             </tr>
         <% }) %>
     </tbody>

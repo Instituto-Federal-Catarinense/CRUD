@@ -97,7 +97,7 @@ const vendaController = {
     deleteVenda: (req, res) => {
         const vendaId = req.params.id;
 
-        Venda.delete(vendaId, (err, result) => {
+        Venda.deleteVenda(vendaId, (err, vendaId) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
@@ -105,5 +105,7 @@ const vendaController = {
         });
     }
 };
+
+
 
 module.exports = vendaController;
