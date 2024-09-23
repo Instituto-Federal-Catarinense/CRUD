@@ -1,48 +1,72 @@
-<h1>Lista de vendas</h1>
+<h1>Lista de Vendas</h1>
 
-<!-- Formulário de filtro por categoria -->
-<form method="GET" action="/vendas">
+<form id="searchForm" method="GET" action="/vendas">
     <div class="form-group">
-        <label for="categoria">Filtrar por Categoria:</label>
-        <select id="categoria" name="categoria" class="form-control">
-            <option value="">Todas as Categorias</option>
-            <% categorias.forEach(categoria => { %>
-                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
-            <% }) %>
-        </select>
+        <label for="search">Buscar Venda:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o ID do produto" autocomplete="off">
     </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
 </form>
 
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Preço</th>
+            <th>Data</th>
+            <th>Valor</th>
             <th>Quantidade</th>
-            <th>Categoria</th>
-            <th>Ações</th>
+            <th>Produto ID</th>
+            <th>Ação</th>
         </tr>
     </thead>
-    <tbody>
-        <% vendas.forEach(vendas => { %>
+    <tbody id="vendaTableBody">
+        <% vendas.forEach(venda => { %>
             <tr>
-                <td><%= vendas.id %></td>
-                <td><%= vendas.nome %></td>
-                <td><%= vendas.descricao %></td>
-                <td><%= vendas.preco %></td>
-                <td><%= vendas.quantidade %></td>
-                <td><%= vendas.categoria_nome %></td>
+                <td><%= venda.id %></td>
+                <td><%= venda.data %></td>
+                <td><%= venda.valor %></td>
+                <td><%= venda.quantidade %></td>
+                <td><%= venda.produto_id %></td>
                 <td>
-                    <a href="/vendas/<%= vendas.id %>" class="btn btn-primary">View</a>
-                    <a href="/vendas/<%= vendas.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/vendas/<%= vendas.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">Ver</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Editar</a>
+                    <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
                     </form>
                 </td>
             </tr>
         <% }) %>
     </tbody>
 </table>
+
+<script>
+    document.getElementById('search').addEventListener('input', function() {
+        const searchValue = this.value;
+
+        fetch(`/vendas/search?search=${encodeURIComponent(searchValue)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('vendaTableBody');
+                tbody.innerHTML = ''; // Clear existing rows
+
+                data.vendas.forEach(venda => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${venda.id}</td>
+                        <td>${venda.data}</td>
+                        <td>${venda.valor}</td>
+                        <td>${venda.quantidade}</td>
+                        <td>${venda.produto_id}</td>
+                        <td>
+                            <a href="/vendas/${venda.id}" class="btn btn-primary">Ver</a>
+                            <a href="/vendas/${venda.id}/edit" class="btn btn-warning">Editar</a>
+                            <form action="/vendas/${venda.id}?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
