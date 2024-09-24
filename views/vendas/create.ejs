@@ -1,0 +1,28 @@
+<h1>Cadastrar nova venda</h1>
+<form action="/vendas" method="POST">
+    <div class="form-group">
+        <label for="data">Data</label>
+        <input type="date" class="form-control" id="data" name="data" required>
+    </div>
+    <div class="form-group">
+        <label for="valor_total">Valor Total</label>
+        <input type="number" step="0.01" class="form-control" id="valor_total" name="valor_total" required>
+    </div>
+    <div class="form-group">
+        <label for="quantidade">Quantidade</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+    </div>
+    <div class="form-group">
+        <label for="produto">Produto:</label>
+        <select class="form-control" id="produto" name="produto" required>
+            <% if (produtos && produtos.length > 0) { %>
+                <% produtos.forEach(produto => { %>
+                    <option value="<%= produto.id %>"><%= produto.nome %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="">Nenhum produto disponível</option>
+            <% } %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

@@ -6,6 +6,8 @@ const indexRoutes = require('./routes/indexRoutes');
 const userRoutes = require('./routes/userRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
+const vendasRoute = require('./routes/vendaRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +24,8 @@ app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
+app.use('/vendas', vendasRoute);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

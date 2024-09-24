@@ -22,8 +22,8 @@ const Produto = {
     },
 
     update: (id, produto, callback) => {
-        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
-        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
+        const query = 'UPDATE produtos SET nome = ?, descricao = ?, preco = ?, quantidade = ?, categoria = ? WHERE id = ?';
+        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria, id], (err, results) => {
             if (err) {
                 return callback(err);
             }
@@ -43,19 +43,20 @@ const Produto = {
 
     getAll: (categoria, callback) => {
         let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
-        
+        let params = [];
+
         if (categoria) {
             query += ' WHERE produtos.categoria = ?';
+            params.push(categoria);
         }
-    
-        db.query(query, [categoria], (err, results) => {
+
+        db.query(query, params, (err, results) => {
             if (err) {
                 return callback(err);
             }
             callback(null, results);
         });
     },
-    
 };
 
 module.exports = Produto;
