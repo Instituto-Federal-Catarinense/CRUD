@@ -60,7 +60,16 @@ const Categoria = {
             callback(null, results);
         });
     },
+    
+    searchByName: (name, callback) => {
+        const query = `SELECT * FROM categorias WHERE nome LIKE ?`;
+        db.query(query, [`%${name}%`], (err, results) => {
+            if (err) {
+                 return callback(err);
+            }
+            callback(null, results);
+        });
+    },
 };
-
 
 module.exports = Categoria;
