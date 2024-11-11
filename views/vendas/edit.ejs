@@ -1,0 +1,31 @@
+<!-- views/edit.ejs -->
+<h1>Editar Venda</h1>
+
+<form action="/vendas/<%= venda.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="user_id">Usuário</label>
+        <select class="form-control" id="user_id" name="user_id" required>
+            <% users.forEach(user => { %>
+                <option value="<%= user.id %>" <%= venda.user_id == user.id ? 'selected' : '' %>><%= user.username %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="produto_id">Produto</label>
+        <select class="form-control" id="produto_id" name="produto_id" required>
+            <% produtos.forEach(produto => { %>
+                <option value="<%= produto.id %>" <%= venda.produto_id == produto.id ? 'selected' : '' %>><%= produto.nome %></option>
+            <% }) %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantidade">Quantidade</label>
+        <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= venda.quantidade %>" required>
+    </div>
+    <div class="form-group">
+        <label for="data_compra">Data da Compra</label>
+        <input type="date" class="form-control" id="data_compra" name="data_compra" value="<%= new Date(venda.data_compra).toISOString().split('T')[0] %>" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>
+<a href="/vendas" class="btn btn-primary">Voltar para a Lista</a>

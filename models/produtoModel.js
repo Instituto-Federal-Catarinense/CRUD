@@ -1,3 +1,4 @@
+// models/produtoModel.js
 const db = require('../config/db');
 
 const Produto = {
@@ -55,7 +56,6 @@ const Produto = {
             callback(null, results);
         });
     },
-    
 };
 
 module.exports = Produto;
