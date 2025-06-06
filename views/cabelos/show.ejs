@@ -1,0 +1,13 @@
+<h1>Detalhes do Cabelo</h1>
+
+<p><strong>ID:</strong> <%= cabelo.id %></p>
+<p><strong>Nome:</strong> <%= cabelo.nome %></p>
+<p><strong>Descrição:</strong> <%= cabelo.descricao %></p>
+<p><strong>Preço:</strong> R$ <%= cabelo.preco %></p>
+<p><strong>Categoria:</strong> <%= cabelo.categoria %></p>
+
+<a href="/cabelos" class="btn btn-primary">Voltar à Lista</a>
+<a href="/cabelos/<%= cabelo.id %>/edit" class="btn btn-warning">Editar</a>
+<form action="/cabelos/<%= cabelo.id %>?_method=DELETE" method="POST" style="display:inline-block;">
+  <button type="submit" class="btn btn-danger">Excluir</button>
+</form>

@@ -1,0 +1,21 @@
+<h1>Cadastrar Novo Cabelo</h1>
+
+<form action="/cabelos" method="POST">
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input type="text" class="form-control" id="nome" name="nome" required>
+  </div>
+  <div class="form-group">
+    <label for="descricao">Descrição:</label>
+    <textarea class="form-control" id="descricao" name="descricao" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="preco">Preço:</label>
+    <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
+  </div>
+  <div class="form-group">
+    <label for="categoria">Categoria:</label>
+    <input type="number" class="form-control" id="categoria" name="categoria" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

@@ -1,0 +1,34 @@
+<h1>Lista de Cabelos</h1>
+
+<a href="/cabelos/new" class="btn btn-success mb-3">Novo Cabelo</a>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Preço</th>
+      <th>Categoria</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% cabelos.forEach(cabelo => { %>
+      <tr>
+        <td><%= cabelo.id %></td>
+        <td><%= cabelo.nome %></td>
+        <td><%= cabelo.descricao %></td>
+        <td>R$ <%= cabelo.preco %></td>
+        <td><%= cabelo.categoria %></td>
+        <td>
+          <a href="/cabelos/<%= cabelo.id %>" class="btn btn-primary btn-sm">Ver</a>
+          <a href="/cabelos/<%= cabelo.id %>/edit" class="btn btn-warning btn-sm">Editar</a>
+          <form action="/cabelos/<%= cabelo.id %>?_method=DELETE" method="POST" style="display:inline-block;">
+            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
