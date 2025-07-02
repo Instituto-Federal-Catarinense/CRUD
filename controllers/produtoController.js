@@ -1,16 +1,16 @@
 const Produto = require('../models/produtoModel');
 const Categoria = require('../models/categoriaModel');
+const Cor = require('../models/corModel');
 
 const produtoController = {
-
     createProduto: (req, res) => {
-
         const newProduto = {
             nome: req.body.nome,
             descricao: req.body.descricao,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            categoria: req.body.categoria
+            categoria: req.body.categoria,
+            cor_id: req.body.cor // <-- nome da coluna do banco!
         };
 
         Produto.create(newProduto, (err, produtoId) => {
@@ -34,10 +34,10 @@ const produtoController = {
             res.render('produtos/show', { produto });
         });
     },
-    
+
     getAllProdutos: (req, res) => {
         const categoria = req.query.categoria || null;
-        
+
         Produto.getAll(categoria, (err, produtos) => {
             if (err) {
                 return res.status(500).json({ error: err });
@@ -56,7 +56,12 @@ const produtoController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('produtos/create', { categorias });
+            Cor.getAll((err, cores) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.render('produtos/create', { categorias, cores });
+            });
         });
     },
 
@@ -75,20 +80,26 @@ const produtoController = {
                 if (err) {
                     return res.status(500).json({ error: err });
                 }
-                res.render('produtos/edit', { produto, categorias });
+                Cor.getAll((err, cores) => {
+                    if (err) {
+                        return res.status(500).json({ error: err });
+                    }
+                    res.render('produtos/edit', { produto, categorias, cores });
+                });
             });
         });
     },
 
     updateProduto: (req, res) => {
         const produtoId = req.params.id;
-        
+
         const updatedProduto = {
             nome: req.body.nome,
             descricao: req.body.descricao,
             preco: req.body.preco,
             quantidade: req.body.quantidade,
-            categoria: req.body.categoria
+            categoria: req.body.categoria,
+            cor_id: req.body.cor
         };
 
         Produto.update(produtoId, updatedProduto, (err) => {

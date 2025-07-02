@@ -25,4 +25,14 @@
             <% }); %>
         </select>
     </div>
+    <div class="form-group">
+        <label for="cor_id">Cor</label>
+        <select class="form-control" id="cor" name="cor" required>
+            <% cores.forEach(function(cor) { %>
+                <option value="<%= cor.id %>" <%= produto.cor==cor.id ? 'selected' : '' %>><%=
+                        cor.nome %>
+                </option>
+                <% }); %>
+        </select>
+    </div>
     <button type="submit" class="btn btn-warning">Salvar</button>
