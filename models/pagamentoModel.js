@@ -1,55 +1,66 @@
-const db = require('../config/db');
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../config/db'); // Certifique-se que exporta uma instância Sequelize
 
-const Pagamento = {
-    create: (pagamento, callback) => {
-        const query = 'INSERT INTO pagamento (nome, descricao) VALUES (?, ?)';
-        db.query(query, [pagamento.nome, pagamento.descricao], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+const Pagamento = sequelize.define('Pagamento', {
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    descricao: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
+}, {
+    tableName: 'pagamento',
+    timestamps: false
+});
+
+module.exports = {
+    create: async (pagamento, callback) => {
+        try {
+            const result = await Pagamento.create({ nome: pagamento.nome, descricao: pagamento.descricao });
+            callback(null, result.id);
+        } catch (err) {
+            callback(err);
+        }
     },
 
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM pagamento WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    findById: async (id, callback) => {
+        try {
+            const result = await Pagamento.findByPk(id);
+            callback(null, result);
+        } catch (err) {
+            callback(err);
+        }
     },
 
-    update: (id, pagamento, callback) => {
-        const query = 'UPDATE pagamento SET nome = ?, descricao = ? WHERE id = ?';
-        db.query(query, [pagamento.nome, pagamento.descricao, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
+    update: async (id, pagamento, callback) => {
+        try {
+            const [updated] = await Pagamento.update(
+                { nome: pagamento.nome, descricao: pagamento.descricao },
+                { where: { id } }
+            );
+            callback(null, updated);
+        } catch (err) {
+            callback(err);
+        }
+    },
+
+    delete: async (id, callback) => {
+        try {
+            const deleted = await Pagamento.destroy({ where: { id } });
+            callback(null, deleted);
+        } catch (err) {
+            callback(err);
+        }
+    },
+
+    getAll: async (callback) => {
+        try {
+            const results = await Pagamento.findAll();
             callback(null, results);
-        });
-    },
-
-    delete: (id, callback) => {
-        const query = 'DELETE FROM pagamento WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    getAll: (callback) => {
-        const query = 'SELECT * FROM pagamento';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-};
-
-module.exports = Pagamento;
+        } catch (err) {
+            callback(err);
+        }
+    }
+}; 

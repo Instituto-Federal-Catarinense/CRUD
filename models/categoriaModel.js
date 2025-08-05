@@ -1,66 +1,71 @@
-const db = require('../config/db');
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../config/db'); // Certifique-se que exporta uma instância Sequelize
 
-const Categoria = {
-    create: (categoria, callback) => {
-        const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+const Categoria = sequelize.define('Categoria', {
+    nome: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+    tableName: 'categorias',
+    timestamps: false
+});
+
+module.exports = {
+    create: async (categoria, callback) => {
+        try {
+            const result = await Categoria.create({ nome: categoria.nome });
+            callback(null, result.id);
+        } catch (err) {
+            callback(err);
+        }
     },
 
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    findById: async (id, callback) => {
+        try {
+            const result = await Categoria.findByPk(id);
+            callback(null, result);
+        } catch (err) {
+            callback(err);
+        }
     },
 
-    findByCategorianame: (nome, callback) => {
-        const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    findByCategorianame: async (nome, callback) => {
+        try {
+            const result = await Categoria.findOne({ where: { nome } });
+            callback(null, result);
+        } catch (err) {
+            callback(err);
+        }
     },
 
-    update: (id, categoria, callback) => {
-        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
+    update: async (id, categoria, callback) => {
+        try {
+            const [updated] = await Categoria.update(
+                { nome: categoria.nome },
+                { where: { id } }
+            );
+            callback(null, updated);
+        } catch (err) {
+            callback(err);
+        }
+    },
+
+    delete: async (id, callback) => {
+        try {
+            const deleted = await Categoria.destroy({ where: { id } });
+            callback(null, deleted);
+        } catch (err) {
+            callback(err);
+        }
+    },
+
+    getAll: async (callback) => {
+        try {
+            const results = await Categoria.findAll();
             callback(null, results);
-        });
-    },
-
-    delete: (id, callback) => {
-        const query = 'DELETE FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    getAll: (callback) => {
-        const query = 'SELECT * FROM categorias';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+        } catch (err) {
+            callback(err);
+        }
+    }
 };
-
-
-module.exports = Categoria;
