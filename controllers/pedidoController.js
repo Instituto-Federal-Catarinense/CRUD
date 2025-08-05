@@ -1,57 +1,58 @@
-const db = require('../config/db');
+const Pedido = require('../models/pedidosModel');
 
-// Listar todos os pedidos
-exports.listarPedidos = (req, res) => {
-    db.query('SELECT * FROM pedidos', (err, results) => {
-        if (err) return res.status(500).json({ erro: err });
-        res.json(results);
-    });
+exports.listarPedidos = async (req, res) => {
+    try {
+        const pedidos = await Pedido.findAll();
+        res.render('pedidos/index', { pedidos });
+    } catch (err) {
+        res.status(500).json({ erro: err });
+    }
 };
 
-// Buscar pedido por ID
-exports.buscarPedidoPorId = (req, res) => {
-    const id = req.params.id;
-    db.query('SELECT * FROM pedidos WHERE id = ?', [id], (err, results) => {
-        if (err) return res.status(500).json({ erro: err });
-        if (results.length === 0) return res.status(404).json({ mensagem: 'Pedido não encontrado' });
-        res.json(results[0]);
-    });
+exports.buscarPedidoPorId = async (req, res) => {
+    try {
+        const pedido = await Pedido.findByPk(req.params.id);
+        if (!pedido) return res.status(404).json({ mensagem: 'Pedido não encontrado' });
+        res.render('pedidos/show', { pedido });
+    } catch (err) {
+        res.status(500).json({ erro: err });
+    }
 };
 
-// Criar novo pedido
-exports.criarPedido = (req, res) => {
-    const { nome_produto, quantidade, preco } = req.body;
-    db.query(
-        'INSERT INTO pedidos (nome_produto, quantidade, preco) VALUES (?, ?, ?)',
-        [nome_produto, quantidade, preco],
-        (err, result) => {
-            if (err) return res.status(500).json({ erro: err });
-            res.status(201).json({ id: result.insertId, nome_produto, quantidade, preco });
-        }
-    );
+exports.criarPedido = async (req, res) => {
+    try {
+        await Pedido.create({
+            nome_produto: req.body.nome_produto,
+            quantidade: req.body.quantidade,
+            preco: req.body.preco
+        });
+        res.redirect('/pedidos');
+    } catch (err) {
+        res.status(500).json({ erro: err });
+    }
 };
 
-// Atualizar pedido existente
-exports.atualizarPedido = (req, res) => {
-    const id = req.params.id;
-    const { nome_produto, quantidade, preco } = req.body;
-    db.query(
-        'UPDATE pedidos SET nome_produto = ?, quantidade = ?, preco = ? WHERE id = ?',
-        [nome_produto, quantidade, preco, id],
-        (err, result) => {
-            if (err) return res.status(500).json({ erro: err });
-            if (result.affectedRows === 0) return res.status(404).json({ mensagem: 'Pedido não encontrado' });
-            res.json({ id, nome_produto, quantidade, preco });
-        }
-    );
+exports.atualizarPedido = async (req, res) => {
+    try {
+        await Pedido.update(
+            {
+                nome_produto: req.body.nome_produto,
+                quantidade: req.body.quantidade,
+                preco: req.body.preco
+            },
+            { where: { id: req.params.id } }
+        );
+        res.redirect('/pedidos');
+    } catch (err) {
+        res.status(500).json({ erro: err });
+    }
 };
 
-// Deletar pedido
-exports.deletarPedido = (req, res) => {
-    const id = req.params.id;
-    db.query('DELETE FROM pedidos WHERE id = ?', [id], (err, result) => {
-        if (err) return res.status(500).json({ erro: err });
-        if (result.affectedRows === 0) return res.status(404).json({ mensagem: 'Pedido não encontrado' });
-        res.status(204).send();
-    });
+exports.deletarPedido = async (req, res) => {
+    try {
+        await Pedido.destroy({ where: { id: req.params.id } });
+        res.redirect('/pedidos');
+    } catch (err) {
+        res.status(500).json({ erro: err });
+    }
 };

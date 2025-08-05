@@ -2,87 +2,79 @@ const Teste = require('../models/testeModel');
 
 const testeController = {
 
-    createTeste: (req, res) => {
-        const newTeste = {
-            titulo: req.body.titulo,
-            descricao: req.body.descricao,
-            ativo: req.body.ativo === 'on' ? true : false
-        };
-
-        Teste.create(newTeste, (err, testeId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    createTeste: async (req, res) => {
+        try {
+            await Teste.create({
+                titulo: req.body.titulo,
+                descricao: req.body.descricao,
+                ativo: req.body.ativo === 'on' ? true : false
+            });
             res.redirect('/testes');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
-    getTesteById: (req, res) => {
-        const testeId = req.params.id;
-
-        Teste.findById(testeId, (err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getTesteById: async (req, res) => {
+        try {
+            const teste = await Teste.findByPk(req.params.id);
             if (!teste) {
                 return res.status(404).json({ message: 'Teste not found' });
             }
             res.render('testes/edit', { teste });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
-    getAllTestes: (req, res) => {
-        Teste.getAll((err, testes) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getAllTestes: async (req, res) => {
+        try {
+            const testes = await Teste.findAll();
             res.render('testes/index', { testes });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
     renderCreateForm: (req, res) => {
         res.render('testes/create');
     },
 
-    renderEditForm: (req, res) => {
-        const testeId = req.params.id;
-
-        Teste.findById(testeId, (err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    renderEditForm: async (req, res) => {
+        try {
+            const teste = await Teste.findByPk(req.params.id);
             if (!teste) {
                 return res.status(404).json({ message: 'Teste not found' });
             }
             res.render('testes/edit', { teste });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
-    updateTeste: (req, res) => {
-        const testeId = req.params.id;
-        const updatedTeste = {
-            titulo: req.body.titulo,
-            descricao: req.body.descricao,
-            ativo: req.body.ativo === 'on'
-        };
-
-        Teste.update(testeId, updatedTeste, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    updateTeste: async (req, res) => {
+        try {
+            await Teste.update(
+                {
+                    titulo: req.body.titulo,
+                    descricao: req.body.descricao,
+                    ativo: req.body.ativo === 'on'
+                },
+                { where: { id: req.params.id } }
+            );
             res.redirect('/testes');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
-    deleteTeste: (req, res) => {
-        const testeId = req.params.id;
-
-        Teste.delete(testeId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    deleteTeste: async (req, res) => {
+        try {
+            await Teste.destroy({ where: { id: req.params.id } });
             res.redirect('/testes');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     }
 };
 
