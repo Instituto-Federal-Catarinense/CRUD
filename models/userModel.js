@@ -1,75 +1,78 @@
 const db = require('../config/db');
 
-const User = {
-    create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
-    },
+const UserService = {
+  create: async (user) => {
+    try {
+      const newUser = await User.create({
+        username: user.username,
+        password: user.password,
+        role: user.role,
+      });
+      return newUser.id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+  findById: async (id) => {
+    try {
+      const user = await User.findByPk(id);
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    findByUsername: (username, callback) => {
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+  findByUsername: async (username) => {
+    try {
+      const user = await User.findOne({ where: { username } });
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    update: (id, user, callback) => {
-        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  update: async (id, user) => {
+    try {
+      await User.update(user, { where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    delete: (id, callback) => {
-        const query = 'DELETE FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  delete: async (id) => {
+    try {
+      await User.destroy({ where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    getAll: (callback) => {
-        const query = 'SELECT * FROM users';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  getAll: async () => {
+    try {
+      const users = await User.findAll();
+      return users;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    searchByName: (name, callback) => {
-        const query = 'SELECT * FROM users WHERE username LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },    
+  searchByName: async (name) => {
+    try {
+      const users = await User.findAll({
+        where: {
+          username: {
+            [Sequelize.Op.like]: `%${name}%`,
+          },
+        },
+      });
+      return users;
+    } catch (err) {
+      throw err;
+    }
+  }
 };
 
-module.exports = User;
+module.exports = UserService;

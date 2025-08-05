@@ -32,7 +32,21 @@ app.use('/categorias', categoriaRoutes);
 // ✅ Uso das rotas de vendas
 app.use('/vendas', vendaRoutes);
 
+// Adicionando configuração global do Sequelize
+const { categoria, Produto, User, Venda } = require('./models');
+
+// Rota de exemplo de teste para ver se o Sequelize está funcionando corretamente
+app.get('/test', async (req, res) => {
+    try {
+        // Teste para garantir que o Sequelize está funcionando e a comunicação com o banco está ativa
+        const categorias = await Categoria.findAll();
+        res.json(categorias); // Retorna as categorias para teste
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Erro ao buscar categorias no banco de dados.' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-

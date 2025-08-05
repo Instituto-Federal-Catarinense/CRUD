@@ -1,61 +1,71 @@
 const db = require('../config/db');
 
-const Produto = {
-    create: (produto, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
-        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
-    },
+const ProdutoService = {
+  create: async (produto) => {
+    try {
+      const newProduto = await Produto.create({
+        nome: produto.nome,
+        descricao: produto.descricao,
+        preco: produto.preco,
+        quantidade: produto.quantidade,
+        categoria: produto.categoria,
+      });
+      return newProduto.id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    findById: (id, callback) => {
-        const query = 'SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id WHERE produtos.id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+  findById: async (id) => {
+    try {
+      const produto = await Produto.findOne({
+        where: { id },
+        include: {
+          model: Categoria,
+          as: 'categoria',
+          attributes: ['nome'],
+        },
+      });
+      return produto;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    update: (id, produto, callback) => {
-        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
-        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  update: async (id, produto) => {
+    try {
+      await Produto.update(produto, { where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    delete: (id, callback) => {
-        const query = 'DELETE FROM produtos WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  delete: async (id) => {
+    try {
+      await Produto.destroy({ where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    getAll: (categoria, callback) => {
-        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
-        
-        if (categoria) {
-            query += ' WHERE produtos.categoria = ?';
-        }
-    
-        db.query(query, [categoria], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-    
+  getAll: async (categoria) => {
+    try {
+      const whereClause = categoria ? { categoria } : {};
+      const produtos = await Produto.findAll({
+        where: whereClause,
+        include: {
+          model: Categoria,
+          as: 'categoria',
+          attributes: ['nome'],
+        },
+      });
+      return produtos;
+    } catch (err) {
+      throw err;
+    }
+  }
 };
 
-module.exports = Produto;
+module.exports = ProdutoService;

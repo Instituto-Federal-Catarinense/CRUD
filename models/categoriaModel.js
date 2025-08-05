@@ -1,66 +1,59 @@
 const db = require('../config/db');
 
-const Categoria = {
-    create: (categoria, callback) => {
-        const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
-    },
+const CategoriaService = {
+  create: async (categoria) => {
+    try {
+      const newCategoria = await Categoria.create({ nome: categoria.nome });
+      return newCategoria.id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+  findById: async (id) => {
+    try {
+      const categoria = await Categoria.findByPk(id);
+      return categoria;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    findByCategorianame: (nome, callback) => {
-        const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+  findByCategorianame: async (nome) => {
+    try {
+      const categoria = await Categoria.findOne({ where: { nome } });
+      return categoria;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    update: (id, categoria, callback) => {
-        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  update: async (id, categoria) => {
+    try {
+      await Categoria.update(categoria, { where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    delete: (id, callback) => {
-        const query = 'DELETE FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  delete: async (id) => {
+    try {
+      await Categoria.destroy({ where: { id } });
+      return id;
+    } catch (err) {
+      throw err;
+    }
+  },
 
-    getAll: (callback) => {
-        const query = 'SELECT * FROM categorias';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+  getAll: async () => {
+    try {
+      const categorias = await Categoria.findAll();
+      return categorias;
+    } catch (err) {
+      throw err;
+    }
+  }
 };
 
-
-module.exports = Categoria;
+module.exports = CategoriaService;
