@@ -1,75 +1,27 @@
-const db = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db'); // Certifique-se que exporta uma instância do Sequelize
 
-const Text = {
-    create: (text, callback) => {
-        const query = 'INSERT INTO text (name, telefone, email) VALUES (?, ?, ?)';
-        db.query(query, [text.name, text.telefone, text.email], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+const Text = sequelize.define('Text', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM text WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-
-    findByEmail: (email, callback) => {
-        const query = 'SELECT * FROM text WHERE email = ?';
-        db.query(query, [email], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    telefone: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
-
-    update: (id, text, callback) => {
-        const query = 'UPDATE text SET name = ?, telefone = ?, email = ? WHERE id = ?';
-        db.query(query, [text.name, text.telefone, text.email, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    delete: (id, callback) => {
-        const query = 'DELETE FROM text WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    getAll: (callback) => {
-        const query = 'SELECT * FROM text';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    searchByName: (name, callback) => {
-        const query = 'SELECT * FROM text WHERE name LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-};
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+    tableName: 'text',
+    timestamps: false
+});
 
 module.exports = Text;

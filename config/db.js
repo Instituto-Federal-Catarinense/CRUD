@@ -10,6 +10,14 @@ const connection = mysql.createConnection({
     database: process.env.DB_NAME,
 });
 
+// config/db.js
+const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize('nome_do_banco', 'usuario', 'senha', {
+    host: 'localhost',
+    dialect: 'mysql' // ou 'sqlite', 'postgres', etc.
+});
+module.exports = sequelize;
+
 connection.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);

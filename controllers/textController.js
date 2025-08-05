@@ -1,110 +1,106 @@
-const Text = require('../models/textModels');
+const { Text } = require('../models'); // Ajuste conforme seu index.js dos models
+const { Op } = require('sequelize');
 
 const textController = {
-    createText: (req, res) => {
-        const newText = {
-            name: req.body.name,
-            telefone: req.body.telefone,
-            email: req.body.email
-        };
-
-        Text.create(newText, (err, textId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    createText: async (req, res) => {
+        try {
+            const { name, telefone, email } = req.body;
+            await Text.create({ name, telefone, email });
             res.redirect('/texts');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    getTextById: (req, res) => {
-        const textId = req.params.id;
-
-        Text.findById(textId, (err, text) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getTextById: async (req, res) => {
+        try {
+            const text = await Text.findByPk(req.params.id);
             if (!text) {
                 return res.status(404).json({ message: 'Text not found' });
             }
             res.render('text/show', { text });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    getAllTexts: (req, res) => {
-        Text.getAll((err, texts) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getAllTexts: async (req, res) => {
+        try {
+            const texts = await Text.findAll();
             res.render('text/index', { texts });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
     renderCreateForm: (req, res) => {
         res.render('text/create');
     },
 
-    renderEditForm: (req, res) => {
-        const textId = req.params.id;
-
-        Text.findById(textId, (err, text) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    renderEditForm: async (req, res) => {
+        try {
+            const text = await Text.findByPk(req.params.id);
             if (!text) {
                 return res.status(404).json({ message: 'Text not found' });
             }
             res.render('text/edit', { text });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    updateText: (req, res) => {
-        const textId = req.params.id;
-        const updatedText = {
-            name: req.body.name,
-            telefone: req.body.telefone,
-            email: req.body.email
-        };
-
-        Text.update(textId, updatedText, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    updateText: async (req, res) => {
+        try {
+            const { name, telefone, email } = req.body;
+            const [updated] = await Text.update(
+                { name, telefone, email },
+                { where: { id: req.params.id } }
+            );
+            if (!updated) {
+                return res.status(404).json({ message: 'Text not found' });
             }
             res.redirect('/texts');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    deleteText: (req, res) => {
-        const textId = req.params.id;
-
-        Text.delete(textId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    deleteText: async (req, res) => {
+        try {
+            const deleted = await Text.destroy({ where: { id: req.params.id } });
+            if (!deleted) {
+                return res.status(404).json({ message: 'Text not found' });
             }
             res.redirect('/texts');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    searchTexts: (req, res) => {
-        const search = req.query.search || '';
-
-        Text.searchByName(search, (err, texts) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    searchTexts: async (req, res) => {
+        try {
+            const search = req.query.search || '';
+            const texts = await Text.findAll({
+                where: {
+                    name: {
+                        [Op.like]: `%${search}%`
+                    }
+                }
+            });
             res.json({ texts });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    // Método adicional para buscar por email
-    searchByEmail: (req, res) => {
-        const email = req.query.email || '';
-
-        Text.findByEmail(email, (err, text) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    searchByEmail: async (req, res) => {
+        try {
+            const email = req.query.email || '';
+            const text = await Text.findOne({ where: { email } });
             res.json({ text });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 
