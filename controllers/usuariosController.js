@@ -1,99 +1,148 @@
+const { Op } = require('sequelize');
 const Usuarios = require('../models/usuariosModel');
 
 const usuariosController = {
-    createUsuarios: (req, res) => {
-        const newUsuarios = {
-            usuariosname: req.body.usuariosname,
-            password: req.body.password,
-            role: req.body.role,
-        };
+  // Criação de um novo usuário
+  createUsuarios: async (req, res) => {
+    try {
+      const newUsuarios = {
+        usuariosname: req.body.usuariosname,
+        password: req.body.password,
+        role: req.body.role,
+      };
 
-        Usuarios.create(newUsuarios, (err, usuariosId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/usuarios');
-        });
-    },
+      // Adicionar log para verificar o valor de 'role' enviado
+      console.log("Role enviado:", newUsuarios.role); // Verifique o valor de 'role'
 
-    getUsuariosById: (req, res) => {
-        const usuariosId = req.params.id;
+      // Validar se o valor de 'role' é válido (apenas 'admin' ou 'usuario' são permitidos)
+      const validRoles = ['admin', 'usuario'];
+      if (!validRoles.includes(newUsuarios.role)) {
+        return res.status(400).json({ error: 'Role inválido. Use "admin" ou "usuario".' });
+      }
 
-        Usuarios.findById(usuariosId, (err, usuarios) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!usuarios) {
-                return res.status(404).json({ message: 'Usuarios not found' });
-            }
-            res.render('usuarios/show', { usuarios });
-        });
-    },
+      await Usuarios.create(newUsuarios);
+      res.redirect('/usuarios');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-    getAllUsuarioss: (req, res) => {
-        Usuarios.getAll((err, usuarios) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('usuarios/index', { usuarios });
-        });
-    },
+  // Obter usuário pelo ID
+  getUsuariosById: async (req, res) => {
+    try {
+      const usuariosId = req.params.id;
+      const usuarios = await Usuarios.findByPk(usuariosId);
 
-    renderCreateForm: (req, res) => {
-        res.render('usuarios/create');
-    },
+      if (!usuarios) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
 
-    renderEditForm: (req, res) => {
-        const usuariosId = req.params.id;
+      res.render('usuarios/show', { usuarios });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-        Usuarios.findById(usuariosId, (err, usuarios) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!usuarios) {
-                return res.status(404).json({ message: 'Usuarios not found' });
-            }
-            res.render('usuarios/edit', { usuarios });
-        });
-    },
+  // Obter todos os usuários
+  getAllUsuarios: async (req, res) => {
+    try {
+      const usuarios = await Usuarios.findAll();
+      res.render('usuarios/index', { usuarios });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-    updateUsuarios: (req, res) => {
-        const usuariosId = req.params.id;
-        const updatedUsuarios = {
-            usuariosname: req.body.usuariosname,
-            password: req.body.password,
-            role: req.body.role,
-        };
+  // Renderizar o formulário de criação
+  renderCreateForm: (req, res) => {
+    res.render('usuarios/create');
+  },
 
-        Usuarios.update(usuariosId, updatedUsuarios, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/usuarios');
-        });
-    },
+  // Renderizar o formulário de edição
+  renderEditForm: async (req, res) => {
+    try {
+      const usuariosId = req.params.id;
+      const usuarios = await Usuarios.findByPk(usuariosId);
 
-    deleteUsuarios: (req, res) => {
-        const usuariosId = req.params.id;
+      if (!usuarios) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
 
-        Usuarios.delete(usuariosId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/usuarios');
-        });
-    },
+      res.render('usuarios/edit', { usuarios });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-    searchUsuarioss: (req, res) => {
-        const search = req.query.search || '';
+  // Atualizar um usuário
+  updateUsuarios: async (req, res) => {
+    try {
+      const usuariosId = req.params.id;
+      const updatedUsuarios = {
+        usuariosname: req.body.usuariosname,
+        password: req.body.password,
+        role: req.body.role,
+      };
 
-        Usuarios.searchByName(search, (err, usuarios) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.json({ usuarios });
-        });
-    },
+      // Adicionar log para verificar o valor de 'role' enviado
+      console.log("Role enviado na atualização:", updatedUsuarios.role); // Verifique o valor de 'role'
+
+      // Validar se o valor de 'role' é válido (apenas 'admin' ou 'usuario' são permitidos)
+      const validRoles = ['admin', 'usuario'];
+      if (!validRoles.includes(updatedUsuarios.role)) {
+        return res.status(400).json({ error: 'Role inválido. Use "admin" ou "usuario".' });
+      }
+
+      const [updatedRows] = await Usuarios.update(updatedUsuarios, {
+        where: { id: usuariosId },
+      });
+
+      if (updatedRows === 0) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      res.redirect('/usuarios');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+  // Deletar um usuário
+  deleteUsuarios: async (req, res) => {
+    try {
+      const usuariosId = req.params.id;
+      const deletedRows = await Usuarios.destroy({
+        where: { id: usuariosId },
+      });
+
+      if (deletedRows === 0) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      res.redirect('/usuarios');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+  // Buscar usuários
+  searchUsuarios: async (req, res) => {
+    try {
+      const search = req.query.search || '';
+
+      const usuarios = await Usuarios.findAll({
+        where: {
+          usuariosname: {
+            [Op.like]: `%${search}%`, // Busca por nome
+          },
+        },
+      });
+
+      res.json({ usuarios });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
 
 module.exports = usuariosController;

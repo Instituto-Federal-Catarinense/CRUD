@@ -2,8 +2,8 @@ const express = require('express');
 const usuariosController = require('../controllers/usuariosController');
 const router = express.Router();
 
-router.get('/', usuariosController.getAllUsuarioss);
-router.get('/search', usuariosController.searchUsuarioss); // Adicione esta rota
+router.get('/', usuariosController.getAllUsuarios);
+router.get('/search', usuariosController.searchUsuarios); // Adicione esta rota
 router.get('/new', usuariosController.renderCreateForm);
 router.post('/', usuariosController.createUsuarios);
 router.get('/:id', usuariosController.getUsuariosById);

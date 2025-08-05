@@ -1,97 +1,138 @@
-const Teste = require('../models/testeModel'); // Corrigido
+const { Op } = require('sequelize');
+const Teste = require('../models/testeModel');
 
 const testeController = {
-    createTeste: (req, res) => {
-        const newTeste = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-        };
+  // Renderiza o formulário para criar um novo teste
+  renderCreateForm: (req, res) => {
+    res.render('teste/create');
+  },
 
-        Teste.create(newTeste, (err, testeId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/teste');
-        });
-    },
+  // Cria um novo teste no banco de dados
+  createTeste: async (req, res) => {
+    try {
+      const newTeste = {
+        nome: req.body.nome,
+        descricao: req.body.descricao,
+      };
 
-    getTesteById: (req, res) => {
-        const testeId = req.params.id;
+      // Validação simples antes de salvar no banco
+      if (!newTeste.nome || !newTeste.descricao) {
+        return res.status(400).json({ error: 'Nome e descrição são obrigatórios' });
+      }
 
-        Teste.findById(testeId, (err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!teste) {
-                return res.status(404).json({ message: 'Teste não encontrado' });
-            }
-            res.render('teste/show', { teste });
-        });
-    },
+      await Teste.create(newTeste);
+      res.redirect('/teste');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-    getAllTeste: (req, res) => {
-        Teste.getAll((err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('teste/index', { teste });
-        });
-    },
+  // Busca um teste pelo ID e o renderiza
+  getTesteById: async (req, res) => {
+    try {
+      const testeId = req.params.id;
+      const teste = await Teste.findByPk(testeId);
 
-    renderCreateForm: (req, res) => {
-        res.render('teste/create');
-    },
+      if (!teste) {
+        return res.status(404).json({ message: 'Teste não encontrado' });
+      }
 
-    renderEditForm: (req, res) => {
-        const testeId = req.params.id;
+      res.render('teste/show', { teste });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-        Teste.findById(testeId, (err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!teste) {
-                return res.status(404).json({ message: 'Teste não encontrado' });
-            }
-            res.render('teste/edit', { teste });
-        });
-    },
+  // Busca todos os testes e renderiza a lista
+  getAllTeste: async (req, res) => {
+    try {
+      const teste = await Teste.findAll();
+      res.render('teste/index', { teste });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-    updateTeste: (req, res) => {
-        const testeId = req.params.id;
-        const updatedTeste = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-        };
+  // Renderiza o formulário de edição para um teste
+  renderEditForm: async (req, res) => {
+    try {
+      const testeId = req.params.id;
+      const teste = await Teste.findByPk(testeId);
 
-        Teste.update(testeId, updatedTeste, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/teste');
-        });
-    },
+      if (!teste) {
+        return res.status(404).json({ message: 'Teste não encontrado' });
+      }
 
-    deleteTeste: (req, res) => {
-        const testeId = req.params.id;
+      res.render('teste/edit', { teste });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 
-        Teste.delete(testeId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/teste');
-        });
-    },
+  // Atualiza os dados de um teste existente
+  updateTeste: async (req, res) => {
+    try {
+      const testeId = req.params.id;
+      const updatedTeste = {
+        nome: req.body.nome,
+        descricao: req.body.descricao,
+      };
 
-    searchTeste: (req, res) => {
-        const search = req.query.search || '';
+      // Validação simples
+      if (!updatedTeste.nome || !updatedTeste.descricao) {
+        return res.status(400).json({ error: 'Nome e descrição são obrigatórios' });
+      }
 
-        Teste.searchByName(search, (err, teste) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.json({ teste });
-        });
-    },
+      const [updatedRows] = await Teste.update(updatedTeste, {
+        where: { id: testeId },
+      });
+
+      if (updatedRows === 0) {
+        return res.status(404).json({ message: 'Teste não encontrado' });
+      }
+
+      res.redirect('/teste');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+  // Deleta um teste
+  deleteTeste: async (req, res) => {
+    try {
+      const testeId = req.params.id;
+      const deletedRows = await Teste.destroy({
+        where: { id: testeId },
+      });
+
+      if (deletedRows === 0) {
+        return res.status(404).json({ message: 'Teste não encontrado' });
+      }
+
+      res.redirect('/teste');
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+  // Busca testes com base no nome, utilizando LIKE
+  searchTeste: async (req, res) => {
+    try {
+      const search = req.query.search || '';
+
+      const teste = await Teste.findAll({
+        where: {
+          nome: {
+            [Op.like]: `%${search}%`, // Buscando pelo nome com LIKE
+          },
+        },
+      });
+
+      res.json({ teste });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
 };
 
 module.exports = testeController;

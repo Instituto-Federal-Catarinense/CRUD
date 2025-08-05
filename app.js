@@ -7,6 +7,7 @@ const usuariosRoutes = require('./routes/usuariosRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
 const testeRoutes = require('./routes/testeRoutes');
+const sequelize = require('./config/db');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -24,6 +25,8 @@ app.use('/usuarios', usuariosRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
 app.use('/teste', testeRoutes);
+
+sequelize.sync();
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
