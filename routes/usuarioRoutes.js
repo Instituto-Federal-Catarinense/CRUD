@@ -2,10 +2,10 @@ const express = require('express');
 const usuarioController = require('../controllers/usuarioController');
 const router = express.Router();
 
-router.get('/', usuarioController.getAllUsuarios);
-router.get('/search', usuarioController.searchUsuarios); // Adicione esta rota
+router.get('/', usuarioController.getAllUsuarios); //tem o mesmo endereço, mas são métodos diferentes
+router.post('/', usuarioController.createUsuario); //tem o mesmo endereço, mas são métodos diferentes
+router.get('/search', usuarioController.searchUsuarios);
 router.get('/new', usuarioController.renderCreateForm);
-router.post('/', usuarioController.createUsuario);
 router.get('/:id', usuarioController.getUsuarioById);
 router.get('/:id/edit', usuarioController.renderEditForm);
 router.put('/:id', usuarioController.updateUsuario);
