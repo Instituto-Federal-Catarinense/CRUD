@@ -2,10 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
+const dotenv = require('dotenv');
+dotenv.config();
+
+// Importa e conecta o banco (Sequelize)
+const sequelize = require('./config/db');
+
+// Rotas
 const indexRoutes = require('./routes/indexRoutes');
-const userRoutes = require('./routes/userRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
+const corRoutes = require('./routes/corRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,10 +27,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 app.use('/', indexRoutes);
-app.use('/users', userRoutes);
+app.use('/usuarios', usuarioRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
+app.use('/cores', corRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Só inicia o servidor se conectar ao banco
+sequelize.authenticate()
+  .then(() => {
+    console.log('Conectado ao MySQL com Sequelize.');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Erro ao conectar com o banco:', err);
+  });
