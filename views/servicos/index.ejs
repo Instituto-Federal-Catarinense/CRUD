@@ -1,7 +1,7 @@
-<h1>Lista de produtos</h1>
+<h1>Lista de servicos</h1>
 
 <!-- Formulário de filtro por categoria -->
-<form method="GET" action="/produtos">
+<form method="GET" action="/servicos">
     <div class="form-group">
         <label for="categoria">Filtrar por Categoria:</label>
         <select id="categoria" name="categoria" class="form-control">
@@ -23,24 +23,22 @@
             <th>Preço</th>
             <th>Quantidade</th>
             <th>Categoria</th>
-            <th>Cor</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        <% produtos.forEach(produto => { %>
+        <% servicos.forEach(servicos => { %>
             <tr>
-                <td><%= produto.id %></td>
-                <td><%= produto.nome %></td>
-                <td><%= produto.descricao %></td>
-                <td><%= produto.preco %></td>
-                <td><%= produto.quantidade %></td>
-                <td><%= produto.categoria_nome %></td>
-                <td><%= produto.cor %></td>
+                <td><%= servicos.id %></td>
+                <td><%= servicos.nome %></td>
+                <td><%= servicos.descricao %></td>
+                <td><%= servicos.preco %></td>
+                <td><%= servicos.quantidade %></td>
+                <td><%= servicos.categoria_nome %></td>
                 <td>
-                    <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
-                    <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <a href="/servicos/<%= servicos.id %>" class="btn btn-primary">View</a>
+                    <a href="/servicos/<%= servicos.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/servicos/<%= servicos.id %>?_method=DELETE" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>

@@ -1,7 +1,7 @@
-<h1>Cadastrar novo produto</h1>
-<form action="/produtos" method="POST">
+<h1>Cadastrar novo serviço</h1>
+<form action="/servicos" method="POST">
     <div class="form-group">
-        <label for="nome">Nome do Produto:</label>
+        <label for="nome">Nome do Serviço:</label>
         <input type="text" class="form-control" id="nome" name="nome" required>
     </div>
     <div class="form-group">
@@ -22,16 +22,6 @@
             <% categorias.forEach(categoria => { %>
                 <option value="<%= categoria.id %>"><%= categoria.nome %></option>
             <% }) %>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="cor">Cor:</label>
-        <select class="form-control" id="cor" name="cor" required>
-            <% cores.forEach(cor => { %>
-                <option value="<%= cor.id %>">
-                    <%= cor.nome %>
-                </option>
-                <% }) %>
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
