@@ -18,14 +18,13 @@ const produtoController = {
       const newProduto = {
         nome: req.body.nome,
         descricao: req.body.descricao,
-        preco: parseFloat(req.body.preco), // converte para número float
-        quantidade: parseInt(req.body.quantidade, 10), // converte para inteiro
-        categoriaId: req.body.categoria, // FK para categoria
+        preco: parseFloat(req.body.preco),
+        quantidade: parseInt(req.body.quantidade, 10),
+        categoria: req.body.categoria,
       };
 
-      // Validação simples (pode melhorar com libs tipo Joi ou express-validator)
-      if (!newProduto.nome || isNaN(newProduto.preco) || isNaN(newProduto.quantidade)) {
-        return res.status(400).json({ error: 'Dados inválidos para produto' });
+      if (!newProduto.nome || isNaN(newProduto.preco) || isNaN(newProduto.quantidade) || !newProduto.categoria) {
+        return res.status(400).json({ error: 'Dados inválidos para produto. Verifique todos os campos.' });
       }
 
       await Produto.create(newProduto);
@@ -42,7 +41,7 @@ const produtoController = {
       const produto = await Produto.findByPk(produtoId, {
         include: {
           model: Categoria,
-          as: 'categoriaDetalhes',  // Usando o alias 'categoriaDetalhes'
+          as: 'categoriaDetalhes',
         },
       });
 
@@ -60,13 +59,13 @@ const produtoController = {
   getAllProdutos: async (req, res) => {
     try {
       const categoria = req.query.categoria || null;
-      const whereClause = categoria ? { categoriaId: categoria } : {};
+      const whereClause = categoria ? { categoria: categoria } : {};
 
       const produtos = await Produto.findAll({
         where: whereClause,
         include: {
           model: Categoria,
-          as: 'categoriaDetalhes',  // Usando o alias 'categoriaDetalhes'
+          as: 'categoriaDetalhes',
         },
       });
 
@@ -86,16 +85,24 @@ const produtoController = {
   renderEditForm: async (req, res) => {
     try {
       const produtoId = req.params.id;
-      const produto = await Produto.findByPk(produtoId);
+      console.log(`Tentando renderizar formulário de edição para o ID: ${produtoId}`); // LOG DE DEBUG
+
+      const produto = await Produto.findByPk(produtoId, {
+        include: {
+          model: Categoria,
+          as: 'categoriaDetalhes',
+        },
+      });
 
       if (!produto) {
-        return res.status(404).json({ message: 'Produto não encontrado' });
+        console.error(`ERRO: Produto com ID ${produtoId} não foi encontrado.`); // LOG DE ERRO
+        return res.status(404).render('404', { message: 'Produto não encontrado' });
       }
 
       const categorias = await Categoria.findAll();
-
       res.render('produtos/edit', { produto, categorias });
     } catch (err) {
+      console.error('Erro ao renderizar formulário de edição:', err);
       res.status(500).json({ error: err.message });
     }
   },
@@ -109,10 +116,10 @@ const produtoController = {
         descricao: req.body.descricao,
         preco: parseFloat(req.body.preco),
         quantidade: parseInt(req.body.quantidade, 10),
-        categoriaId: req.body.categoria,
+        categoria: req.body.categoria,
       };
 
-      if (!updatedProduto.nome || isNaN(updatedProduto.preco) || isNaN(updatedProduto.quantidade)) {
+      if (!updatedProduto.nome || isNaN(updatedProduto.preco) || isNaN(updatedProduto.quantidade) || !updatedProduto.categoria) {
         return res.status(400).json({ error: 'Dados inválidos para atualização' });
       }
 

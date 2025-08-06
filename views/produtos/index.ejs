@@ -1,6 +1,5 @@
 <h1>Lista de produtos</h1>
 
-<!-- Formulário de filtro por categoria -->
 <form method="GET" action="/produtos">
     <div class="form-group">
         <label for="categoria">Filtrar por Categoria:</label>
@@ -34,7 +33,7 @@
                 <td><%= produto.descricao %></td>
                 <td><%= produto.preco %></td>
                 <td><%= produto.quantidade %></td>
-                <td><%= produto.categoria_nome %></td>
+                <td><%= produto.categoriaDetalhes.nome %></td>
                 <td>
                     <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
                     <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
