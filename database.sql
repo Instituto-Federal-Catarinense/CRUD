@@ -14,6 +14,7 @@ CREATE TABLE categorias (
     nome VARCHAR(255) NOT NULL
 );
 
+
 CREATE TABLE produtos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -24,10 +25,10 @@ CREATE TABLE produtos (
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
 
-CREATE TABLE fornecedores (
+CREATE TABLE marcas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
-    cnpj VARCHAR(18),
-    email VARCHAR(255)
+    cidade VARCHAR(255),
+    pais VARCHAR(100),
+    data_fundacao DATE
 );
-

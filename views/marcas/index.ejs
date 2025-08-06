@@ -1,0 +1,42 @@
+<h1>Lista de marcas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Marca</th>
+            <th>Cidade</th>
+            <th>País</th>
+            <th>Data de Fundação</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% marcas.forEach(marca=> { %>
+            <tr>
+                <td>
+                    <%= marca.id %>
+                </td>
+                <td>
+                    <%= marca.nome %>
+                </td>
+                <td>
+                    <%= marca.cidade %>
+                </td>
+                <td>
+                    <%= marca.pais %>
+                </td>
+                <td>
+                    <%= marca.data_fundacao ? new Date(marca.data_fundacao).toLocaleDateString('pt-BR') : 'Não informada'
+                        %>
+                </td>
+                <td>
+                    <a href="/marcas/<%= marca.id %>" class="btn btn-primary">View</a>
+                    <a href="/marcas/<%= marca.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/marcas/<%= marca.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
