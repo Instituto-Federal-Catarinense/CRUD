@@ -1,71 +1,39 @@
-const db = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
 
-const ProdutoService = {
-  create: async (produto) => {
-    try {
-      const newProduto = await Produto.create({
-        nome: produto.nome,
-        descricao: produto.descricao,
-        preco: produto.preco,
-        quantidade: produto.quantidade,
-        categoria: produto.categoria,
-      });
-      return newProduto.id;
-    } catch (err) {
-      throw err;
-    }
+const Produto = sequelize.define('Produto', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
   },
-
-  findById: async (id) => {
-    try {
-      const produto = await Produto.findOne({
-        where: { id },
-        include: {
-          model: Categoria,
-          as: 'categoria',
-          attributes: ['nome'],
-        },
-      });
-      return produto;
-    } catch (err) {
-      throw err;
-    }
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
-
-  update: async (id, produto) => {
-    try {
-      await Produto.update(produto, { where: { id } });
-      return id;
-    } catch (err) {
-      throw err;
-    }
+  descricao: {
+    type: DataTypes.TEXT,
+    allowNull: true
   },
-
-  delete: async (id) => {
-    try {
-      await Produto.destroy({ where: { id } });
-      return id;
-    } catch (err) {
-      throw err;
-    }
+  preco: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false
   },
-
-  getAll: async (categoria) => {
-    try {
-      const whereClause = categoria ? { categoria } : {};
-      const produtos = await Produto.findAll({
-        where: whereClause,
-        include: {
-          model: Categoria,
-          as: 'categoria',
-          attributes: ['nome'],
-        },
-      });
-      return produtos;
-    } catch (err) {
-      throw err;
+  quantidade: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  categoriaId: { // referência à chave estrangeira
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'categorias', // nome da tabela no banco (não o model)
+      key: 'id'
     }
   }
-};
+}, {
+  tableName: 'produtos',
+  timestamps: false
+});
 
-module.exports = ProdutoService;
+module.exports = Produto;

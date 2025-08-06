@@ -1,55 +1,35 @@
-const db = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
 
-const VendaService = {
-  create: async (venda) => {
-    try {
-      const newVenda = await Venda.create({
-        data: venda.data,
-        valor: venda.valor,
-        quantidade: venda.quantidade,
-        produto_id: venda.produto_id,
-      });
-      return newVenda.id;
-    } catch (err) {
-      throw err;
-    }
+const Venda = sequelize.define('Venda', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   },
-
-  getAll: async () => {
-    try {
-      const vendas = await Venda.findAll();
-      return vendas;
-    } catch (err) {
-      throw err;
-    }
+  data: {
+    type: DataTypes.DATE,
+    allowNull: false,
   },
-
-  findById: async (id) => {
-    try {
-      const venda = await Venda.findByPk(id);
-      return venda;
-    } catch (err) {
-      throw err;
-    }
+  valor: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
   },
-
-  update: async (id, venda) => {
-    try {
-      await Venda.update(venda, { where: { id } });
-      return id;
-    } catch (err) {
-      throw err;
-    }
+  quantidade: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
+  produto_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'produtos', // ou 'Produtos', dependendo do nome da tabela/model
+      key: 'id',
+    },
+  },
+}, {
+  tableName: 'vendas', // ou 'Venda' se quiser manter o padrão singular
+  timestamps: false,
+});
 
-  delete: async (id) => {
-    try {
-      await Venda.destroy({ where: { id } });
-      return id;
-    } catch (err) {
-      throw err;
-    }
-  }
-};
-
-module.exports = VendaService;
+module.exports = Venda;

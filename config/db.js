@@ -1,24 +1,28 @@
-const mysql = require('mysql2');
+const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 
 // Carrega as variáveis do .env
 dotenv.config();
 
-// Cria a conexão com o banco de dados usando variáveis de ambiente
-const connection = mysql.createConnection({
+// Cria a instância do Sequelize com os dados do .env
+const sequelize = new Sequelize(
+  process.env.DB_NAME,     // nome do banco
+  process.env.DB_USER,     // usuário
+  process.env.DB_PASSWORD, // senha
+  {
     host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-});
+    dialect: 'mysql',
+    logging: false, // desativa os logs SQL no console (pode ativar com true)
+  }
+);
 
-// Conecta ao banco e exibe status
-connection.connect((err) => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err.message);
-        return;
-    }
-    console.log('Conectado ao banco de dados MySQL.');
-});
+// Testa a conexão
+sequelize.authenticate()
+  .then(() => {
+    console.log('Conectado ao banco de dados MySQL com Sequelize.');
+  })
+  .catch((err) => {
+    console.error('Erro ao conectar com Sequelize:', err.message);
+  });
 
-module.exports = connection;
+module.exports = sequelize;
