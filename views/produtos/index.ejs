@@ -23,6 +23,7 @@
             <th>Preço</th>
             <th>Quantidade</th>
             <th>Categoria</th>
+            <th>Cor</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -35,6 +36,7 @@
                 <td><%= produto.preco %></td>
                 <td><%= produto.quantidade %></td>
                 <td><%= produto.categoria_nome %></td>
+                <td><%= produto.cor %></td>
                 <td>
                     <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
                     <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
