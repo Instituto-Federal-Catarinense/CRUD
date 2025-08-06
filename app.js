@@ -6,7 +6,8 @@ const indexRoutes = require('./routes/indexRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
-const corRoutes = require('./routes/corRoutes');
+const fornecedorRoutes = require('./routes/fornecedorRoutes');
+const { sequelize } = require('./config/sequelize');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,8 +24,12 @@ app.use('/', indexRoutes);
 app.use('/usuarios', usuarioRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
-app.use('/cores', corRoutes);
+app.use('/fornecedores', fornecedorRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+sequelize.sync().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}).catch((err) => { 
+    console.error('Erro ao sincronizar Sequelize:', err);
 });
