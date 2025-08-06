@@ -1,84 +1,136 @@
-const Categoria = require('../models/categoriaModel');
+const Categoria = require('../models/Categoria');
+const Produto = require('../models/Produto');
+const { Op } = require('sequelize');
 
 const categoriaController = {
-    createCategoria: (req, res) => {
-        const newCategoria = {
-            nome: req.body.nome
-        };
+    createCategoria: async (req, res) => {
+        try {
+            const novaCategoria = {
+                nome: req.body.nome,
+                descricao: req.body.descricao,
+            };
 
-        Categoria.create(newCategoria, (err, categoriaId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+            await Categoria.create(novaCategoria);
             res.redirect('/categorias');
-        });
+        } catch (error) {
+            console.error('Erro ao criar categoria:', error);
+            res.status(500).json({ error: error.message });
+        }
     },
 
-    getCategoriaById: (req, res) => {
-        const categoriaId = req.params.id;
+    getCategoriaById: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
+            const categoria = await Categoria.findByPk(categoriaId);
 
-        Categoria.findById(categoriaId, (err, categoria) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
             if (!categoria) {
-                return res.status(404).json({ message: 'Categoria not found' });
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
+
             res.render('categorias/show', { categoria });
-        });
+        } catch (error) {
+            console.error('Erro ao buscar categoria:', error);
+            res.status(500).json({ error: error.message });
+        }
     },
 
-    getAllCategorias: (req, res) => {
-        Categoria.getAll((err, categorias) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getAllCategorias: async (req, res) => {
+        try {
+            const categorias = await Categoria.findAll({ order: [['id', 'ASC']] });
             res.render('categorias/index', { categorias });
-        });
+        } catch (error) {
+            console.error('Erro ao buscar categorias:', error);
+            res.status(500).json({ error: error.message });
+        }
     },
 
     renderCreateForm: (req, res) => {
         res.render('categorias/create');
     },
 
-    renderEditForm: (req, res) => {
-        const categoriaId = req.params.id;
+    renderEditForm: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
+            const categoria = await Categoria.findByPk(categoriaId);
 
-        Categoria.findById(categoriaId, (err, categoria) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
             if (!categoria) {
-                return res.status(404).json({ message: 'Categoria not found' });
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
+
             res.render('categorias/edit', { categoria });
-        });
+        } catch (error) {
+            console.error('Erro ao carregar edição da categoria:', error);
+            res.status(500).json({ error: error.message });
+        }
     },
 
-    updateCategoria: (req, res) => {
-        const categoriaId = req.params.id;
-        const updatedCategoria = {
-            nome: req.body.nome
-        };
+    updateCategoria: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
+            const dadosAtualizados = {
+                nome: req.body.nome,
+                descricao: req.body.descricao,
+            };
 
-        Categoria.update(categoriaId, updatedCategoria, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+            const [updated] = await Categoria.update(dadosAtualizados, {
+                where: { id: categoriaId }
+            });
+
+            if (updated) {
+                res.redirect('/categorias');
+            } else {
+                res.status(404).json({ message: 'Categoria não encontrada' });
             }
-            res.redirect('/categorias');
-        });
+        } catch (error) {
+            console.error('Erro ao atualizar categoria:', error);
+            res.status(500).json({ error: error.message });
+        }
     },
 
-    deleteCategoria: (req, res) => {
-        const categoriaId = req.params.id;
+    deleteCategoria: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
 
-        Categoria.delete(categoriaId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+            // Excluir produtos relacionados primeiro
+            await Produto.destroy({
+                where: { categoriaId }
+            });
+
+            // Depois excluir a categoria
+            const deleted = await Categoria.destroy({
+                where: { id: categoriaId }
+            });
+
+            if (deleted) {
+                res.redirect('/categorias');
+            } else {
+                res.status(404).json({ message: 'Categoria não encontrada' });
             }
-            res.redirect('/categorias');
-        });
-    }
+        } catch (error) {
+            console.error('Erro ao excluir categoria:', error);
+            res.status(500).json({ error: error.message });
+        }
+    },
+
+    searchCategoria: async (req, res) => {
+        try {
+            const search = req.query.search || '';
+
+            const resultados = await Categoria.findAll({
+                where: {
+                    nome: {
+                        [Op.like]: `%${search}%`
+                    }
+                },
+                order: [['id', 'ASC']]
+            });
+
+            res.json({ categorias: resultados });
+        } catch (error) {
+            console.error('Erro ao buscar categorias:', error);
+            res.status(500).json({ error: error.message });
+        }
+    },
 };
 
 module.exports = categoriaController;

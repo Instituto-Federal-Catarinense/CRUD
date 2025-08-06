@@ -10,7 +10,7 @@
     </div>
     <div class="form-group">
         <label for="preco">Preço:</label>
-        <input type="number" class="form-control" id="preco" name="preco" required>
+        <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
     </div>
     <div class="form-group">
         <label for="quantidade">Quantidade:</label>
@@ -19,6 +19,7 @@
     <div class="form-group">
         <label for="categoria">Categoria:</label>
         <select class="form-control" id="categoria" name="categoria" required>
+            <option value="">Selecione uma categoria</option>
             <% categorias.forEach(categoria => { %>
                 <option value="<%= categoria.id %>"><%= categoria.nome %></option>
             <% }) %>
