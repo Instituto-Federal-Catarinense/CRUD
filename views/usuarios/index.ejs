@@ -1,6 +1,6 @@
 <h1>Lista de usuários</h1>
 
-<form id="searchForm" method="GET" action="/users">
+<form id="searchForm" method="GET" action="/usuarios">
     <div class="form-group">
         <label for="search">Buscar Usuário:</label>
         <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome do usuário" autocomplete="off">
@@ -16,16 +16,16 @@
             <th>Ação</th>
         </tr>
     </thead>
-    <tbody id="userTableBody">
-        <% users.forEach(user => { %>
+    <tbody id="usuarioTableBody">
+        <% usuarios.forEach(usuario => { %>
             <tr>
-                <td><%= user.id %></td>
-                <td><%= user.username %></td>
-                <td><%= user.role %></td>
+                <td><%= usuario.id %></td>
+                <td><%= usuario.usuarioname %></td>
+                <td><%= usuario.role %></td>
                 <td>
-                    <a href="/users/<%= user.id %>" class="btn btn-primary">View</a>
-                    <a href="/users/<%= user.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <a href="/usuarios/<%= usuario.id %>" class="btn btn-primary">View</a>
+                    <a href="/usuarios/<%= usuario.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
@@ -38,22 +38,22 @@
     document.getElementById('search').addEventListener('input', function() {
         const searchValue = this.value;
 
-        fetch(`/users/search?search=${encodeURIComponent(searchValue)}`)
+        fetch(`/usuarios/search?search=${encodeURIComponent(searchValue)}`)
             .then(response => response.json())
             .then(data => {
-                const tbody = document.getElementById('userTableBody');
+                const tbody = document.getElementById('usuarioTableBody');
                 tbody.innerHTML = ''; // Clear existing rows
 
-                data.users.forEach(user => {
+                data.usuarios.forEach(usuario => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.username}</td>
-                        <td>${user.role}</td>
+                        <td>${usuario.id}</td>
+                        <td>${usuario.usuarioname}</td>
+                        <td>${usuario.role}</td>
                         <td>
-                            <a href="/users/${user.id}" class="btn btn-primary">View</a>
-                            <a href="/users/${user.id}/edit" class="btn btn-warning">Edit</a>
-                            <form action="/users/${user.id}?_method=DELETE" method="POST" style="display: inline;">
+                            <a href="/usuarios/${usuario.id}" class="btn btn-primary">View</a>
+                            <a href="/usuarios/${usuario.id}/edit" class="btn btn-warning">Edit</a>
+                            <form action="/usuarios/${usuario.id}?_method=DELETE" method="POST" style="display: inline;">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
