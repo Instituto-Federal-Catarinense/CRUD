@@ -1,26 +1,36 @@
-CREATE DATABASE CRUD;
-
+-- Primeiro, vamos verificar se o banco existe e conectar
+CREATE DATABASE IF NOT EXISTS CRUD;
 USE CRUD;
 
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') NOT NULL
-);
+-- Remover tabelas existentes se necessário (cuidado com dados!)
+-- DROP TABLE IF EXISTS produtos;
+-- DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS categorias;
+-- DROP TABLE IF EXISTS capivara;
 
-CREATE TABLE categorias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
-);
+-- Ou alterar tabelas existentes para adicionar timestamps
+-- Tabela users
+ALTER TABLE users 
+ADD COLUMN IF NOT EXISTS createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
-//crie a tabela produtos com os campos id, nome, descricao e preco
-CREATE TABLE produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    descricao TEXT NOT NULL,
-    preco DECIMAL(10,2) NOT NULL,
-    quantidade INT NOT NULL,
-    categoria INT NOT NULL,
-    FOREIGN KEY (categoria) REFERENCES categorias(id)
-);
+-- Tabela categorias  
+ALTER TABLE categorias 
+ADD COLUMN IF NOT EXISTS createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+-- Tabela produtos
+ALTER TABLE produtos 
+ADD COLUMN IF NOT EXISTS createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+-- Tabela capivara
+ALTER TABLE capivara 
+ADD COLUMN IF NOT EXISTS createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+-- Verificar estrutura das tabelas
+DESCRIBE users;
+DESCRIBE categorias;  
+DESCRIBE produtos;
+DESCRIBE capivara;

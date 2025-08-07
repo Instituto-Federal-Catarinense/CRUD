@@ -7,18 +7,18 @@
     </div>
     <div class="form-group">
         <label for="descricao">Descrição</label>
-        <input type="text" class="form-control" id="descricao" name="descricao" value="<%= produto.descricao %>" required>
+        <textarea class="form-control" id="descricao" name="descricao" required><%= produto.descricao %></textarea>
     </div>
     <div class="form-group">
         <label for="preco">Preço</label>
-        <input type="number" class="form-control" id="preco" name="preco" value="<%= produto.preco %>" required>
+        <input type="number" step="0.01" class="form-control" id="preco" name="preco" value="<%= produto.preco %>" required>
     </div>
     <div class="form-group">
         <label for="quantidade">Quantidade</label>
         <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= produto.quantidade %>" required>
     </div>
     <div class="form-group">
-        <label for="categoria_id">Categoria</label>
+        <label for="categoria">Categoria</label>
         <select class="form-control" id="categoria" name="categoria" required>
             <% categorias.forEach(function(categoria) { %>
                 <option value="<%= categoria.id %>" <%= produto.categoria == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
@@ -26,3 +26,4 @@
         </select>
     </div>
     <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

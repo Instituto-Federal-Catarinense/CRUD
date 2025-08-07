@@ -1,0 +1,66 @@
+<h1>Lista de capivaras</h1>
+
+<form id="searchForm" method="GET" action="/capivara">
+  <div class="form-group">
+    <label for="search">Buscar capivara:</label>
+    <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome da capivara" autocomplete="off">
+  </div>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody id="capivaraTableBody">
+    <% capivara.forEach(c => { %>
+      <tr>
+        <td><%= c.id %></td>
+        <td><%= c.nome %></td>
+        <td><%= c.descricao %></td>
+        <td>
+          <a href="/capivara/<%= c.id %>" class="btn btn-primary">View</a>
+          <a href="/capivara/<%= c.id %>/edit" class="btn btn-warning">Edit</a>
+          <form action="/capivara/<%= c.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<script>
+  document.getElementById('search').addEventListener('input', function () {
+    const searchValue = this.value;
+
+    fetch(`/capivara/search?search=${encodeURIComponent(searchValue)}`)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('capivaraTableBody');
+        tbody.innerHTML = ''; // Limpa a tabela
+
+        data.capivara.forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${c.id}</td>
+            <td>${c.nome}</td>
+            <td>${c.descricao}</td>
+            <td>
+              <a href="/capivara/${c.id}" class="btn btn-primary">View</a>
+              <a href="/capivara/${c.id}/edit" class="btn btn-warning">Edit</a>
+              <form action="/capivara/${c.id}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(error => console.error('Erro ao buscar:', error));
+  });
+</script>
