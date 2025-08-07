@@ -1,99 +1,97 @@
-const User = require('../models/userModel');
+const { Usuario, Sequelize } = require('../models'); // Corrigi a forma como você importa os models
 
-const userController = {
-    createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
-
-        User.create(newUser, (err, userId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+const usuarioController = {
+    createUsuario: async (req, res) => {
+        try {
+            const newUsuario = {
+                usuarioname: req.body.usuarioname,
+                password: req.body.password,
+                role: req.body.role,
+            };
+            await Usuario.create(newUsuario);
+            res.redirect('/usuarios');
+        } catch (err) {
+            res.status(500).json({ error: err.message }); // Melhor tratamento de erro
+        }
     },
 
-    getUserById: (req, res) => {
-        const userId = req.params.id;
-
-        User.findById(userId, (err, user) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    getUsuarioById: async (req, res) => {
+        try {
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (!usuario) {
+                return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
-            }
-            res.render('users/show', { user });
-        });
+            res.render('usuarios/show', { usuario });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    getAllUsers: (req, res) => {
-        User.getAll((err, users) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('users/index', { users });
-        });
+    getAllUsuarios: async (req, res) => {
+        try {
+            const usuarios = await Usuario.findAll();
+            res.render('usuarios/index', { usuarios });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
     renderCreateForm: (req, res) => {
-        res.render('users/create');
+        res.render('usuarios/create');
     },
 
-    renderEditForm: (req, res) => {
-        const userId = req.params.id;
-
-        User.findById(userId, (err, user) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    renderEditForm: async (req, res) => {
+        try {
+            const usuario = await Usuario.findByPk(req.params.id);
+            if (!usuario) {
+                return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-            if (!user) {
-                return res.status(404).json({ message: 'User not found' });
-            }
-            res.render('users/edit', { user });
-        });
+            res.render('usuarios/edit', { usuario });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    updateUser: (req, res) => {
-        const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
-
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+    updateUsuario: async (req, res) => {
+        try {
+            const usuarioId = req.params.id;
+            const updatedUsuario = {
+                usuarioname: req.body.usuarioname,
+                password: req.body.password,
+                role: req.body.role,
+            };
+            await Usuario.update(updatedUsuario, { where: { id: usuarioId } });
+            res.redirect('/usuarios');
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    deleteUser: (req, res) => {
-        const userId = req.params.id;
-
-        User.delete(userId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+    deleteUsuario: async (req, res) => {
+        try {
+            const usuarioId = req.params.id;
+            await Usuario.destroy({ where: { id: usuarioId } });
+            res.redirect('/usuarios');
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    searchUsers: (req, res) => {
-        const search = req.query.search || '';
-
-        User.searchByName(search, (err, users) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.json({ users });
-        });
+    searchUsuarios: async (req, res) => {
+        try {
+            const search = req.query.search || '';
+            const usuarios = await Usuario.findAll({
+                where: {
+                    usuarioname: {
+                        [Sequelize.Op.like]: `%${search}%`
+                    }
+                }
+            });
+            res.json({ usuarios });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 };
 
-module.exports = userController;
+module.exports = usuarioController;
