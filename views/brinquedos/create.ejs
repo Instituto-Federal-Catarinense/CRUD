@@ -1,0 +1,82 @@
+
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: #130303;
+    padding: 20px;
+    margin: 0;
+  }
+
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #af9191;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #00000066;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    background-color: #ffffff;
+    border: none;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    color: rgb(203, 11, 174);
+    font-size: 1rem;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  button {
+    background-color: #ec4899;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background-color: white;
+    color: #ec4899;
+  }
+</style>
+
+<div class="form-container">
+  <h1>Novo Brinquedo</h1>
+  <form action="/brinquedos/create" method="POST">
+    <input type="text" name="nome" placeholder="Nome" required>
+    <textarea name="descricao" placeholder="Descrição"></textarea>
+    <input type="number" step="0.01" name="preco" placeholder="Preço" required>
+    <button type="submit">Salvar</button>
+  </form>
+</div>
+
+

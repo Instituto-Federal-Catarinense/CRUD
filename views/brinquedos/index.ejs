@@ -1,0 +1,103 @@
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #dde1e3, #edf3d5, #f4e7ba);
+    color: #140707;
+    padding: 20px;
+    margin: 0;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+  }
+
+  .brinquedo-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #e1e1e1;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #00000066;
+  }
+
+  .novo-btn {
+    display: inline-block;
+    background-color: #ec4899;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .novo-btn:hover {
+    background-color: white;
+    color: #ec4899;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    background-color: #b82f96;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .actions a,
+  .actions button {
+    margin-left: 10px;
+    background-color: #ec4899;
+    border: none;
+    padding: 6px 12px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .actions a:hover,
+  .actions button:hover {
+    background-color: white;
+    color: #ec4899;
+  }
+
+  .item-info {
+    flex-grow: 1;
+  }
+</style>
+
+<div class="brinquedo-container">
+  <h1>Brinquedos</h1>
+
+  <a href="/brinquedos/create" class="novo-btn">+ Novo Brinquedo</a>
+
+  <ul>
+    <% brinquedos.forEach(b => { %>
+      <li>
+        <div class="item-info">
+          <strong><%= b.nome %></strong> — R$ <%= b.preco %>
+        </div>
+        <div class="actions">
+          <a href="/brinquedos/<%= b.id %>/edit">Editar</a>
+          <form action="/brinquedos/<%= b.id %>/delete" method="POST" style="display:inline;">
+            <button type="submit">Excluir</button>
+          </form>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+</div>
+
+

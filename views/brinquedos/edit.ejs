@@ -1,0 +1,8 @@
+
+<h1>Editar Brinquedo</h1>
+<form action="/brinquedos/<%= brinquedo.id %>/edit" method="POST">
+  <input type="text" name="nome" value="<%= brinquedo.nome %>" required>
+  <textarea name="descricao"><%= brinquedo.descricao %></textarea>
+  <input type="number" step="0.01" name="preco" value="<%= brinquedo.preco %>" required>
+  <button type="submit">Atualizar</button>
+</form>
