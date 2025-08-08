@@ -1,0 +1,13 @@
+<h1>Detalhes do Time</h1>
+<p>ID: <%= time.id %>
+</p>
+<p>Time: <%= time.nome %>
+</p>
+<p>Cidade: <%= time.cidade %>
+</p>
+<p>País: <%= time.pais %>
+</p>
+<p>Data de Fundação: <%= time.data_fundacao ? new Date(time.data_fundacao).toLocaleDateString('pt-BR') : 'Não informada'
+        %>
+</p>
+<a href="/times" class="btn btn-primary">Voltar</a>
