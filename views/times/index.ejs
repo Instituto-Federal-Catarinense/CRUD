@@ -1,0 +1,42 @@
+<h1>Lista de times</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Time</th>
+            <th>Cidade</th>
+            <th>País</th>
+            <th>Data de Fundação</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% times.forEach(time=> { %>
+            <tr>
+                <td>
+                    <%= time.id %>
+                </td>
+                <td>
+                    <%= time.nome %>
+                </td>
+                <td>
+                    <%= time.cidade %>
+                </td>
+                <td>
+                    <%= time.pais %>
+                </td>
+                <td>
+                    <%= time.data_fundacao ? new Date(time.data_fundacao).toLocaleDateString('pt-BR') : 'Não informada'
+                        %>
+                </td>
+                <td>
+                    <a href="/times/<%= time.id %>" class="btn btn-primary">View</a>
+                    <a href="/times/<%= time.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/times/<%= time.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
