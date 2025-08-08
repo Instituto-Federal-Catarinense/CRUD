@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
 const indexRoutes = require('./routes/indexRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
+const userRoutes = require('./routes/userRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
-const fornecedorRoutes = require('./routes/fornecedorRoutes');
+const sequelize = require('./config/db'); // Adicionado para usar o Sequelize
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,11 +20,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 app.use('/', indexRoutes);
-app.use('/usuarios', usuarioRoutes);
+app.use('/users', userRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
-app.use('/fornecedores', fornecedorRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Sincroniza os modelos Sequelize antes de iniciar o servidor
+sequelize.sync()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Erro ao sincronizar o banco de dados:', err);
+  });
