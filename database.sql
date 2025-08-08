@@ -25,10 +25,10 @@ CREATE TABLE produtos (
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
 
-CREATE TABLE timaos (
+CREATE TABLE times (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL DEFAULT 'Sem Nome',
-    fundacao DATE NOT NULL DEFAULT '2000-01-01',
-    jogadores VARCHAR(500) NOT NULL DEFAULT 'alisson',
-    cidade VARCHAR(255) NOT NULL DEFAULT 'São Paulo'
+    nome VARCHAR(255) NOT NULL,
+    cidade VARCHAR(255),
+    pais VARCHAR(100),
+    data_fundacao DATE
 );
