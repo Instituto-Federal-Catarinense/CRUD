@@ -3,111 +3,131 @@ const Categoria = require('../models/categoriaModel');
 
 const produtoController = {
 
-    createProduto: (req, res) => {
+    createProduto: async (req, res) => {
+        try {
+            const { nome, descricao, preco, quantidade, categoria } = req.body;
 
-        const newProduto = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-            preco: req.body.preco,
-            quantidade: req.body.quantidade,
-            categoria: req.body.categoria
-        };
+            await Produto.create({
+                nome,
+                descricao,
+                preco,
+                quantidade,
+                categoriaId: categoria // chave estrangeira
+            });
 
-        Produto.create(newProduto, (err, produtoId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
             res.redirect('/produtos');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    getProdutoById: (req, res) => {
-        const produtoId = req.params.id;
+    getProdutoById: async (req, res) => {
+        try {
+            const produtoId = req.params.id;
 
-        Produto.findById(produtoId, (err, produto) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+            const produto = await Produto.findByPk(produtoId, {
+                include: Categoria
+            });
+
             if (!produto) {
-                return res.status(404).json({ message: 'Produto not found' });
+                return res.status(404).json({ message: 'Produto não encontrado' });
             }
+
             res.render('produtos/show', { produto });
-        });
-    },
-    
-    getAllProdutos: (req, res) => {
-        const categoria = req.query.categoria || null;
-        
-        Produto.getAll(categoria, (err, produtos) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            Categoria.getAll((err, categorias) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-                res.render('produtos/index', { produtos, categorias, categoriaSelecionada: categoria });
-            });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    renderCreateForm: (req, res) => {
-        Categoria.getAll((err, categorias) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    getAllProdutos: async (req, res) => {
+        try {
+            const categoria = req.query.categoria || null;
+
+            let whereClause = {};
+            if (categoria) {
+                whereClause = { categoriaId: categoria };
             }
+
+            const produtos = await Produto.findAll({
+                where: whereClause,
+                include: Categoria
+            });
+
+            const categorias = await Categoria.findAll();
+
+            res.render('produtos/index', {
+                produtos,
+                categorias,
+                categoriaSelecionada: categoria
+            });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    renderCreateForm: async (req, res) => {
+        try {
+            const categorias = await Categoria.findAll();
             res.render('produtos/create', { categorias });
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    renderEditForm: (req, res) => {
-        const produtoId = req.params.id;
+    renderEditForm: async (req, res) => {
+        try {
+            const produtoId = req.params.id;
+            const produto = await Produto.findByPk(produtoId);
 
-        Produto.findById(produtoId, (err, produto) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
             if (!produto) {
-                return res.status(404).json({ message: 'Produto not found' });
+                return res.status(404).json({ message: 'Produto não encontrado' });
             }
 
-            Categoria.getAll((err, categorias) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
-                }
-                res.render('produtos/edit', { produto, categorias });
+            const categorias = await Categoria.findAll();
+            res.render('produtos/edit', { produto, categorias });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    },
+
+    updateProduto: async (req, res) => {
+        try {
+            const produtoId = req.params.id;
+            const { nome, descricao, preco, quantidade, categoria } = req.body;
+
+            const produto = await Produto.findByPk(produtoId);
+            if (!produto) {
+                return res.status(404).json({ message: 'Produto não encontrado' });
+            }
+
+            await produto.update({
+                nome,
+                descricao,
+                preco,
+                quantidade,
+                categoriaId: categoria
             });
-        });
+
+            res.redirect('/produtos');
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
-    updateProduto: (req, res) => {
-        const produtoId = req.params.id;
-        
-        const updatedProduto = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-            preco: req.body.preco,
-            quantidade: req.body.quantidade,
-            categoria: req.body.categoria
-        };
+    deleteProduto: async (req, res) => {
+        try {
+            const produtoId = req.params.id;
+            const produto = await Produto.findByPk(produtoId);
 
-        Produto.update(produtoId, updatedProduto, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+            if (!produto) {
+                return res.status(404).json({ message: 'Produto não encontrado' });
             }
-            res.redirect('/produtos');
-        });
-    },
 
-    deleteProduto: (req, res) => {
-        const produtoId = req.params.id;
-
-        Produto.delete(produtoId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+            await produto.destroy();
             res.redirect('/produtos');
-        });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 

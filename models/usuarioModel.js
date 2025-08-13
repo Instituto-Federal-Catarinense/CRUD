@@ -1,75 +1,70 @@
-const db = require('../config/db');
+const { DataTypes, Op } = require('sequelize');
+const sequelize = require('../config/db');
 
-const Usuario = {
-    create: (usuario, callback) => {
-        const query = 'INSERT INTO usuarios (usuarioname, password, role) VALUES (?, ?, ?)';
-        db.query(query, [usuario.usuarioname, usuario.password, usuario.role], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
-    },
+const Usuario = sequelize.define('Usuario', {
+  usuarioname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  role: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+}, {
+  tableName: 'usuarios',
+  timestamps: false,
+});
 
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM usuarios WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+// Métodos estáticos para replicar as funções do model original:
 
-    findByUsuarioname: (usuarioname, callback) => {
-        const query = 'SELECT * FROM usuarios WHERE usuarioname = ?';
-        db.query(query, [usuarioname], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+// Criar usuário
+Usuario.createUsuario = async (usuario) => {
+  return await Usuario.create(usuario);
+};
 
-    update: (id, usuario, callback) => {
-        const query = 'UPDATE usuarios SET usuarioname = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [usuario.usuarioname, usuario.password, usuario.role, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+// Buscar por ID
+Usuario.findById = async (id) => {
+  return await Usuario.findByPk(id);
+};
 
-    delete: (id, callback) => {
-        const query = 'DELETE FROM usuarios WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+// Buscar por nome de usuário
+Usuario.findByUsuarioname = async (usuarioname) => {
+  return await Usuario.findOne({ where: { usuarioname } });
+};
 
-    getAll: (callback) => {
-        const query = 'SELECT * FROM usuarios';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
+// Atualizar usuário
+Usuario.updateUsuario = async (id, dadosAtualizados) => {
+  const usuario = await Usuario.findByPk(id);
+  if (!usuario) return null;
+  return await usuario.update(dadosAtualizados);
+};
 
-    searchByName: (name, callback) => {
-        const query = 'SELECT * FROM usuarios WHERE usuarioname LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },    
+// Deletar usuário
+Usuario.deleteUsuario = async (id) => {
+  const usuario = await Usuario.findByPk(id);
+  if (!usuario) return null;
+  return await usuario.destroy();
+};
+
+// Buscar todos usuários
+Usuario.getAll = async () => {
+  return await Usuario.findAll();
+};
+
+// Buscar usuários por nome com filtro LIKE
+Usuario.searchByName = async (name) => {
+  return await Usuario.findAll({
+    where: {
+      usuarioname: {
+        [Op.like]: `%${name}%`
+      }
+    }
+  });
 };
 
 module.exports = Usuario;
