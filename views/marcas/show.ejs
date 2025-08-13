@@ -1,0 +1,13 @@
+<h1>Detalhes do Marca</h1>
+<p>ID: <%= marca.id %>
+</p>
+<p>Marca: <%= marca.nome %>
+</p>
+<p>Cidade: <%= marca.cidade %>
+</p>
+<p>País: <%= marca.pais %>
+</p>
+<p>Data de Fundação: <%= marca.data_fundacao ? new Date(marca.data_fundacao).toLocaleDateString('pt-BR') : 'Não informada'
+        %>
+</p>
+<a href="/marcas" class="btn btn-primary">Voltar</a>
