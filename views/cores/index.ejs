@@ -1,0 +1,29 @@
+<h1>Lista de cores</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cor</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% cores.forEach(cor=> { %>
+            <tr>
+                <td>
+                    <%= cor.id %>
+                </td>
+                <td>
+                    <%= cor.nome %>
+                </td>
+                <td>
+                    <a href="/cores/<%= cor.id %>" class="btn btn-primary">Ver</a>
+                    <a href="/cores/<%= cor.id %>/edit" class="btn btn-warning">Editar</a>
+                    <form action="/cores/<%= cor.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            <% }) %>
+    </tbody>
+</table>
