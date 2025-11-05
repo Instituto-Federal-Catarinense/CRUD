@@ -1,0 +1,58 @@
+body {
+  background-color: #fef6e4;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.navbar {
+  background-color: #b388eb !important;
+}
+
+.navbar-brand,
+.nav-link,
+.dropdown-item {
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.nav-link:hover,
+.dropdown-item:hover {
+  background-color: #6a0dad !important;
+  color: #fff !important;
+}
+
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #6a0dad;
+}
+
+.btn-custom {
+  background-color: #b388eb;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  padding: 0.6rem 1.4rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-custom:hover {
+  background-color: #6a0dad;
+}
+
+.footer {
+  background-color: #b388eb;
+  color: white;
+  padding: 10px 0;
+  margin-top: 40px;
+  border-top: 3px solid #6a0dad;
+}

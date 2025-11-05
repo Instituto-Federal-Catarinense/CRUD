@@ -14,6 +14,8 @@
             <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
             <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
         </select>
+    <div class="mt-4 d-flex justify-content-between">
+      <a href="/users" class="btn btn-light border">Cancelar</a>
+      <button type="submit" class="btn btn-custom">Salvar</button>
     </div>
-    <button type="submit" class="btn btn-warning">Salvar</button>
 </form>

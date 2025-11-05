@@ -3,67 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Read Update Delete System</title>
+    <title><%= title || 'CRUD System' %></title>
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Estilo customizado -->
+    <link rel="stylesheet" href="/css/style.css">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-        }
-        .jumbotron {
-            background-color: #007bff;
-            color: white;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
-        }
-        .jumbotron h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-        .btn-custom {
-            background-color: #28a745;
-            color: white;
-            border-radius: 25px;
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        .btn-custom:hover {
-            background-color: #218838;
-        }
-        .feature-card {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            background-color: white;
-            text-align: center;
-        }
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-    </style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdf6f9; /* Bege bem claro */
+    color: #3d3d3d;
+  }
+
+  .jumbotron {
+    background-color: #b48cc0; /* Lilás suave */
+    color: white;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .jumbotron h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .btn-custom {
+    background-color: #c792e5; /* Botão lilás */
+    color: white;
+    border-radius: 25px;
+    padding: 0.6rem 1.4rem;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-custom:hover {
+    background-color: #a36bb8;
+  }
+
+  .btn-light {
+    background-color: #fcefe8; /* Bege claro */
+    color: #6b4f4f;
+  }
+
+  .feature-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: white;
+    text-align: center;
+  }
+
+  .feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .navbar {
+    background-color: #fbeaff; /* Lilás claro */
+  }
+
+  .navbar-brand, .nav-link {
+    color: #6b4f8d !important;
+    font-weight: 500;
+  }
+
+  .dropdown-menu {
+    background-color: #fbeaff;
+  }
+
+  .dropdown-item:hover {
+    background-color: #e4cce5;
+  }
+
+  .footer {
+    background-color: #fbeaff;
+    color: #6b4f8d;
+  }
+
+  h1, h2, h3 {
+    color: #6b4f8d;
+  }
+
+  .text-purple {
+    color: #6b4f8d;
+  }
+
+  .bg-white {
+    background-color: #ffffff !important;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <%- include('partials/navbar') %>
-        <%- body %>
 
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <!-- Conteúdo principal -->
+    <div class="container mt-4">
+        <%- body %>
+    </div>
+
+    <!-- Rodapé -->
     <footer class="footer mt-auto py-3 bg-light text-center">
         <div class="container">
             <span class="text-muted">&copy; 2024 CRUD</span>
         </div>
     </footer>
 
+    <!-- JS Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

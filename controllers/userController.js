@@ -26,7 +26,7 @@ const userController = {
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            res.render('users/show', { user });
+            res.render('users/show', { user, title: 'Detalhes do Usuário' });
         });
     },
 
@@ -35,12 +35,12 @@ const userController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('users/index', { users });
+            res.render('users/index', { users, title: 'Usuários' });
         });
     },
 
     renderCreateForm: (req, res) => {
-        res.render('users/create');
+        res.render('users/create', { title: 'Cadastrar Usuário' });
     },
 
     renderEditForm: (req, res) => {
@@ -53,7 +53,7 @@ const userController = {
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
             }
-            res.render('users/edit', { user });
+            res.render('users/edit', { user, title: 'Editar Usuário' });
         });
     },
 
@@ -92,6 +92,14 @@ const userController = {
                 return res.status(500).json({ error: err });
             }
             res.json({ users });
+        });
+    },
+
+    // Função da rota /sobre
+    sobre: (req, res) => {
+        res.render('sobre', {
+            titulo: 'Sobre o Sistema',
+            title: 'Sobre'
         });
     },
 };
