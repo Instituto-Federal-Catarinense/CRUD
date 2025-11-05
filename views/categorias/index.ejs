@@ -1,9 +1,9 @@
-<h1>Lista de categorias</h1>
+<h1>Lista de Categorias</h1>
 <table class="table">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Categoria</th>
+            <th>Categorias</th>
         </tr>
     </thead>
     <tbody>
@@ -11,13 +11,6 @@
             <tr>
                 <td><%= categoria.id %></td>
                 <td><%= categoria.nome %></td>
-                <td>
-                    <a href="/categorias/<%= categoria.id %>" class="btn btn-primary">View</a>
-                    <a href="/categorias/<%= categoria.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/categorias/<%= categoria.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
             </tr>
         <% }) %>
     </tbody>

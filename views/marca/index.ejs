@@ -1,0 +1,24 @@
+<h1>Lista de Marcas</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Marca</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% marca.forEach(marca => { %>
+            <tr>
+                <td><%= marca.id %></td>
+                <td><%= marca.nome %></td>
+                <td>
+                    <a href="/marca/<%= marca.id %>" class="btn btn-primary">View</a>
+                    <a href="/marca/<%= marca.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/marca/<%= marca.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

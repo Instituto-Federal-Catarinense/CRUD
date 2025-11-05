@@ -1,0 +1,8 @@
+<h1>Editar marca</h1>
+<form action="/marca/<%= categoria.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="nome">Marca</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="<%= marca.nome %>" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>
