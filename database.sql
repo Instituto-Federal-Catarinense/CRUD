@@ -21,5 +21,11 @@ CREATE TABLE produtos (
     preco DECIMAL(10,2) NOT NULL,
     quantidade INT NOT NULL,
     categoria INT NOT NULL,
+<<<<<<< HEAD
     FOREIGN KEY (categoria) REFERENCES categorias(id)
+=======
+    cor_id INT, 
+    FOREIGN KEY (categoria) REFERENCES categorias(id),
+    FOREIGN KEY (cor_id) REFERENCES cor(id)
+>>>>>>> c228207 (crud com sequelize atualizado)
 );
