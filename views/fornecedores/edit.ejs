@@ -1,0 +1,8 @@
+<h1>Editar fornecedor</h1>
+<form action="/fornecedores/<%= fornecedor.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="nome">Fornecedor</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="<%= fornecedor.nome %>" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

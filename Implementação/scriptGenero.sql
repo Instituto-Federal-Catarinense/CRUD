@@ -1,0 +1,6 @@
+USE gracaKids;
+
+CREATE TABLE Genero (
+cod INTEGER NOT NULL UNIQUE,
+descricao VARCHAR(9) NOT NULL,
+PRIMARY KEY (cod));

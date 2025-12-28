@@ -1,0 +1,9 @@
+USE gracaKids;
+
+CREATE TABLE Possui (
+cod INTEGER NOT NULL UNIQUE,
+aluno INTEGER,
+turma INTEGER,
+PRIMARY KEY (cod),
+FOREIGN KEY (aluno) REFERENCES Aluno(cod),
+FOREIGN KEY (turma) REFERENCES Turma(cod));

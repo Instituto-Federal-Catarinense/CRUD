@@ -1,0 +1,27 @@
+USE gracaKids;
+
+CREATE TABLE Responsavel (
+cod INTEGER AUTO_INCREMENT NOT NULL UNIQUE,
+nome VARCHAR (50) NOT NULL,
+login VARCHAR (15) NOT NULL UNIQUE,
+CHECK (CHAR_LENGTH(login) >= 5),
+senha VARCHAR (10) NOT NULL,
+CHECK (CHAR_LENGTH(senha) >= 5),
+dataNasc DATE NOT NULL,
+rg VARCHAR (14) NOT NULL UNIQUE,
+cpf CHAR (14) NOT NULL UNIQUE,
+fone INTEGER,
+email VARCHAR (70) UNIQUE,
+parentesco VARCHAR (20) NOT NULL,
+autoVf BLOB NOT NULL,
+autorização BLOB NOT NULL,
+projetoIgreja VARCHAR (60),
+ministroAuxiliar BOOLEAN NOT NULL,
+pastor BOOLEAN NOT NULL,
+imagem VARCHAR (60) NOT NULL,
+obs VARCHAR (100),
+endereco INTEGER,
+genero INTEGER,
+PRIMARY KEY (cod),
+FOREIGN KEY (endereco) REFERENCES Endereco (cod),
+FOREIGN KEY (genero) REFERENCES Genero (cod));
