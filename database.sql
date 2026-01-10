@@ -2,7 +2,7 @@ CREATE DATABASE CRUD;
 
 USE CRUD;
 
-CREATE TABLE users (
+CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -22,4 +22,11 @@ CREATE TABLE produtos (
     quantidade INT NOT NULL,
     categoria INT NOT NULL,
     FOREIGN KEY (categoria) REFERENCES categorias(id)
+);
+
+CREATE TABLE text (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    telefone char(11) NOT NULL,
+    email VARCHAR(255) NOT NULL
 );

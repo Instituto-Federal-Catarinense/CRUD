@@ -1,19 +1,27 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); // Certifique-se que exporta uma instância do Sequelize
 
-const Categoria = sequelize.define('Categoria', {
+const Text = sequelize.define('Text', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    nome: {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    telefone: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    email: {
         type: DataTypes.STRING,
         allowNull: false
     }
 }, {
-    tableName: 'categorias',
+    tableName: 'text',
     timestamps: false
 });
 
-module.exports = Categoria;
+module.exports = Text;
