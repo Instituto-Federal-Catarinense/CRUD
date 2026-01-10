@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Novo Produto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Cadastrar Novo Produto</h3>
+            </div>
+            <div class="card-body">
+                <form action="/produtos" method="POST">
+                    <div class="form-group">
+                        <label for="nome">Nome do Produto:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <textarea id="descricao" class="form-control" name="descricao" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="preco">Preço:</label>
+                        <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoria:</label>
+                        <select class="form-control" id="categoria" name="categoria" required>
+                            <% categorias.forEach(categoria => { %>
+                                <option value="<%= categoria.id %>"><%= categoria.nome %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <a href="/produtos" class="btn btn-secondary ml-2">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

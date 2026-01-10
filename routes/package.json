@@ -1,0 +1,37 @@
+{
+  "name": "clara_webiii",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "debug": "^4.4.1",
+    "dottie": "^2.0.6",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "inflection": "^1.13.4",
+    "lodash": "^4.17.21",
+    "method-override": "^3.0.0",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.48",
+    "ms": "^2.1.3",
+    "mysql2": "^3.14.3",
+    "pg-connection-string": "^2.9.1",
+    "retry-as-promised": "^7.1.1",
+    "semver": "^7.7.2",
+    "sequelize": "^6.37.7",
+    "sequelize-pool": "^7.1.0",
+    "toposort-class": "^1.0.1",
+    "undici-types": "^7.10.0",
+    "uuid": "^8.3.2",
+    "validator": "^13.15.15",
+    "wkx": "^0.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

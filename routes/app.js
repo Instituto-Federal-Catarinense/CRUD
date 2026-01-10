@@ -24,7 +24,6 @@ app.use('/usuarios', usuarioRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
 app.use('/fornecedores', fornecedorRoutes);
-
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

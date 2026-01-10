@@ -1,0 +1,27 @@
+<h1>Editar Fornecedor</h1>
+
+<form action="/fornecedores/<%= fornecedor.id %>" method="POST">
+    <div class="form-group">
+        <label>Fornecedor:</label>
+        <input type="text" name="tema" value="<%= fornecedor.tema %>" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label>Descrição:</label>
+        <input type="text" name="descricao" value="<%= fornecedor.descricao %>" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label>Produto:</label>
+        <input type="text" name="tema" value="<%= fornecedor.tema %>" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label>Data:</label>
+        <input type="date" name="data_fornecedor" value="<%= fornecedor.data_fornecedor.toISOString().slice(0, 10) %>"
+            class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label>Horário:</label>
+        <input type="time" name="horario" value="<%= fornecedor.horario || '' %>" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Atualizar</button>
+    <a href="/fornecedores" class="btn btn-secondary">Cancelar</a>
+</form>

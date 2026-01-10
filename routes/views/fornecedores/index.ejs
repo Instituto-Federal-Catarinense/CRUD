@@ -1,0 +1,47 @@
+<h1>Lista de Fornecedores</h1>
+
+<a href="/fornecedores/new" class="btn btn-success mb-3">Nova Aula</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fornecedor</th>
+            <th>Descrição</th>
+            <th>Produto</th>
+            <th>Data</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (fornecedores.length===0) { %>
+            <tr>
+                <td colspan="5" class="text-center">Nenhum fornecedor cadastrado.</td>
+            </tr>
+            <% } else { %>
+                <% fornecedores.forEach(fornecedor=> { %>
+                    <tr>
+                        <td>
+                            <%= fornecedor.id %>
+                        </td>
+                        <td>
+                            <%= fornecedor.fornecedor %>
+                        </td>
+                        <td>
+                            <%= fornecedor.descricao %>
+                        </td>
+                        <td>
+                            <%= fornecedor.data_fornecedor.toISOString().slice(0, 10) %>
+                        </td>
+                        <td>
+                            <a href="/fornecedores/<%= fornecedor.id %>" class="btn btn-sm btn-primary">View</a>
+                            <a href="/fornecedores/<%= fornecedor.id %>/edit" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="/fornecedores/<%= fornecedor.id %>/delete" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                        <% } %>
+    </tbody>
+</table>

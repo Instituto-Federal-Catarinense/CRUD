@@ -1,0 +1,19 @@
+<h1>Detalhes do Fornecedor</h1>
+
+<p><strong>ID:</strong>
+    <%= fornecedor.id %>
+</p>
+<p><strong>Fornecedor(a):</strong>
+    <%= fornecedor.fornecedor %>
+</p>
+<p><strong>Descrição:</strong>
+    <%= fornecedor.descricao %>
+</p>
+<p><strong>Data do Fornecedor:</strong>
+    <%= fornecedor.data_fornecedor.toISOString().slice(0, 10) %>
+</p>
+<p><strong>Horário:</strong>
+    <%= fornecedor.horario || 'Não informado' %>
+</p>
+
+<a href="/fornecedores" class="btn btn-primary">Voltar</a>
