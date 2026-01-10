@@ -1,83 +1,87 @@
 const Categoria = require('../models/categoriaModel');
 
 const categoriaController = {
-    createCategoria: (req, res) => {
-        const newCategoria = {
-            nome: req.body.nome
-        };
-
-        Categoria.create(newCategoria, (err, categoriaId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/categorias');
-        });
+    createCategoria: async (req, res) => {
+        try {
+            const { nome } = req.body;
+            const categoria = await Categoria.create({ nome });
+            res.redirect('/categorias'); // Redireciona para a lista de categorias
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao criar categoria' });
+        }
     },
 
-    getCategoriaById: (req, res) => {
-        const categoriaId = req.params.id;
-
-        Categoria.findById(categoriaId, (err, categoria) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getCategoriaById: async (req, res) => {
+        try {
+            const categoria = await Categoria.findByPk(req.params.id);
             if (!categoria) {
-                return res.status(404).json({ message: 'Categoria not found' });
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
             res.render('categorias/show', { categoria });
-        });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao buscar categoria' });
+        }
     },
 
-    getAllCategorias: (req, res) => {
-        Categoria.getAll((err, categorias) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getAllCategorias: async (req, res) => {
+        try {
+            const categorias = await Categoria.findAll();
             res.render('categorias/index', { categorias });
-        });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao buscar categorias' });
+        }
     },
 
     renderCreateForm: (req, res) => {
         res.render('categorias/create');
     },
 
-    renderEditForm: (req, res) => {
-        const categoriaId = req.params.id;
-
-        Categoria.findById(categoriaId, (err, categoria) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    renderEditForm: async (req, res) => {
+        try {
+            const categoria = await Categoria.findByPk(req.params.id);
             if (!categoria) {
-                return res.status(404).json({ message: 'Categoria not found' });
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
             res.render('categorias/edit', { categoria });
-        });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao buscar categoria' });
+        }
     },
 
-    updateCategoria: (req, res) => {
-        const categoriaId = req.params.id;
-        const updatedCategoria = {
-            nome: req.body.nome
-        };
-
-        Categoria.update(categoriaId, updatedCategoria, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    updateCategoria: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
+            const { nome } = req.body;
+            const categoria = await Categoria.findByPk(categoriaId);
+            if (!categoria) {
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
+            categoria.nome = nome;
+            await categoria.save();
             res.redirect('/categorias');
-        });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao atualizar categoria' });
+        }
     },
 
-    deleteCategoria: (req, res) => {
-        const categoriaId = req.params.id;
-
-        Categoria.delete(categoriaId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    deleteCategoria: async (req, res) => {
+        try {
+            const categoriaId = req.params.id;
+            const categoria = await Categoria.findByPk(categoriaId);
+            if (!categoria) {
+                return res.status(404).json({ message: 'Categoria não encontrada' });
             }
+            await categoria.destroy();
             res.redirect('/categorias');
-        });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Erro ao deletar categoria' });
+        }
     }
 };
 
