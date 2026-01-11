@@ -1,0 +1,22 @@
+<h1>Editar Teste</h1>
+
+<form action="/testes/<%= teste.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="titulo">Título do Teste</label>
+        <input type="text" class="form-control" id="titulo" name="titulo" value="<%= teste.titulo %>" required>
+    </div>
+
+    <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <textarea class="form-control" id="descricao" name="descricao" rows="4"><%= teste.descricao %></textarea>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="ativo" name="ativo" <%= teste.ativo ? 'checked' : '' %>>
+        <label class="form-check-label" for="ativo">Ativo</label>
+    </div>
+
+    <button type="submit" class="btn btn-warning mt-3">Salvar</button>
+</form>
+
+<a href="/testes" class="btn btn-secondary mt-2">Voltar</a>

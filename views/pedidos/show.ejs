@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Pedido</title>
+</head>
+<body>
+    <h1>Detalhes do Pedido</h1>
+    <ul>
+        <li><strong>ID:</strong> <%= pedido.id %></li>
+        <li><strong>Nome do Produto:</strong> <%= pedido.nome_produto %></li>
+        <li><strong>Quantidade:</strong> <%= pedido.quantidade %></li>
+        <li><strong>Preço:</strong> R$ <%= pedido.preco %></li>
+    </ul>
+    <a href="/pedidos/<%= pedido.id %>/edit">Editar</a>
+    <form action="/pedidos/<%= pedido.id %>?_method=DELETE" method="POST" style="display:inline;">
+        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir este pedido?');">Excluir</button>
+    </form>
+    <br>
+    <a href="/pedidos">Voltar para lista de pedidos</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Pedido</title>
+</head>
+<body>
+    <h1>Criar Novo Pedido</h1>
+    <form action="/pedidos" method="POST">
+        <div>
+            <label for="nome_produto">Nome do Produto:</label>
+            <input type="text" id="nome_produto" name="nome_produto" required>
+        </div>
+        <div>
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" min="1" required>
+        </div>
+        <div>
+            <label for="preco">Preço:</label>
+            <input type="number" id="preco" name="preco" step="0.01" min="0" required>
+        </div>
+        <button type="submit">Criar Pedido</button>
+    </form>
+    <a href="/pedidos">Voltar para lista de pedidos</a>
+</body>
+</html>

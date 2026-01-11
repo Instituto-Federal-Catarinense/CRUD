@@ -1,0 +1,19 @@
+<h1>Cadastrar Teste</h1>
+<form action="/testes" method="POST">
+    <div class="form-group">
+        <label for="titulo">Título:</label>
+        <input type="text" class="form-control" id="titulo" name="titulo" required>
+    </div>
+
+    <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea class="form-control" id="descricao" name="descricao" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="ativo">Ativo:</label>
+        <input type="checkbox" id="ativo" name="ativo">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>

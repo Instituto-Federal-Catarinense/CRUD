@@ -1,0 +1,26 @@
+<h1>Lista de Testes</h1>
+<a href="/testes/new" class="btn btn-success mb-2">Cadastrar Novo Teste</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% testes.forEach(teste => { %>
+            <tr>
+                <td><%= teste.id %></td>
+                <td><%= teste.titulo %></td>
+                <td>
+                    <a href="/testes/<%= teste.id %>" class="btn btn-primary">View</a>
+                    <a href="/testes/<%= teste.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/testes/<%= teste.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
