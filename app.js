@@ -6,6 +6,7 @@ const indexRoutes = require('./routes/indexRoutes');
 const userRoutes = require('./routes/userRoutes');
 const produtoRoutes = require('./routes/produtoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
+const sequelize = require('./config/db'); // Adicionado para usar o Sequelize
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +24,13 @@ app.use('/users', userRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/categorias', categoriaRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Sincroniza os modelos Sequelize antes de iniciar o servidor
+sequelize.sync()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Erro ao sincronizar o banco de dados:', err);
+  });
