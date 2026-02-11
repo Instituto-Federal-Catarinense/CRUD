@@ -1,0 +1,18 @@
+<h1>Cadastrar Tanque</h1>
+<form action="/tanques" method="POST">
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
+    <label>Descrição:</label>
+    <textarea name="descricao" required></textarea>
+    <label>Preço:</label>
+    <input type="number" name="preco" required>
+    <label>Quantidade:</label>
+    <input type="number" name="quantidade" required>
+    <label>Categoria:</label>
+    <select name="categoria" required>
+        <% categorias.forEach(c => { %>
+            <option value="<%= c.id %>"><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <button type="submit">Cadastrar</button>
+</form>

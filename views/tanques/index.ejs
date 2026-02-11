@@ -1,0 +1,32 @@
+<h1>Lista de Tanques</h1>
+<a href="/tanques/create">Cadastrar Novo</a>
+<table>
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% tanques.forEach(t => { %>
+            <tr>
+                <td><%= t.nome %></td>
+                <td><%= t.descricao %></td>
+                <td><%= t.preco %></td>
+                <td><%= t.quantidade %></td>
+                <td><%= t.categoria_nome %></td>
+                <td>
+                    <a href="/tanques/<%= t.id %>">Ver</a>
+                    <a href="/tanques/<%= t.id %>/edit">Editar</a>
+                    <form action="/tanques/<%= t.id %>?_method=DELETE" method="POST" style="display:inline;">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

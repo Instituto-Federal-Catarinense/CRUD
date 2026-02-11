@@ -1,0 +1,18 @@
+<h1>Editar Tanque</h1>
+<form action="/tanques/<%= tanque.id %>?_method=PUT" method="POST">
+    <label>Nome:</label>
+    <input type="text" name="nome" value="<%= tanque.nome %>" required>
+    <label>Descrição:</label>
+    <input type="text" name="descricao" value="<%= tanque.descricao %>" required>
+    <label>Preço:</label>
+    <input type="number" name="preco" value="<%= tanque.preco %>" required>
+    <label>Quantidade:</label>
+    <input type="number" name="quantidade" value="<%= tanque.quantidade %>" required>
+    <label>Categoria:</label>
+    <select name="categoria" required>
+        <% categorias.forEach(c => { %>
+            <option value="<%= c.id %>" <%= tanque.categoria == c.id ? 'selected' : '' %>><%= c.nome %></option>
+        <% }) %>
+    </select>
+    <button type="submit">Salvar</button>
+</form>

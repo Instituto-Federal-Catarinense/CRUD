@@ -1,4 +1,4 @@
-# User Management System
+# Usuario Management System
 
 Este é um sistema de gerenciamento de usuários desenvolvido com Node.js, Express e MySQL. Ele permite a criação, leitura, atualização e exclusão (CRUD) de usuários, com uma interface web para administradores e usuários.
 
@@ -27,7 +27,7 @@ Certifique-se de que você tem o Node.js e o MySQL instalados. Em seguida, execu
 
 ### 3. Configure o Banco de Dados
 
-Crie um banco de dados no MySQL, por exemplo, user_management.
+Crie um banco de dados no MySQL, por exemplo, usuario_management.
 
 ### 4. Execute o Aplicativo
 
@@ -51,13 +51,13 @@ O servidor estará disponível em http://localhost:3000.
 │   ├── show.ejs
 │
 ├── /controllers
-│   └── userController.js
+│   └── usuarioController.js
 │
 ├── /models
-│   └── userModel.js
+│   └── usuarioModel.js
 │
 ├── /routes
-│   └── userRoutes.js
+│   └── usuarioRoutes.js
 │
 ├── /config
 │   └── database.js
