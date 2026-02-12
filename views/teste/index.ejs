@@ -1,0 +1,66 @@
+<h1>Lista de Testes</h1>
+
+<form id="searchForm" method="GET" action="/teste">
+  <div class="form-group">
+    <label for="search">Buscar teste:</label>
+    <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome do teste" autocomplete="off">
+  </div>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody id="testeTableBody">
+    <% teste.forEach(t => { %>
+      <tr>
+        <td><%= t.id %></td>
+        <td><%= t.nome %></td>
+        <td><%= t.descricao %></td>
+        <td>
+          <a href="/teste/<%= t.id %>" class="btn btn-primary">View</a>
+          <a href="/teste/<%= t.id %>/edit" class="btn btn-warning">Edit</a>
+          <form action="/teste/<%= t.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<script>
+  document.getElementById('search').addEventListener('input', function () {
+    const searchValue = this.value;
+
+    fetch(`/teste/search?search=${encodeURIComponent(searchValue)}`)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('testeTableBody');
+        tbody.innerHTML = ''; // Limpa a tabela
+
+        data.teste.forEach(t => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${t.id}</td>
+            <td>${t.nome}</td>
+            <td>${t.descricao}</td>
+            <td>
+              <a href="/teste/${t.id}" class="btn btn-primary">View</a>
+              <a href="/teste/${t.id}/edit" class="btn btn-warning">Edit</a>
+              <form action="/teste/${t.id}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(error => console.error('Erro ao buscar:', error));
+  });
+</script>

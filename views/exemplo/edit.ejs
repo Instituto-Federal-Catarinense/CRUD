@@ -1,0 +1,20 @@
+<h1>Editar exemplo</h1>
+<form action="/exemplo/<%= exemplo.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="valor1">Valor 1</label>
+        <input type="text" class="form-control" id="valor1" name="valor1" value="<%= exemplo.valor1 %>" required>
+    </div>
+    <div class="form-group">
+        <label for="valor2">Valor 2</label>
+        <input type="number" class="form-control" id="valor2" name="valor2" value="<%= exemplo.valor2 %>" required>
+    </div>
+    <div class="form-group">
+        <label for="valor3">Valor 3 (Data)</label>
+        <input type="date" class="form-control" id="valor3" name="valor3" value="<%= exemplo.valor3.toISOString().slice(0,10) %>" required>
+    </div>
+    <div class="form-group">
+        <label for="valor4">Valor 4</label>
+        <input type="number" step="0.01" class="form-control" id="valor4" name="valor4" value="<%= exemplo.valor4 %>" required>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

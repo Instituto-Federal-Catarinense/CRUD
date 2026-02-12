@@ -1,0 +1,72 @@
+<h1>Lista de exemplos</h1>
+
+<form id="searchForm" method="GET" action="/exemplo">
+    <div class="form-group">
+        <label for="search">Buscar Valor 1:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o valor 1" autocomplete="off">
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Valor 1</th>
+            <th>Valor 2</th>
+            <th>Valor 3 (Data)</th>
+            <th>Valor 4</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody id="exemploTableBody">
+        <% exemplos.forEach(exemplo => { %>
+            <tr>
+                <td><%= exemplo.id %></td>
+                <td><%= exemplo.valor1 %></td>
+                <td><%= exemplo.valor2 %></td>
+                <td><%= exemplo.valor3.toISOString().slice(0,10) %></td>
+                <td><%= exemplo.valor4 %></td>
+                <td>
+                    <a href="/exemplo/<%= exemplo.id %>" class="btn btn-primary">View</a>
+                    <a href="/exemplo/<%= exemplo.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/exemplo/<%= exemplo.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('search').addEventListener('input', function() {
+        const searchValue = this.value;
+
+        fetch(`/exemplo/search?search=${encodeURIComponent(searchValue)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('exemploTableBody');
+                tbody.innerHTML = ''; // Limpa as linhas existentes
+
+                data.exemplos.forEach(exemplo => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${exemplo.id}</td>
+                        <td>${exemplo.valor1}</td>
+                        <td>${exemplo.valor2}</td>
+                        <td>${new Date(exemplo.valor3).toISOString().slice(0,10)}</td>
+                        <td>${exemplo.valor4}</td>
+                        <td>
+                            <a href="/exemplo/${exemplo.id}" class="btn btn-primary">View</a>
+                            <a href="/exemplo/${exemplo.id}/edit" class="btn btn-warning">Edit</a>
+                            <form action="/exemplo/${exemplo.id}?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>

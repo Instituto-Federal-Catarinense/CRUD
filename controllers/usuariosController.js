@@ -11,19 +11,19 @@ const usuariosController = {
             });
             res.redirect('/usuarios');
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
     getUsuariosById: async (req, res) => {
         try {
-            const usuario = await Usuarios.findByPk(req.params.id);
-            if (!usuario) {
+            const usuarios = await Usuarios.findByPk(req.params.id);
+            if (!usuarios) {
                 return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-            res.render('usuarios/show', { usuarios: usuario });
+            res.render('usuarios/show', { usuarios });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
@@ -32,7 +32,7 @@ const usuariosController = {
             const usuarios = await Usuarios.findAll();
             res.render('usuarios/index', { usuarios });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
@@ -42,13 +42,13 @@ const usuariosController = {
 
     renderEditForm: async (req, res) => {
         try {
-            const usuario = await Usuarios.findByPk(req.params.id);
-            if (!usuario) {
+            const usuarios = await Usuarios.findByPk(req.params.id);
+            if (!usuarios) {
                 return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-            res.render('usuarios/edit', { usuarios: usuario });
+            res.render('usuarios/edit', { usuarios });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
@@ -63,7 +63,7 @@ const usuariosController = {
             });
             res.redirect('/usuarios');
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
@@ -74,7 +74,7 @@ const usuariosController = {
             });
             res.redirect('/usuarios');
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     },
 
@@ -90,7 +90,7 @@ const usuariosController = {
             });
             res.json({ usuarios });
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err });
         }
     }
 };
