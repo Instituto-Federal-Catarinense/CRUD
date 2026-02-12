@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+    <div class="container mt-4">
+        <h1>Editar Fornecedor</h1>
+
+        <% if (error) { %>
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+            <% } %>
+
+                <form action="/fornecedores/editar/<%= fornecedor.id %>" method="POST">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" value="<%= fornecedor.nome %>"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" class="form-control" id="cnpj" name="cnpj" value="<%= fornecedor.cnpj %>"
+                            readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" class="form-control" id="telefone" name="telefone"
+                            value="<%= fornecedor.telefone %>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="<%= fornecedor.email %>"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <textarea class="form-control" id="endereco" name="endereco" rows="3"
+                            required><%= fornecedor.endereco %></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                    <a href="/fornecedores" class="btn btn-secondary">Cancelar</a>
+                </form>
+    </div>
+
+    <%- include('../partials/footer') %>
