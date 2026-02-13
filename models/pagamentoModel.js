@@ -1,20 +1,24 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/db'); // Certifique-se que exporta uma instância Sequelize
 
-const Categoria = sequelize.define('Categoria', {
+const Pagamento = sequelize.define('Pagamento', {
     nome: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    descricao: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
-    tableName: 'categorias',
+    tableName: 'pagamento',
     timestamps: false
 });
 
 module.exports = {
-    create: async (categoria, callback) => {
+    create: async (pagamento, callback) => {
         try {
-            const result = await Categoria.create({ nome: categoria.nome });
+            const result = await Pagamento.create({ nome: pagamento.nome, descricao: pagamento.descricao });
             callback(null, result.id);
         } catch (err) {
             callback(err);
@@ -23,26 +27,17 @@ module.exports = {
 
     findById: async (id, callback) => {
         try {
-            const result = await Categoria.findByPk(id);
+            const result = await Pagamento.findByPk(id);
             callback(null, result);
         } catch (err) {
             callback(err);
         }
     },
 
-    findByCategorianame: async (nome, callback) => {
+    update: async (id, pagamento, callback) => {
         try {
-            const result = await Categoria.findOne({ where: { nome } });
-            callback(null, result);
-        } catch (err) {
-            callback(err);
-        }
-    },
-
-    update: async (id, categoria, callback) => {
-        try {
-            const [updated] = await Categoria.update(
-                { nome: categoria.nome },
+            const [updated] = await Pagamento.update(
+                { nome: pagamento.nome, descricao: pagamento.descricao },
                 { where: { id } }
             );
             callback(null, updated);
@@ -53,7 +48,7 @@ module.exports = {
 
     delete: async (id, callback) => {
         try {
-            const deleted = await Categoria.destroy({ where: { id } });
+            const deleted = await Pagamento.destroy({ where: { id } });
             callback(null, deleted);
         } catch (err) {
             callback(err);
@@ -62,10 +57,10 @@ module.exports = {
 
     getAll: async (callback) => {
         try {
-            const results = await Categoria.findAll();
+            const results = await Pagamento.findAll();
             callback(null, results);
         } catch (err) {
             callback(err);
         }
     }
-};
+}; 

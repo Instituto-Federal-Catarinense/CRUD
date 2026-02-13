@@ -1,0 +1,31 @@
+<%- include('../partials/navbar') %>
+
+<h1>Lista de métodos de pagamento</h1>
+<a href="/pagamentos/new" class="btn btn-primary mb-3">Novo Método</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% pagamentos.forEach(pagamento => { %>
+            <tr>
+                <td><%= pagamento.id %></td>
+                <td><%= pagamento.nome %></td>
+                <td><%= pagamento.descricao %></td>
+                <td>
+                    <a href="/pagamentos/<%= pagamento.id %>" class="btn btn-primary">Ver</a>
+                    <a href="/pagamentos/<%= pagamento.id %>/edit" class="btn btn-warning">Editar</a>
+                    <form action="/pagamentos/<%= pagamento.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

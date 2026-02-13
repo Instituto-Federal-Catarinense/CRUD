@@ -1,0 +1,85 @@
+<h1>Lista de usuários</h1>
+
+<form id="searchForm" method="GET" action="/usuarios">
+    <div class="form-group">
+        <label for="search">Buscar Usuário:</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Digite o nome do usuário" autocomplete="off">
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>novo usuário</h1>
+            <form action="/usuarios" method="POST">
+                <div class="form-group">
+                    <label for="usuarioname">Nome</label>
+                    <input type="text" class="form-control" id="usuarioname" name="usuarioname" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Regra</label>
+                    <select class="form-control" id="role" name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="usuario">Usuário</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+            
+            <th>Nome</th>
+            <th>Regra</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody id="usuarioTableBody">
+        <% usuarios.forEach(usuario => { %>
+            <tr>
+                <td><%= usuario.id %></td>
+                <td><%= usuario.usuarioname %></td>
+                <td><%= usuario.role %></td>
+                <td>
+                    <a href="/usuarios/<%= usuario.id %>" class="btn btn-primary">View</a>
+                    <a href="/usuarios/<%= usuario.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/usuarios/<%= usuario.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<script>
+    document.getElementById('search').addEventListener('input', function() {
+        const searchValue = this.value;
+
+        fetch(`/usuarios/search?search=${encodeURIComponent(searchValue)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('usuarioTableBody');
+                tbody.innerHTML = ''; // Clear existing rows
+
+                data.usuarios.forEach(usuario => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${usuario.id}</td>
+                        <td>${usuario.usuarioname}</td>
+                        <td>${usuario.role}</td>
+                        <td>
+                            <a href="/usuarios/${usuario.id}" class="btn btn-primary">View</a>
+                            <a href="/usuarios/${usuario.id}/edit" class="btn btn-warning">Edit</a>
+                            <form action="/usuarios/${usuario.id}?_method=DELETE" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>

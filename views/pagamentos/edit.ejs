@@ -1,0 +1,14 @@
+<%- include('../partials/navbar') %>
+
+<h1>Editar método de pagamento</h1>
+<form action="/pagamentos/<%= pagamento.id %>?_method=PUT" method="POST">
+    <div class="form-group">
+        <label for="nome">Nome:</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="<%= pagamento.nome %>" required>
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea class="form-control" id="descricao" name="descricao" required><%= pagamento.descricao %></textarea>
+    </div>
+    <button type="submit" class="btn btn-warning">Salvar</button>
+</form>
