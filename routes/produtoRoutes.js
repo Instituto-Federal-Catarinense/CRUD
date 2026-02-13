@@ -3,8 +3,8 @@ const produtoController = require('../controllers/produtoController');
 const router = express.Router();
 
 router.get('/', produtoController.getAllProdutos);
-router.get('/new', produtoController.renderCreateForm);
-router.post('/', produtoController.createProduto);
+router.get('/new', produtoController.form); // Corrigido
+router.post('/', produtoController.create); // Corrigido
 router.get('/:id', produtoController.getProdutoById);
 router.get('/:id/edit', produtoController.renderEditForm);
 router.put('/:id', produtoController.updateProduto);

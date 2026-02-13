@@ -4,5 +4,6 @@
 <p>Descrição: <%= produto.descricao %></p>
 <p>Preço: <%= produto.preco %></p>
 <p>Quantidade: <%= produto.quantidade %></p>
-<p>Categoria: <%= produto.categoria_nome %></p>
+<p>Categoria: <%= produto.categoria ? produto.categoria.nome : 'Sem categoria' %></p>
+<p>Tempo: <%= produto.tempo ? produto.tempo.nome : 'Sem tempo' %></p>
 <a href="/produtos" class="btn btn-primary">Back to List</a>

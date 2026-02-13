@@ -1,0 +1,24 @@
+<h1>Lista de tempos</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tempo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% tempos.forEach(tempo => { %>
+            <tr>
+                <td><%= tempo.id %></td>
+                <td><%= tempo.nome %></td>
+                <td>
+                    <a href="/tempos/<%= tempo.id %>" class="btn btn-primary">View</a>
+                    <a href="/tempos/<%= tempo.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/tempos/<%= tempo.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

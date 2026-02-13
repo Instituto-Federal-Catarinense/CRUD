@@ -19,10 +19,19 @@
     </div>
     <div class="form-group">
         <label for="categoria_id">Categoria</label>
-        <select class="form-control" id="categoria" name="categoria" required>
+        <select class="form-control" id="categoria_id" name="categoria_id" required>
             <% categorias.forEach(function(categoria) { %>
-                <option value="<%= categoria.id %>" <%= produto.categoria == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+                <option value="<%= categoria.id %>" <%= produto.categoria_id == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="tempo_id">Tempo</label>
+        <select class="form-control" id="tempo_id" name="tempo_id" required>
+            <% tempos.forEach(function(tempo) { %>
+                <option value="<%= tempo.id %>" <%= produto.tempo_id == tempo.id ? 'selected' : '' %>><%= tempo.nome %></option>
             <% }); %>
         </select>
     </div>
     <button type="submit" class="btn btn-warning">Salvar</button>
+</form>

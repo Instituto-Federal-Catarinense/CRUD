@@ -7,7 +7,9 @@
         <select id="categoria" name="categoria" class="form-control">
             <option value="">Todas as Categorias</option>
             <% categorias.forEach(categoria => { %>
-                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>>
+                    <%= categoria.nome %>
+                </option>
             <% }) %>
         </select>
     </div>
@@ -23,6 +25,7 @@
             <th>Preço</th>
             <th>Quantidade</th>
             <th>Categoria</th>
+            <th>Tempo</th>
             <th>Ações</th>
         </tr>
     </thead>
@@ -34,7 +37,8 @@
                 <td><%= produto.descricao %></td>
                 <td><%= produto.preco %></td>
                 <td><%= produto.quantidade %></td>
-                <td><%= produto.categoria_nome %></td>
+                <td><%= produto.categoria ? produto.categoria.nome : 'Sem categoria' %></td>
+                <td><%= produto.tempo ? produto.tempo.nome : 'Sem tempo' %></td>
                 <td>
                     <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
                     <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
