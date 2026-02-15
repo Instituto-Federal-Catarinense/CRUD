@@ -1,91 +1,75 @@
-//crie o conteudo deste arquivo vendaController.js com o seguinte conteudo: tabela de vendas com os campos: id, data, valor, quantidade, produto_id
-
-const Venda = require('../models/vendaModel');
+const { Venda } = require('../models/vendaModel');
 
 const vendaController = {
-    createVenda: (req, res) => {
-        const newVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
-            quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
-        };
-
-        Venda.create(newVenda, (err, vendaId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/vendas');
-        });
-    },
-
-    getVendaById: (req, res) => {
-        const vendaId = req.params.id;
-
-        Venda.findById(vendaId, (err, venda) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!venda) {
-                return res.status(404).json({ message: 'Venda not found' });
-            }
-            res.render('vendas/show', { venda });
-        });
-    },
-
-    getAllVendas: (req, res) => {
-        Venda.getAll((err, vendas) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('vendas/index', { vendas });
-        });
-    },
-
     renderCreateForm: (req, res) => {
         res.render('vendas/create');
     },
 
-    renderEditForm: (req, res) => {
-        const vendaId = req.params.id;
+    createVenda: async (req, res) => {
+        try {
+            const novaVenda = { 
+                data: req.body.data, 
+                valor: req.body.valor, 
+                quantidade: req.body.quantidade, 
+                produto_id: req.body.produto_id 
+            };
+            await Venda.create(novaVenda);
+            res.redirect('/vendas');
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    },
 
-        Venda.findById(vendaId, (err, venda) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    getAllVendas: async (req, res) => {
+        try {
+            const vendas = await Venda.findAll();
+            res.render('vendas/index', { vendas });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    },
+
+    getVendaById: async (req, res) => {
+        try {
+            const venda = await Venda.findByPk(req.params.id);
             if (!venda) {
-                return res.status(404).json({ message: 'Venda not found' });
+                return res.status(404).json({ message: 'Venda não encontrada' });
+            }
+            res.render('vendas/show', { venda });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
+    },
+
+    renderEditForm: async (req, res) => {
+        try {
+            const venda = await Venda.findByPk(req.params.id);
+            if (!venda) {
+                return res.status(404).json({ message: 'Venda não encontrada' });
             }
             res.render('vendas/edit', { venda });
-        });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
     },
 
-    updateVenda: (req, res) => {
-        const vendaId = req.params.id;
-        const updatedVenda = {
-            data: req.body.data,
-            valor: req.body.valor,
-            quantidade: req.body.quantidade,
-            produto_id: req.body.produto_id,
-        };
-
-        Venda.update(vendaId, updatedVenda, (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    updateVenda: async (req, res) => {
+        try {
+            const vendaAtualizada = { ...req.body };
+            await Venda.update(vendaAtualizada, { where: { id: req.params.id } });
             res.redirect('/vendas');
-        });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
     },
 
-    deleteVenda: (req, res) => {
-        const vendaId = req.params.id;
-
-        Venda.delete(vendaId, (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+    deleteVenda: async (req, res) => {
+        try {
+            await Venda.destroy({ where: { id: req.params.id } });
             res.redirect('/vendas');
-        });
+        } catch (err) {
+            return res.status(500).json({ error: err.message });
+        }
     }
 };
 

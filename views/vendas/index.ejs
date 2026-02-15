@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+    <h2>Lista de Vendas</h2>
+
+    <a href="/vendas/new">Nova Venda</a>
+
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th>Quantidade</th>
+                <th>Produto ID</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% vendas.forEach(venda=> { %>
+                <tr>
+                    <td>
+                        <%= venda.id %>
+                    </td>
+                    <td>
+                        <%= new Date(venda.data).toLocaleDateString() %>
+                    </td>
+                    <td>R$ <%= venda.valor.toFixed(2) %>
+                    </td>
+                    <td>
+                        <%= venda.quantidade %>
+                    </td>
+                    <td>
+                        <%= venda.produto_id %>
+                    </td>
+                    <td>
+                        <a href="/vendas/<%= venda.id %>">Ver</a> |
+                        <a href="/vendas/<%= venda.id %>/edit">Editar</a> |
+                        <form action="/vendas/<%= venda.id %>/delete" method="POST" style="display:inline">
+                            <button type="submit"
+                                onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+
+    <%- include('../partials/footer') %>

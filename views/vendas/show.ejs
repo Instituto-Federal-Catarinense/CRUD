@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+    <h2>Detalhes da Venda</h2>
+
+    <ul>
+        <li><strong>ID:</strong>
+            <%= venda.id %>
+        </li>
+        <li><strong>Data:</strong>
+            <%= new Date(venda.data).toLocaleDateString() %>
+        </li>
+        <li><strong>Valor:</strong> R$ <%= venda.valor.toFixed(2) %>
+        </li>
+        <li><strong>Quantidade:</strong>
+            <%= venda.quantidade %>
+        </li>
+        <li><strong>Produto ID:</strong>
+            <%= venda.produto_id %>
+        </li>
+    </ul>
+
+    <a href="/produtos">Voltar</a> |
+    <a href="/vendas/<%= venda.id %>/edit">Editar</a>
+
+    <form action="/vendas/<%= venda.id %>/delete" method="POST" style="display:inline">
+        <button type="submit" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+    </form>
+
+    <%- include('../partials/footer') %>
