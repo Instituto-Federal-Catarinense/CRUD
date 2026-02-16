@@ -1,75 +1,21 @@
-const db = require('../config/db');
-
-const User = {
-    create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+module.exports = (sequelize, DataTypes) => {
+  const Usuario = sequelize.define('Usuario', {
+    usuarioname: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
+  }, {
+    tableName: 'usuarios',
+    timestamps: false
+  });
 
-    findByUsername: (username, callback) => {
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
-
-    update: (id, user, callback) => {
-        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    delete: (id, callback) => {
-        const query = 'DELETE FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    getAll: (callback) => {
-        const query = 'SELECT * FROM users';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    searchByName: (name, callback) => {
-        const query = 'SELECT * FROM users WHERE username LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },    
+  return Usuario;
 };
-
-module.exports = User;
