@@ -1,61 +1,48 @@
-const db = require('../config/db');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db');
+const Categoria = require('./categoriaModel'); // Importe o modelo de Categoria
 
-const Produto = {
-    create: (produto, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
-        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
-    },
+const Produto = sequelize.define('Produto', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  nome: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  descricao: {
+    type: DataTypes.TEXT,
+  },
+  preco: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+  },
+  quantidade: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
+  // 💡 CHAVE ESTRANGEIRA CORRIGIDA
+  // Definimos a coluna 'categoria' explicitamente
+  categoria: {
+    type: DataTypes.INTEGER,
+    allowNull: false, // É obrigatório ter uma categoria
+    references: {
+      model: Categoria, // Referencia o modelo Categoria
+      key: 'id' // Usa o campo 'id' do modelo Categoria
+    }
+  }
+}, {
+  tableName: 'produtos',
+  timestamps: false,
+});
 
-    findById: (id, callback) => {
-        const query = 'SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id WHERE produtos.id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
-
-    update: (id, produto, callback) => {
-        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
-        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    delete: (id, callback) => {
-        const query = 'DELETE FROM produtos WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-
-    getAll: (categoria, callback) => {
-        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
-        
-        if (categoria) {
-            query += ' WHERE produtos.categoria = ?';
-        }
-    
-        db.query(query, [categoria], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },
-    
-};
+// A associação continua a mesma, mas agora o Sequelize já sabe que a coluna `categoria`
+// no modelo `Produto` é a chave estrangeira.
+Produto.belongsTo(Categoria, {
+  foreignKey: 'categoria',
+  as: 'categoriaDetalhes'
+});
 
 module.exports = Produto;
