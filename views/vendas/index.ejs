@@ -1,0 +1,32 @@
+<h1>Lista de Vendas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Quantidade</th>
+            <th>Produto</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% vendas.forEach(venda => { %>
+            <tr>
+                <td><%= venda.id %></td>
+                <td><%= venda.data.toISOString().split('T')[0] %></td>
+                <td><%= venda.valor %></td>
+                <td><%= venda.quantidade %></td>
+                <td><%= venda.nome_produto %></td>
+                <td>
+                    <a href="/vendas/<%= venda.id %>" class="btn btn-primary">View</a>
+                    <a href="/vendas/<%= venda.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/vendas/<%= venda.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
