@@ -10,7 +10,7 @@ const categoriaRoutes = require('./routes/categoriaRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.use(expressLayouts);
 
