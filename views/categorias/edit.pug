@@ -1,8 +1,11 @@
-h1 Editar categoria
+extends ../layout
 
-form(action=`/categorias/${categoria.id}?_method=PUT`, method="POST")
-    .form-group
-        label(for="nome") Categoria
-        input.form-control(type="text", id="nome", name="nome", value=categoria.nome, required)
+block content
+  h1 Editar categoria
 
-    button.btn.btn-warning(type="submit") Salvar
+  form(action=`/categorias/${categoria.id}?_method=PUT`, method="POST")
+      .form-group
+          label(for="nome") Categoria
+          input.form-control(type="text", id="nome", name="nome", value=categoria.nome, required)
+
+      button.btn.btn-warning(type="submit") Salvar

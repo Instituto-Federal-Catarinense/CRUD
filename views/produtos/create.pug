@@ -1,26 +1,29 @@
-h1 Cadastrar novo produto
+extends ../layout
 
-form(action="/produtos", method="POST")
-    .form-group
-        label(for="nome") Nome do Produto:
-        input.form-control(type="text", id="nome", name="nome", required)
+block content
+  h1 Cadastrar novo produto
 
-    .form-group
-        label(for="descricao") Descrição:
-        textarea.form-control(id="descricao", name="descricao", required)
+  form(action="/produtos", method="POST")
+      .form-group
+          label(for="nome") Nome do Produto:
+          input.form-control(type="text", id="nome", name="nome", required)
 
-    .form-group
-        label(for="preco") Preço:
-        input.form-control(type="number", id="preco", name="preco", required)
+      .form-group
+          label(for="descricao") Descrição:
+          textarea.form-control(id="descricao", name="descricao", required)
 
-    .form-group
-        label(for="quantidade") Quantidade:
-        input.form-control(type="number", id="quantidade", name="quantidade", required)
+      .form-group
+          label(for="preco") Preço:
+          input.form-control(type="number", id="preco", name="preco", required)
 
-    .form-group
-        label(for="categoria") Categoria:
-        select.form-control(id="categoria", name="categoria", required)
-            each categoria in categorias
-                option(value=categoria.id)= categoria.nome
+      .form-group
+          label(for="quantidade") Quantidade:
+          input.form-control(type="number", id="quantidade", name="quantidade", required)
 
-    button.btn.btn-primary(type="submit") Cadastrar
+      .form-group
+          label(for="categoria") Categoria:
+          select.form-control(id="categoria", name="categoria", required)
+              each categoria in categorias
+                  option(value=categoria.id)= categoria.nome
+
+      button.btn.btn-primary(type="submit") Cadastrar

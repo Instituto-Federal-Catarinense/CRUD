@@ -1,8 +1,11 @@
-h1 User Details
+extends ../layout
 
-p ID: #{user.id}
-p Username: #{user.username}
-p Role: #{user.role}
+block content
+  h1 User Details
 
-a.btn.btn-primary(href="/users") Back to List
+  p ID: #{user.id}
+  p Username: #{user.username}
+  p Role: #{user.role}
+
+  a.btn.btn-primary(href="/users") Back to List
 

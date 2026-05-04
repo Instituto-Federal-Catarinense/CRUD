@@ -1,6 +1,9 @@
-h1 Detalhes da categoria
+extends ../layout
 
-p ID: #{categoria.id}
-p Categoria: #{categoria.nome}
+block content
+  h1 Detalhes da categoria
 
-a.btn.btn-primary(href="/categorias") Voltar
+  p ID: #{categoria.id}
+  p Categoria: #{categoria.nome}
+
+  a.btn.btn-primary(href="/categorias") Voltar

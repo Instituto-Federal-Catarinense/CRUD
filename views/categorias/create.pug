@@ -1,8 +1,11 @@
-h1 Cadastrar categoria
+extends ../layout
 
-form(action="/categorias", method="POST")
-    .form-group
-        label(for="nome") Nome da categoria
-        input.form-control(type="text", id="nome", name="nome", required)
+block content
+  h1 Cadastrar categoria
 
-    button.btn.btn-primary(type="submit") Cadastrar
+  form(action="/categorias", method="POST")
+      .form-group
+          label(for="nome") Nome da categoria
+          input.form-control(type="text", id="nome", name="nome", required)
+
+      button.btn.btn-primary(type="submit") Cadastrar

@@ -1,10 +1,13 @@
-h1 produto Details
+extends ../layout
 
-p ID: #{produto.id}
-p Nome: #{produto.nome}
-p Descrição: #{produto.descricao}
-p Preço: #{produto.preco}
-p Quantidade: #{produto.quantidade}
-p Categoria: #{produto.categoria_nome}
+block content
+  h1 produto Details
 
-a.btn.btn-primary(href="/produtos") Back to List
+  p ID: #{produto.id}
+  p Nome: #{produto.nome}
+  p Descrição: #{produto.descricao}
+  p Preço: #{produto.preco}
+  p Quantidade: #{produto.quantidade}
+  p Categoria: #{produto.categoria_nome}
+
+  a.btn.btn-primary(href="/produtos") Back to List
