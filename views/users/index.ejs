@@ -1,5 +1,7 @@
 <h1>Lista de usuários</h1>
 
+<% const currentUserId = currentUser ? Number(currentUser.id) : null; %>
+
 <form id="searchForm" method="GET" action="/users">
     <div class="form-group">
         <label for="search">Buscar Usuário:</label>
@@ -25,9 +27,13 @@
                 <td>
                     <a href="/users/<%= user.id %>" class="btn btn-primary">View</a>
                     <a href="/users/<%= user.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    <% if (currentUserId !== Number(user.id)) { %>
+                        <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    <% } else { %>
+                        <span class="badge badge-secondary">Conta atual</span>
+                    <% } %>
                 </td>
             </tr>
         <% }) %>
@@ -37,6 +43,7 @@
 <script>
     document.getElementById('search').addEventListener('input', function() {
         const searchValue = this.value;
+        const currentUserId = <%- JSON.stringify(currentUserId) %>;
 
         fetch(`/users/search?search=${encodeURIComponent(searchValue)}`)
             .then(response => response.json())
@@ -53,9 +60,11 @@
                         <td>
                             <a href="/users/${user.id}" class="btn btn-primary">View</a>
                             <a href="/users/${user.id}/edit" class="btn btn-warning">Edit</a>
-                            <form action="/users/${user.id}?_method=DELETE" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            ${Number(user.id) !== Number(currentUserId)
+                                ? `<form action="/users/${user.id}?_method=DELETE" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                   </form>`
+                                : `<span class="badge badge-secondary">Conta atual</span>`}
                         </td>
                     `;
                     tbody.appendChild(tr);

@@ -1,0 +1,41 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Cadastro</h2>
+
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <%= error %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+
+                    <form method="POST" action="/register">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nome de Usuário</label>
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="Escolha um nome de usuário">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" name="password" required placeholder="Mínimo 4 caracteres">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="passwordConfirm" class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" required placeholder="Confirme sua senha">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Cadastrar</button>
+                    </form>
+
+                    <p class="text-center">
+                        Já tem uma conta? <a href="/login" class="text-decoration-none">Faça login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -75,6 +75,11 @@ const userController = {
 
     deleteUser: (req, res) => {
         const userId = req.params.id;
+        const authenticatedUserId = req.user?.id || req.session?.user?.id;
+
+        if (authenticatedUserId && Number(userId) === Number(authenticatedUserId)) {
+            return res.status(403).json({ message: 'Você não pode excluir sua própria conta.' });
+        }
 
         User.delete(userId, (err) => {
             if (err) {

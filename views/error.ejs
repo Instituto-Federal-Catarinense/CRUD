@@ -1,0 +1,11 @@
+<div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Erro!</h4>
+        <p><%= message %></p>
+        <hr>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <small><strong>Detalhes:</strong> <%= error %></small>
+        <% } %>
+    </div>
+    <a href="/" class="btn btn-primary">Voltar para Home</a>
+</div>
