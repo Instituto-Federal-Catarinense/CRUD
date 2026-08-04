@@ -1,75 +1,93 @@
-const db = require('../config/db');
+const { readData, saveData } = require('../config/storage');
 
 const User = {
     create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+        try {
+            const data = readData();
+            const id = data.nextIds.users++;
+            const newUser = {
+                id,
+                username: user.username,
+                password: user.password,
+                role: user.role
+            };
+            data.users.push(newUser);
+            saveData(data);
+            callback(null, id);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+        try {
+            const data = readData();
+            const user = data.users.find(u => u.id == id);
+            callback(null, user);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     findByUsername: (username, callback) => {
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+        try {
+            const data = readData();
+            const user = data.users.find(u => u.username === username);
+            callback(null, user);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     update: (id, user, callback) => {
-        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const index = data.users.findIndex(u => u.id == id);
+            if (index !== -1) {
+                data.users[index] = {
+                    ...data.users[index],
+                    username: user.username,
+                    password: user.password,
+                    role: user.role
+                };
+                saveData(data);
             }
-            callback(null, results);
-        });
+            callback(null, { affectedRows: index !== -1 ? 1 : 0 });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
+        try {
+            const data = readData();
+            data.users = data.users.filter(u => u.id != id);
+            saveData(data);
+            callback(null, { affectedRows: 1 });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM users';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
+        try {
+            const data = readData();
+            callback(null, data.users);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     searchByName: (name, callback) => {
-        const query = 'SELECT * FROM users WHERE username LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
-    },    
+        try {
+            const data = readData();
+            const term = (name || '').toLowerCase();
+            const filtered = data.users.filter(u => u.username.toLowerCase().includes(term));
+            callback(null, filtered);
+        } catch (err) {
+            callback(err);
+        }
+    },
 };
 
 module.exports = User;

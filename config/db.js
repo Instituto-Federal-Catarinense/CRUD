@@ -1,21 +1,8 @@
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
-
-dotenv.config();
-
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-});
-
-connection.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
+// MySQL connection disabled - application uses local JSON file storage (config/storage.js)
+module.exports = {
+    query: (query, params, callback) => {
+        console.warn('DB query called, but MySQL is disabled in favor of JSON storage.');
+        if (typeof params === 'function') callback = params;
+        if (callback) callback(null, []);
     }
-    console.log('Connected to the MySQL database.');
-});
-
-module.exports = connection;
+};

@@ -1,0 +1,37 @@
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-lg">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h3 class="mb-0 font-weight-bold">Acesso ao Sistema</h3>
+            </div>
+            <div class="card-body p-4">
+                <% if (error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <div class="alert alert-info py-2" role="alert">
+                    <small>
+                        🔑 <strong>Credenciais de Teste:</strong><br>
+                        Usuário: <code>admin</code> | Senha: <code>123</code>
+                    </small>
+                </div>
+
+                <form action="/login" method="POST">
+                    <div class="form-group">
+                        <label for="username">Usuário</label>
+                        <input type="text" id="username" name="username" class="form-control form-control-lg" placeholder="Digite seu usuário" required autofocus>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Digite sua senha" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg mt-4">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
