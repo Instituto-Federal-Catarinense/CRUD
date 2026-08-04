@@ -1,0 +1,85 @@
+{
+  "categorias": [
+    {
+      "id": 1,
+      "nome": "Eletrônicos"
+    },
+    {
+      "id": 2,
+      "nome": "Roupas"
+    },
+    {
+      "id": 3,
+      "nome": "Alimentos"
+    }
+  ],
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Smartphone X",
+      "descricao": "Smartphone top de linha",
+      "preco": 2500,
+      "quantidade": 10,
+      "categoria": 1
+    },
+    {
+      "id": 2,
+      "nome": "Camiseta Algodão",
+      "descricao": "Camiseta 100% algodão",
+      "preco": 49.9,
+      "quantidade": 30,
+      "categoria": 2
+    },
+    {
+      "id": 3,
+      "nome": "Chocolate Amargo",
+      "descricao": "Barra de chocolate 70%",
+      "preco": 12.5,
+      "quantidade": 50,
+      "categoria": 3
+    },
+    {
+      "id": 4,
+      "nome": "Beringela",
+      "descricao": "Oooooo beringeeela",
+      "preco": 67,
+      "quantidade": 67,
+      "categoria": 3
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "joao",
+      "password": "123",
+      "role": "user"
+    },
+    {
+      "id": 3,
+      "username": "Daniel Ertle Lopes",
+      "password": "Joaozinhopenis",
+      "role": "user"
+    }
+  ],
+  "vendas": [
+    {
+      "id": 1,
+      "data": "2026-08-04",
+      "valor": 2500,
+      "quantidade": 1,
+      "produto_id": 1
+    }
+  ],
+  "nextIds": {
+    "categorias": 4,
+    "produtos": 5,
+    "users": 4,
+    "vendas": 2
+  }
+}

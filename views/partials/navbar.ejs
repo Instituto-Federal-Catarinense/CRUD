@@ -1,50 +1,73 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">CRUD</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <a class="navbar-brand font-weight-bold text-primary" href="/">CRUD</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
 
-            <!-- Dropdown Users -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Usuários
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
-                </div>
-            </li>
+            <!-- Produtos (Público para listagem, dropdown para logados) -->
+            <% if (currentUser) { %>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProdutos" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Produtos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
+                        <a class="dropdown-item" href="/produtos">Listar Produtos</a>
+                        <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    </div>
+                </li>
 
-            <!-- Dropdown Categorias -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorias" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categorias
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
-                    <a class="dropdown-item" href="/categorias">Listar Categorias</a>
-                </div>
-            </li>
+                <!-- Dropdown Categorias -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorias" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
+                        <a class="dropdown-item" href="/categorias">Listar Categorias</a>
+                        <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    </div>
+                </li>
 
-            <!-- Dropdown Produtos -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProdutos" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Produtos
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
-                    <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
-                    <a class="dropdown-item" href="/produtos">Listar Produtos</a>
-                </div>
-            </li>
+                <!-- Dropdown Users -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Usuários
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
+                        <a class="dropdown-item" href="/users">Listar Usuários</a>
+                        <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
+                    </div>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/produtos">Produtos</a>
+                </li>
+            <% } %>
+        </ul>
+
+        <ul class="navbar-nav">
+            <% if (currentUser) { %>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="userMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        👤 <%= currentUser.username %>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                        <a class="dropdown-item text-danger" href="/logout">Sair</a>
+                    </div>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary" href="/login">Entrar</a>
+                </li>
+            <% } %>
         </ul>
     </div>
 </nav>

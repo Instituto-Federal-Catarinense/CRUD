@@ -1,21 +1,30 @@
-<h1>Lista de produtos</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Lista de produtos</h1>
+    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <a href="/produtos/new" class="btn btn-success">Novo Produto</a>
+    <% } %>
+</div>
 
 <!-- Formulário de filtro por categoria -->
-<form method="GET" action="/produtos">
-    <div class="form-group">
-        <label for="categoria">Filtrar por Categoria:</label>
-        <select id="categoria" name="categoria" class="form-control">
-            <option value="">Todas as Categorias</option>
-            <% categorias.forEach(categoria => { %>
-                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
-            <% }) %>
-        </select>
+<form method="GET" action="/produtos" class="mb-4">
+    <div class="form-row align-items-center">
+        <div class="col-auto">
+            <label for="categoria" class="sr-only">Categoria</label>
+            <select id="categoria" name="categoria" class="form-control mb-2">
+                <option value="">Todas as Categorias</option>
+                <% categorias.forEach(categoria => { %>
+                    <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
+                <% }) %>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
 </form>
 
-<table class="table">
-    <thead>
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
         <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -27,20 +36,27 @@
         </tr>
     </thead>
     <tbody>
+        <% if (produtos.length === 0) { %>
+            <tr>
+                <td colspan="7" class="text-center text-muted">Nenhum produto encontrado.</td>
+            </tr>
+        <% } %>
         <% produtos.forEach(produto => { %>
             <tr>
                 <td><%= produto.id %></td>
                 <td><%= produto.nome %></td>
                 <td><%= produto.descricao %></td>
-                <td><%= produto.preco %></td>
+                <td>R$ <%= parseFloat(produto.preco).toFixed(2) %></td>
                 <td><%= produto.quantidade %></td>
                 <td><%= produto.categoria_nome %></td>
                 <td>
-                    <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
-                    <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    <a href="/produtos/<%= produto.id %>" class="btn btn-sm btn-info">Ver</a>
+                    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                        <a href="/produtos/<%= produto.id %>/edit" class="btn btn-sm btn-warning">Editar</a>
+                        <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                        </form>
+                    <% } %>
                 </td>
             </tr>
         <% }) %>
