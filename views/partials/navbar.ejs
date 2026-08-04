@@ -46,5 +46,24 @@
                 </div>
             </li>
         </ul>
+        <ul class="navbar-nav ml-auto align-items-center">
+            <% if (currentUser) { %>
+                <li class="nav-item">
+                    <span class="nav-link mb-0">Olá, <%= currentUser.username %></span>
+                </li>
+                <li class="nav-item">
+                    <form action="/logout" method="POST" class="form-inline mb-0">
+                        <button type="submit" class="nav-link btn btn-link p-0 mb-0">Sair</button>
+                    </form>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/new">Cadastrar-se</a>
+                </li>
+            <% } %>
+        </ul>
     </div>
 </nav>

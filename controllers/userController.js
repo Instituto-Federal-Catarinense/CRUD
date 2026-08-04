@@ -1,18 +1,25 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 const userController = {
     createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
-
-        User.create(newUser, (err, userId) => {
+        bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
+
+            const newUser = {
+                username: req.body.username,
+                password: hashedPassword,
+                role: req.body.role,
+            };
+
+            User.create(newUser, (err, userId) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
         });
     },
 
@@ -59,17 +66,24 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
 
-        User.update(userId, updatedUser, (err) => {
+        bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
+
+            const updatedUser = {
+                username: req.body.username,
+                password: hashedPassword,
+                role: req.body.role,
+            };
+
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
         });
     },
 
