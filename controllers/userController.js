@@ -1,11 +1,13 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 const userController = {
     createUser: (req, res) => {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
         const newUser = {
             username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
+            password: hashedPassword,
+            role: req.body.role || 'user',
         };
 
         User.create(newUser, (err, userId) => {
@@ -59,17 +61,29 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
-
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+        
+        User.findById(userId, (err, existingUser) => {
+            if (err || !existingUser) {
+                return res.status(500).json({ error: err || 'Usuário não encontrado' });
             }
-            res.redirect('/users');
+
+            let password = existingUser.password;
+            if (req.body.password && req.body.password.trim() !== '') {
+                password = bcrypt.hashSync(req.body.password, 10);
+            }
+
+            const updatedUser = {
+                username: req.body.username,
+                password: password,
+                role: req.body.role || existingUser.role,
+            };
+
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
         });
     },
 
