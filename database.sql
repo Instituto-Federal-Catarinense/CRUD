@@ -1,25 +1,54 @@
-CREATE DATABASE CRUD;
-
+-- database.sql
+CREATE DATABASE
+IF NOT EXISTS CRUD;
 USE CRUD;
 
-CREATE TABLE users (
+-- Tabela de usuários
+CREATE TABLE
+IF NOT EXISTS users
+(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'user') NOT NULL
+    username VARCHAR
+(255) NOT NULL UNIQUE,
+    password VARCHAR
+(255) NOT NULL,
+    role ENUM
+('admin', 'user') NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE categorias (
+-- Tabela de categorias
+CREATE TABLE
+IF NOT EXISTS categorias
+(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
+    nome VARCHAR
+(255) NOT NULL
 );
 
-CREATE TABLE produtos (
+-- Tabela de produtos
+CREATE TABLE
+IF NOT EXISTS produtos
+(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    nome VARCHAR
+(255) NOT NULL,
     descricao TEXT NOT NULL,
-    preco DECIMAL(10,2) NOT NULL,
+    preco DECIMAL
+(10,2) NOT NULL,
     quantidade INT NOT NULL,
     categoria INT NOT NULL,
-    FOREIGN KEY (categoria) REFERENCES categorias(id)
+    FOREIGN KEY
+(categoria) REFERENCES categorias
+(id)
 );
+
+-- Inserir algumas categorias iniciais
+INSERT INTO categorias
+    (nome)
+VALUES
+    ('Eletrônicos'),
+    ('Roupas'),
+    ('Alimentos'),
+    ('Livros'),
+    ('Esportes');
