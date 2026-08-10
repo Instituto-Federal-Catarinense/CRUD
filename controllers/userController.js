@@ -1,17 +1,29 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 const userController = {
     createUser: (req, res) => {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        
+        // Aceita o perfil enviado no formulário (admin ou user), garantindo 'user' como fallback
+        const role = (req.body.role === 'admin' || req.body.role === 'user') ? req.body.role : 'user';
+
         const newUser = {
             username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
+            password: hashedPassword,
+            role: role,
         };
 
         User.create(newUser, (err, userId) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
+
+            // Se for auto-cadastro (usuário não logado), redireciona para o login
+            if (!req.user) {
+                return res.redirect('/auth/login?error=' + encodeURIComponent('Cadastro realizado com sucesso! Faça login para entrar.'));
+            }
+
             res.redirect('/users');
         });
     },
@@ -59,9 +71,15 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
+        let password = req.body.password;
+
+        if (password && !password.startsWith('$2a$') && !password.startsWith('$2b$')) {
+            password = bcrypt.hashSync(password, 10);
+        }
+
         const updatedUser = {
             username: req.body.username,
-            password: req.body.password,
+            password: password,
             role: req.body.role,
         };
 

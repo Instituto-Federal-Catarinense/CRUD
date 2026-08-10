@@ -1,14 +1,18 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
 const router = express.Router();
 
-router.get('/', userController.getAllUsers);
-router.get('/search', userController.searchUsers); // Adicione esta rota
+// Cadastro público de usuário (qualquer pessoa pode se cadastrar)
 router.get('/new', userController.renderCreateForm);
 router.post('/', userController.createUser);
-router.get('/:id', userController.getUserById);
-router.get('/:id/edit', userController.renderEditForm);
-router.put('/:id', userController.updateUser);
-router.delete('/:id', userController.deleteUser);
+
+// Rotas restritas exclusivamente a Administradores
+router.get('/', requireAuth, requireAdmin, userController.getAllUsers);
+router.get('/search', requireAuth, requireAdmin, userController.searchUsers);
+router.get('/:id', requireAuth, requireAdmin, userController.getUserById);
+router.get('/:id/edit', requireAuth, requireAdmin, userController.renderEditForm);
+router.put('/:id', requireAuth, requireAdmin, userController.updateUser);
+router.delete('/:id', requireAuth, requireAdmin, userController.deleteUser);
 
 module.exports = router;
