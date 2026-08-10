@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+
+
+  h1 Editar produto
+
+  form(action="/produtos/" + produto.id + "?_method=PUT", method="POST")
+    .form-group
+      label(for="nome") Nome
+      input#nome.form-control(type="text", name="nome", value=produto.nome, required)
+    .form-group
+      label(for="descricao") Descrição
+      input#descricao.form-control(type="text", name="descricao", value=produto.descricao, required)
+    .form-group
+      label(for="preco") Preço
+      input#preco.form-control(type="number", name="preco", value=produto.preco, required)
+    .form-group
+      label(for="quantidade") Quantidade
+      input#quantidade.form-control(type="number", name="quantidade", value=produto.quantidade, required)
+    .form-group
+      label(for="categoria") Categoria
+      select#categoria.form-control(name="categoria", required)
+        each categoria in categorias
+          option(value=categoria.id, selected=produto.categoria == categoria.id)= categoria.nome
+    button.btn.btn-warning(type="submit") Salvar

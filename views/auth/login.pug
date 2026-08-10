@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  .row.justify-content-center
+    .col-md-5
+      h1.text-center.mb-4 Entrar
+
+      if erro
+        .alert.alert-danger= erro
+
+      form(action="/login", method="POST")
+        .form-group
+          label(for="username") Usuário
+          input#username.form-control(type="text", name="username", required, autofocus)
+        .form-group
+          label(for="password") Senha
+          input#password.form-control(type="password", name="password", required)
+        button.btn.btn-primary.btn-block(type="submit") Entrar
