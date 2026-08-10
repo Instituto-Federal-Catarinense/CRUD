@@ -1,12 +1,14 @@
-h1 User Details
-p
-  | ID: 
-  = user.id
-p
-  | Username: 
-  = user.username
-p
-  | Role: 
-  = user.role
-a.btn.btn-primary(href="/users") Back to List
+extends ../layout
 
+block content
+  h1 User Details
+  p
+    | ID: 
+    = user.id
+  p
+    | Username: 
+    = user.username
+  p
+    | Role: 
+    = user.role
+  a.btn.btn-primary(href="/users") Back to List

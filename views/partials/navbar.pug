@@ -3,30 +3,42 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
   button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
     span.navbar-toggler-icon
   div#navbarNav.collapse.navbar-collapse
-    ul.navbar-nav
+    ul.navbar-nav.mr-auto
       li.nav-item
         a.nav-link(href="/") Home
 
-      // Dropdown Users
-      li.nav-item.dropdown
-        a#navbarDropdownUsers.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-          | Usuários
-        div.dropdown-menu(aria-labelledby="navbarDropdownUsers")
-          a.dropdown-item(href="/users/new") Cadastrar Usuário
-          a.dropdown-item(href="/users") Listar Usuários
+      if currentUser
+        // Dropdown Users — seção de controle, somente admin
+        if currentUser.role === 'admin'
+          li.nav-item.dropdown
+            a#navbarDropdownUsers.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+              | Usuários
+            div.dropdown-menu(aria-labelledby="navbarDropdownUsers")
+              a.dropdown-item(href="/users/new") Cadastrar Usuário
+              a.dropdown-item(href="/users") Listar Usuários
 
-      // Dropdown Categorias
-      li.nav-item.dropdown
-        a#navbarDropdownCategorias.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-          | Categorias
-        div.dropdown-menu(aria-labelledby="navbarDropdownCategorias")
-          a.dropdown-item(href="/categorias/new") Cadastrar Categoria
-          a.dropdown-item(href="/categorias") Listar Categorias
+        // Dropdown Categorias
+        li.nav-item.dropdown
+          a#navbarDropdownCategorias.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+            | Categorias
+          div.dropdown-menu(aria-labelledby="navbarDropdownCategorias")
+            a.dropdown-item(href="/categorias/new") Cadastrar Categoria
+            a.dropdown-item(href="/categorias") Listar Categorias
 
-      // Dropdown Produtos
-      li.nav-item.dropdown
-        a#navbarDropdownProdutos.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-          | Produtos
-        div.dropdown-menu(aria-labelledby="navbarDropdownProdutos")
-          a.dropdown-item(href="/produtos/new") Cadastrar Produto
-          a.dropdown-item(href="/produtos") Listar Produtos
+        // Dropdown Produtos
+        li.nav-item.dropdown
+          a#navbarDropdownProdutos.nav-link.dropdown-toggle(href="#", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+            | Produtos
+          div.dropdown-menu(aria-labelledby="navbarDropdownProdutos")
+            a.dropdown-item(href="/produtos/new") Cadastrar Produto
+            a.dropdown-item(href="/produtos") Listar Produtos
+
+    ul.navbar-nav.ml-auto
+      if currentUser
+        li.nav-item
+          span.nav-link= `Olá, ${currentUser.username} (${currentUser.role})`
+        li.nav-item
+          a.nav-link(href="/logout") Sair
+      else
+        li.nav-item
+          a.nav-link(href="/login") Entrar

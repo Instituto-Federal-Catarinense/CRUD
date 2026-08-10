@@ -1,13 +1,22 @@
 const db = require('../config/db');
+const bcrypt = require('bcryptjs');
+
+const SALT_ROUNDS = 10;
 
 const User = {
     create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
+        bcrypt.hash(user.password, SALT_ROUNDS, (err, hash) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results.insertId);
+
+            const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+            db.query(query, [user.username, hash, user.role], (err, results) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, results.insertId);
+            });
         });
     },
 
@@ -31,13 +40,31 @@ const User = {
         });
     },
 
+    // Se user.password vier vazio/undefined, a senha atual é mantida
+    // (permite editar usuário sem ser obrigado a redefinir a senha).
     update: (id, user, callback) => {
-        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
+        if (!user.password) {
+            const query = 'UPDATE users SET username = ?, role = ? WHERE id = ?';
+            return db.query(query, [user.username, user.role, id], (err, results) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, results);
+            });
+        }
+
+        bcrypt.hash(user.password, SALT_ROUNDS, (err, hash) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+
+            const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
+            db.query(query, [user.username, hash, user.role, id], (err, results) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, results);
+            });
         });
     },
 
@@ -69,7 +96,7 @@ const User = {
             }
             callback(null, results);
         });
-    },    
+    },
 };
 
 module.exports = User;

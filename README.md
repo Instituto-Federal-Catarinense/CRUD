@@ -29,13 +29,28 @@ Certifique-se de que você tem o Node.js e o MySQL instalados. Em seguida, execu
 
 Crie um banco de dados no MySQL, por exemplo, user_management.
 
-### 4. Execute o Aplicativo
+### 4. Crie o Primeiro Usuário Admin
+
+Como as rotas de cadastro de usuário agora exigem login de admin, use o script de seed para criar o primeiro acesso:
+
+npm run seed:admin -- meuAdmin minhaSenha123
+
+(Sem argumentos, cria o usuário `admin` com senha `admin123` — troque-a depois pelo próprio sistema.)
+
+### 5. Execute o Aplicativo
 
 Inicie o servidor com o comando:
 
 node app.js
 
-O servidor estará disponível em http://localhost:3000.
+O servidor estará disponível em http://localhost:3000. Acesse `/login` para autenticar.
+
+## Autenticação e Controle de Acesso
+
+- **Login/Logout**: `/login` (GET exibe o formulário, POST autentica) e `/logout` encerra a sessão.
+- **Senhas**: armazenadas com hash (bcrypt), nunca em texto puro.
+- **Rotas protegidas**: `/produtos` e `/categorias` exigem apenas login. `/users` (gestão de usuários) exige login **e** role `admin` — é a seção de controle administrativo do sistema.
+- **Sessão**: configurada via `express-session`; defina `SESSION_SECRET` no `.env` com um valor forte antes de colocar em produção.
 
 ## Estrutura do Projeto
 
