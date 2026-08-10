@@ -1,10 +1,14 @@
 const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
 
 const userController = {
     createUser: (req, res) => {
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+
         const newUser = {
             username: req.body.username,
-            password: req.body.password,
+            password: hashedPassword,
             role: req.body.role,
         };
 
@@ -59,9 +63,12 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+
         const updatedUser = {
             username: req.body.username,
-            password: req.body.password,
+            password: hashedPassword,
             role: req.body.role,
         };
 
