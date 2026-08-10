@@ -1,0 +1,8 @@
+<h1>Detalhes do Post</h1>
+<p>ID: <%= post.id %></p>
+<p>Título: <%= post.title %></p>
+<p>Conteúdo: <%= post.content %></p>
+<p>Data: <%= new Date(post.created_at).toLocaleDateString() %></p>
+<p>Categoria: <%= post.categoria_nome %></p>
+<p>Autor: <%= post.author_nome %></p>
+<a href="/posts" class="btn btn-primary">Voltar à Lista</a>

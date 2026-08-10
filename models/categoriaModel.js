@@ -3,64 +3,63 @@ const db = require('../config/db');
 const Categoria = {
     create: (categoria, callback) => {
         const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
+        db.run(query, [categoria.nome], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results.insertId);
+            callback(null, this.lastID);
         });
     },
 
     findById: (id, callback) => {
         const query = 'SELECT * FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
+        db.get(query, [id], (err, row) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results[0]);
+            callback(null, row);
         });
     },
 
     findByCategorianame: (nome, callback) => {
         const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
+        db.get(query, [nome], (err, row) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results[0]);
+            callback(null, row);
         });
     },
 
     update: (id, categoria, callback) => {
         const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
+        db.run(query, [categoria.nome, id], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, this.changes);
         });
     },
 
     delete: (id, callback) => {
         const query = 'DELETE FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
+        db.run(query, [id], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, this.changes);
         });
     },
 
     getAll: (callback) => {
         const query = 'SELECT * FROM categorias';
-        db.query(query, (err, results) => {
+        db.all(query, [], (err, rows) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, rows);
         });
     },
 };
-
 
 module.exports = Categoria;

@@ -1,7 +1,7 @@
-<h1>Lista de produtos</h1>
+<h1>Lista de Posts</h1>
 
 <!-- Formulário de filtro por categoria -->
-<form method="GET" action="/produtos">
+<form method="GET" action="/posts">
     <div class="form-group">
         <label for="categoria">Filtrar por Categoria:</label>
         <select id="categoria" name="categoria" class="form-control">
@@ -18,27 +18,27 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
+            <th>Título</th>
+            <th>Conteúdo</th>
+            <th>Data</th>
             <th>Categoria</th>
+            <th>Autor</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-        <% produtos.forEach(produto => { %>
+        <% posts.forEach(post => { %>
             <tr>
-                <td><%= produto.id %></td>
-                <td><%= produto.nome %></td>
-                <td><%= produto.descricao %></td>
-                <td><%= produto.preco %></td>
-                <td><%= produto.quantidade %></td>
-                <td><%= produto.categoria_nome %></td>
+                <td><%= post.id %></td>
+                <td><%= post.title %></td>
+                <td><%= post.content.substring(0, 100) %>...</td>
+                <td><%= new Date(post.created_at).toLocaleDateString() %></td>
+                <td><%= post.categoria_nome %></td>
+                <td><%= post.author_nome %></td>
                 <td>
-                    <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
-                    <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
+                    <a href="/posts/<%= post.id %>" class="btn btn-primary">View</a>
+                    <a href="/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
+                    <form action="/posts/<%= post.id %>?_method=DELETE" method="POST" style="display: inline;">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
@@ -46,3 +46,5 @@
         <% }) %>
     </tbody>
 </table>
+
+<a href="/posts/new" class="btn btn-success">Novo Post</a>

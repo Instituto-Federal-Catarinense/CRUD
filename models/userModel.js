@@ -3,73 +3,73 @@ const db = require('../config/db');
 const User = {
     create: (user, callback) => {
         const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
+        db.run(query, [user.username, user.password, user.role], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results.insertId);
+            callback(null, this.lastID);
         });
     },
 
     findById: (id, callback) => {
         const query = 'SELECT * FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
+        db.get(query, [id], (err, row) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results[0]);
+            callback(null, row);
         });
     },
 
     findByUsername: (username, callback) => {
         const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
+        db.get(query, [username], (err, row) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results[0]);
+            callback(null, row);
         });
     },
 
     update: (id, user, callback) => {
         const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
+        db.run(query, [user.username, user.password, user.role, id], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, this.changes);
         });
     },
 
     delete: (id, callback) => {
         const query = 'DELETE FROM users WHERE id = ?';
-        db.query(query, [id], (err, results) => {
+        db.run(query, [id], function(err) {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, this.changes);
         });
     },
 
     getAll: (callback) => {
         const query = 'SELECT * FROM users';
-        db.query(query, (err, results) => {
+        db.all(query, [], (err, rows) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, rows);
         });
     },
 
     searchByName: (name, callback) => {
         const query = 'SELECT * FROM users WHERE username LIKE ?';
-        db.query(query, [`%${name}%`], (err, results) => {
+        db.all(query, [`%${name}%`], (err, rows) => {
             if (err) {
                 return callback(err);
             }
-            callback(null, results);
+            callback(null, rows);
         });
-    },    
+    },
 };
 
 module.exports = User;

@@ -3,57 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Read Update Delete System</title>
+    <title>MD ESSENTIAL Blog</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
         }
-        .jumbotron {
-            background-color: #007bff;
-            color: white;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
         }
-        .jumbotron h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-        .btn-custom {
-            background-color: #28a745;
-            color: white;
-            border-radius: 25px;
-            padding: 0.75rem 1.5rem;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s ease;
-        }
-        .btn-custom:hover {
-            background-color: #218838;
-        }
-        .feature-card {
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            background-color: white;
-            text-align: center;
-        }
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+
+        /* Navbar Customization */
+        .navbar {
+            background: rgba(15, 12, 41, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 2rem;
         }
         .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        /* Jumbotron / Hero Section */
+        .jumbotron {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 4rem 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .jumbotron::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,65,108,0.1) 0%, transparent 70%);
+            z-index: 0;
+            animation: pulse 10s infinite linear;
+        }
+        .jumbotron > * {
+            position: relative;
+            z-index: 1;
+        }
+        .jumbotron h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Buttons */
+        .btn-custom {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+        }
+        .btn-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.6);
+            color: white;
+        }
+
+        /* Cards */
+        .feature-card {
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 65, 108, 0.3);
+            box-shadow: 0 15px 40px rgba(255, 65, 108, 0.2);
+        }
+        .feature-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Tables */
+        .table {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        .table th {
+            background: rgba(255, 65, 108, 0.8);
+            color: white;
+            border: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .table td {
+            background: transparent;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            vertical-align: middle;
+        }
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Inputs */
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff416c;
+            box-shadow: 0 0 15px rgba(255, 65, 108, 0.3);
+            color: white;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.5) !important;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+        .footer .text-muted {
+            color: rgba(255, 255, 255, 0.5) !important;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <%- include('partials/navbar') %>
+
+        <% if (typeof msg !== 'undefined' && msg) { %>
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <strong>Sucesso!</strong> <%= msg %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <strong>Erro:</strong> <%= error %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
+
         <%- body %>
 
     <footer class="footer mt-auto py-3 bg-light text-center">

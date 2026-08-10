@@ -10,9 +10,9 @@ const userController = {
 
         User.create(newUser, (err, userId) => {
             if (err) {
-                return res.status(500).json({ error: err });
+                return res.status(500).render('users/create', { error: 'Erro ao criar usuário: ' + err.message });
             }
-            res.redirect('/users');
+            res.redirect('/users?msg=' + encodeURIComponent('Usuário criado com sucesso!'));
         });
     },
 
@@ -69,7 +69,7 @@ const userController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
+            res.redirect('/users?msg=' + encodeURIComponent('Usuário atualizado com sucesso!'));
         });
     },
 
@@ -80,7 +80,7 @@ const userController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
+            res.redirect('/users?msg=' + encodeURIComponent('Usuário excluído com sucesso!'));
         });
     },
 
