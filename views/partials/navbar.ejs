@@ -1,13 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">MD ESSENTIAL Blog</a>
+<nav class="navbar navbar-expand-lg navbar-dark mb-4" style="border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" href="/dashboard">MD ESSENTIAL</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <% if (typeof usuario !== 'undefined' && usuario) { %>
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/dashboard">Dashboard</a>
             </li>
 
             <!-- Dropdown Users -->
@@ -16,9 +17,9 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Usuários
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
+                <div class="dropdown-menu bg-dark border-secondary text-white" aria-labelledby="navbarDropdownUsers">
+                    <a class="dropdown-item text-light" href="/users/new">Cadastrar Usuário</a>
+                    <a class="dropdown-item text-light" href="/users">Listar Usuários</a>
                 </div>
             </li>
 
@@ -28,9 +29,9 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Categorias
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
-                    <a class="dropdown-item" href="/categorias">Listar Categorias</a>
+                <div class="dropdown-menu bg-dark border-secondary text-white" aria-labelledby="navbarDropdownCategorias">
+                    <a class="dropdown-item text-light" href="/categorias/new">Cadastrar Categoria</a>
+                    <a class="dropdown-item text-light" href="/categorias">Listar Categorias</a>
                 </div>
             </li>
 
@@ -40,11 +41,19 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Posts
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownPosts">
-                    <a class="dropdown-item" href="/posts/new">Cadastrar Post</a>
-                    <a class="dropdown-item" href="/posts">Listar Posts</a>
+                <div class="dropdown-menu bg-dark border-secondary text-white" aria-labelledby="navbarDropdownPosts">
+                    <a class="dropdown-item text-light" href="/posts/new">Cadastrar Post</a>
+                    <a class="dropdown-item text-light" href="/posts">Listar Posts</a>
                 </div>
             </li>
         </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <form action="/logout" method="POST" class="form-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" style="border-radius: 20px; font-weight: 600;">Sair (Logout)</button>
+                </form>
+            </li>
+        </ul>
+        <% } %>
     </div>
 </nav>

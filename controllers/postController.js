@@ -16,7 +16,7 @@ const postController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/posts');
+            res.redirect('/posts?msg=' + encodeURIComponent('Post criado com sucesso!'));
         });
     },
 
@@ -93,7 +93,7 @@ const postController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/posts');
+            res.redirect('/posts?msg=' + encodeURIComponent('Post atualizado com sucesso!'));
         });
     },
 
@@ -104,7 +104,7 @@ const postController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/posts');
+            res.redirect('/posts?msg=' + encodeURIComponent('Post excluído com sucesso!'));
         });
     }
 };

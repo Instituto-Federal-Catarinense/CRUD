@@ -10,7 +10,7 @@ const categoriaController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/categorias');
+            res.redirect('/categorias?msg=' + encodeURIComponent('Categoria criada com sucesso!'));
         });
     },
 
@@ -65,7 +65,7 @@ const categoriaController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/categorias');
+            res.redirect('/categorias?msg=' + encodeURIComponent('Categoria atualizada com sucesso!'));
         });
     },
 
@@ -76,7 +76,7 @@ const categoriaController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/categorias');
+            res.redirect('/categorias?msg=' + encodeURIComponent('Categoria excluída com sucesso!'));
         });
     }
 };
