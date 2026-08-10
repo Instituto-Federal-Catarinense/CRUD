@@ -22,14 +22,18 @@ const User = {
     },
 
     findByUsername: (username, callback) => {
-        const query = 'SELECT * FROM users WHERE username = ?';
-        db.query(query, [username], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
-    },
+
+    const query = 'SELECT * FROM users WHERE username = ?';
+
+    db.query(query, [username], (err, results) => {
+
+        if (err) {
+            return callback(err);
+        }
+
+        callback(null, results[0]);
+    });
+},
 
     update: (id, user, callback) => {
         const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';

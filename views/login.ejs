@@ -1,0 +1,78 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .login-container {
+        width: 350px;
+        margin: 100px auto;
+        padding: 30px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px #ccc;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #087df5;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0668d1;
+    }
+</style>
+
+<div class="login-container">
+
+    <h2>Login</h2>
+
+    <form method="POST" action="/login">
+
+        <label for="username">Usuário:</label>
+
+        <input
+            type="text"
+            id="username"
+            name="username"
+            required
+        >
+
+        <label for="password">Senha:</label>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            required
+        >
+
+        <button type="submit">
+            Entrar
+        </button>
+
+    </form>
+
+</div>
