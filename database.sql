@@ -9,6 +9,9 @@ CREATE TABLE users (
     role ENUM('admin', 'user') NOT NULL
 );
 
+INSERT INTO users (username, password, role)
+VALUES ('admin', 'admin123', 'admin');
+
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL
