@@ -1,7 +1,10 @@
 const express = require('express');
 const produtoController = require('../controllers/produtoController');
+const { authorize } = require('../middleware/auth');
 const router = express.Router();
 
+// Usuários autenticados podem acessar o cadastro de produtos.
+router.use(authorize(['admin', 'user']));
 router.get('/', produtoController.getAllProdutos);
 router.get('/new', produtoController.renderCreateForm);
 router.post('/', produtoController.createProduto);
