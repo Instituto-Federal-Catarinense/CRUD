@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Read Update Delete System</title>
+    <title>
+        <%= title || 'Create Read Update Delete System' %>
+    </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
+
         .jumbotron {
             background-color: #007bff;
             color: white;
@@ -17,10 +24,12 @@
             margin-bottom: 2rem;
             border-radius: 0.5rem;
         }
+
         .jumbotron h1 {
             font-size: 2.5rem;
             font-weight: bold;
         }
+
         .btn-custom {
             background-color: #28a745;
             color: white;
@@ -30,9 +39,11 @@
             margin-top: 1rem;
             transition: background-color 0.3s ease;
         }
+
         .btn-custom:hover {
             background-color: #218838;
         }
+
         .feature-card {
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -41,29 +52,61 @@
             background-color: white;
             text-align: center;
         }
+
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
+
         .navbar-brand {
             font-size: 1.5rem;
             font-weight: bold;
         }
+
+        .container {
+            flex: 1;
+        }
+
+        .auth-card {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .auth-card h2 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .bg-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
+
 <body>
-    <div class="container">
-        <%- include('partials/navbar') %>
-        <%- body %>
+    <%- include('partials/navbar') %>
 
-    <footer class="footer mt-auto py-3 bg-light text-center">
         <div class="container">
-            <span class="text-muted">&copy; 2024 CRUD</span>
+            <%- body %>
         </div>
-    </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <footer class="footer mt-auto py-3 bg-light text-center">
+            <div class="container">
+                <span class="text-muted">&copy; 2024 CRUD</span>
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
