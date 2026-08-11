@@ -1,6 +1,9 @@
 const express = require('express');
 const categoriaController = require('../controllers/categoriaController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 const router = express.Router();
+
+router.use(ensureAuthenticated);
 
 router.get('/', categoriaController.getAllCategorias);
 router.get('/new', categoriaController.renderCreateForm);

@@ -1,5 +1,5 @@
 <h1>Cadastrar novo usuário</h1>
-<form action="/users" method="POST">
+<form id="userForm" action="/users" method="POST">
     <div class="form-group">
         <label for="username">Nome</label>
         <input type="text" class="form-control" id="username" name="username" required>
@@ -17,3 +17,45 @@
     </div>
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
+
+<script>
+    const createForm = document.getElementById('userForm');
+    const createFields = ['username', 'role'];
+    const createDraftKey = 'createUserFormDraft';
+
+    function loadCreateDraft() {
+        const draft = loadFormDraft(createDraftKey);
+        if (!draft) return;
+
+        createFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (input && draft[field]) {
+                input.value = draft[field];
+            }
+        });
+    }
+
+    function saveCreateDraft() {
+        const draft = {};
+        createFields.forEach(field => {
+            const input = document.getElementById(field);
+            if (input) {
+                draft[field] = input.value;
+            }
+        });
+        saveFormDraft(createDraftKey, draft);
+    }
+
+    createFields.forEach(field => {
+        const input = document.getElementById(field);
+        if (input) {
+            input.addEventListener('input', saveCreateDraft);
+        }
+    });
+
+    createForm.addEventListener('submit', () => {
+        clearFormDraft(createDraftKey);
+    });
+
+    loadCreateDraft();
+</script>
