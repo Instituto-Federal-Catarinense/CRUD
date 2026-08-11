@@ -1,64 +1,82 @@
-const db = require('../config/db');
+const { readData, saveData } = require('../config/dataStore');
 
 const Categoria = {
     create: (categoria, callback) => {
-        const query = 'INSERT INTO categorias (nome) VALUES (?)';
-        db.query(query, [categoria.nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+        try {
+            const data = readData();
+            const nextCategoriaId = Math.max(0, ...data.categorias.map(c => c.id)) + 1;
+            const newCategoria = {
+                id: nextCategoriaId,
+                nome: categoria.nome
+            };
+            if (!data.categorias) data.categorias = [];
+            data.categorias.push(newCategoria);
+            saveData(data);
+            callback(null, newCategoria.id);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT * FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+        try {
+            const data = readData();
+            const categoria = data.categorias.find(c => c.id === id);
+            callback(null, categoria || null);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     findByCategorianame: (nome, callback) => {
-        const query = 'SELECT * FROM categorias WHERE nome = ?';
-        db.query(query, [nome], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results[0]);
-        });
+        try {
+            const data = readData();
+            const categoria = data.categorias.find(c => c.nome === nome);
+            callback(null, categoria || null);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     update: (id, categoria, callback) => {
-        const query = 'UPDATE categorias SET nome = ? WHERE id = ?';
-        db.query(query, [categoria.nome,id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const index = data.categorias.findIndex(c => c.id === id);
+            if (index !== -1) {
+                data.categorias[index].nome = categoria.nome;
+                saveData(data);
+                callback(null, { affectedRows: 1 });
+            } else {
+                callback(null, { affectedRows: 0 });
             }
-            callback(null, results);
-        });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM categorias WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const index = data.categorias.findIndex(c => c.id === id);
+            if (index !== -1) {
+                data.categorias.splice(index, 1);
+                saveData(data);
+                callback(null, { affectedRows: 1 });
+            } else {
+                callback(null, { affectedRows: 0 });
             }
-            callback(null, results);
-        });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM categorias';
-        db.query(query, (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
+        try {
+            const data = readData();
+            callback(null, data.categorias || []);
+        } catch (err) {
+            callback(err);
+        }
     },
 };
 

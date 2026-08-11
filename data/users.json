@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$D790YfVK4l0fqd5dO4H2O.wBLrItbBoiOMIgv.80Mkk7uY6jDagqy",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "user",
+      "password": "$2a$10$WPVW/orfXnFdO1L8kcR4EewfAbsyMzujJZNuklMvXX1pqtxhnKMne",
+      "role": "user"
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nome": "Eletrônicos"
+    },
+    {
+      "id": 2,
+      "nome": "Livros"
+    }
+  ],
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Notebook",
+      "descricao": "Notebook de alta performance",
+      "preco": 3500,
+      "quantidade": 10,
+      "categoria": 1
+    },
+    {
+      "id": 2,
+      "nome": "Clean Code",
+      "descricao": "Livro sobre desenvolvimento limpo",
+      "preco": 89.9,
+      "quantidade": 5,
+      "categoria": 2
+    }
+  ],
+  "nextId": 3
+}

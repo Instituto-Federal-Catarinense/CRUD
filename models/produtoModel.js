@@ -1,59 +1,107 @@
-const db = require('../config/db');
+const { readData, saveData } = require('../config/dataStore');
 
 const Produto = {
     create: (produto, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
-        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+        try {
+            const data = readData();
+            const nextProdutoId = Math.max(0, ...data.produtos.map(p => p.id)) + 1;
+            const newProduto = {
+                id: nextProdutoId,
+                nome: produto.nome,
+                descricao: produto.descricao,
+                preco: produto.preco,
+                quantidade: produto.quantidade,
+                categoria: produto.categoria
+            };
+            if (!data.produtos) data.produtos = [];
+            data.produtos.push(newProduto);
+            saveData(data);
+            callback(null, newProduto.id);
+        } catch (err) {
+            callback(err);
+        }
     },
 
     findById: (id, callback) => {
-        const query = 'SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id WHERE produtos.id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const produto = data.produtos.find(p => p.id === id);
+            if (produto) {
+                const categoria = data.categorias.find(c => c.id === produto.categoria);
+                const result = {
+                    ...produto,
+                    categoria_nome: categoria ? categoria.nome : 'Sem categoria'
+                };
+                callback(null, result);
+            } else {
+                callback(null, null);
             }
-            callback(null, results[0]);
-        });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     update: (id, produto, callback) => {
-        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
-        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const index = data.produtos.findIndex(p => p.id === id);
+            if (index !== -1) {
+                data.produtos[index] = {
+                    id: data.produtos[index].id,
+                    nome: produto.nome,
+                    descricao: produto.descricao,
+                    preco: produto.preco,
+                    quantidade: produto.quantidade,
+                    categoria: produto.categoria
+                };
+                saveData(data);
+                callback(null, { affectedRows: 1 });
+            } else {
+                callback(null, { affectedRows: 0 });
             }
-            callback(null, results);
-        });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     delete: (id, callback) => {
-        const query = 'DELETE FROM produtos WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            const index = data.produtos.findIndex(p => p.id === id);
+            if (index !== -1) {
+                data.produtos.splice(index, 1);
+                saveData(data);
+                callback(null, { affectedRows: 1 });
+            } else {
+                callback(null, { affectedRows: 0 });
             }
-            callback(null, results);
-        });
+        } catch (err) {
+            callback(err);
+        }
     },
 
     getAll: (categoria, callback) => {
-        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
-        
-        if (categoria) {
-            query += ' WHERE produtos.categoria = ?';
-        }
-    
-        db.query(query, [categoria], (err, results) => {
-            if (err) {
-                return callback(err);
+        try {
+            const data = readData();
+            let produtos = data.produtos || [];
+            
+            if (categoria) {
+                produtos = produtos.filter(p => p.categoria === categoria);
             }
-            callback(null, results);
-        });
+            
+            // Enriquece com nome da categoria
+            const result = produtos.map(p => {
+                const cat = data.categorias.find(c => c.id === p.categoria);
+                return {
+                    ...p,
+                    categoria_nome: cat ? cat.nome : 'Sem categoria'
+                };
+            });
+            
+            callback(null, result);
+        } catch (err) {
+            callback(err);
+        }
     },
     
 };
