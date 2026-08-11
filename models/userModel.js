@@ -69,7 +69,30 @@ const User = {
             }
             callback(null, results);
         });
-    },    
+    },
+
+    // Garante a criação de um usuário padrão admin quando a tabela ainda estiver vazia.
+    ensureDefaultAdmin: (callback) => {
+        const countQuery = 'SELECT COUNT(*) AS total FROM users';
+
+        db.query(countQuery, (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+
+            if (results[0].total > 0) {
+                return callback(null, false);
+            }
+
+            const createQuery = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+            db.query(createQuery, ['admin', 'admin', 'admin'], (createErr) => {
+                if (createErr) {
+                    return callback(createErr);
+                }
+                callback(null, true);
+            });
+        });
+    }
 };
 
 module.exports = User;
