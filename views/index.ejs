@@ -1,8 +1,13 @@
 <div class="jumbotron text-center">
     <h1>Bem-vindo ao Sistema de Gerenciamento de Usuários</h1>
     <p class="lead">Gerencie seus usuários e produtos sem esforço.</p>
-    <a href="/users" class="btn btn-custom">Gerenciar usuários</a>
-    <a href="/produtos" class="btn btn-custom ml-2">Gerenciar produtos</a>
+    <% if (typeof isAuthenticated !== 'undefined' && isAuthenticated) { %>
+        <p>Você está autenticado como <strong><%= currentUser && currentUser.username ? currentUser.username : 'usuário' %></strong>.</p>
+        <a href="/users" class="btn btn-custom">Gerenciar usuários</a>
+        <a href="/produtos" class="btn btn-custom ml-2">Gerenciar produtos</a>
+    <% } else { %>
+        <a href="/login" class="btn btn-custom">Entrar no sistema</a>
+    <% } %>
 </div>
 
 <div class="row">
@@ -17,8 +22,7 @@
         <div class="feature-card">
             <h3>Gerenciamento de produtos</h3>
             <p>Acompanhe seus produtos e seus detalhes perfeitamente.</p>
-            <a href="/produtos" class="btn btn-primary">Is para produtos</a>
+            <a href="/produtos" class="btn btn-primary">Ir para produtos</a>
         </div>
     </div>
-</div>
 </div>
