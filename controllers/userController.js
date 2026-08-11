@@ -1,19 +1,25 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 const userController = {
-    createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+    createUser: async (req, res) => {
+        try {
+            const newUser = {
+                username: req.body.username,
+                password: await bcrypt.hash(req.body.password, 10),
+                role: req.body.role,
+            };
 
-        User.create(newUser, (err, userId) => {
+            User.create(newUser, (err, userId) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
-        });
+                res.redirect('/users');
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Não foi possível criar o usuário.' });
+        }
     },
 
     getUserById: (req, res) => {
@@ -57,20 +63,40 @@ const userController = {
         });
     },
 
-    updateUser: (req, res) => {
+    updateUser: async (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+        try {
+            const password = req.body.password
+                ? await bcrypt.hash(req.body.password, 10)
+                : undefined;
+
+            User.findById(userId, (findErr, existingUser) => {
+                if (findErr) {
+                    return res.status(500).json({ error: findErr });
+                }
+
+                if (!existingUser) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+
+                const updatedUser = {
+                    username: req.body.username,
+                    password: password || existingUser.password,
+                    role: req.body.role,
+                };
+
+                User.update(userId, updatedUser, (err) => {
+                    if (err) {
+                        return res.status(500).json({ error: err });
+                    }
+                    res.redirect('/users');
+                });
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Não foi possível atualizar o usuário.' });
+        }
     },
 
     deleteUser: (req, res) => {

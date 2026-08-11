@@ -72,3 +72,26 @@ Sinta-se à vontade para contribuir com melhorias ou correções. Abra uma issue
 Licença
 
 Este projeto é licenciado sob a MIT License.
+
+## Login, logout e controle de sessão
+
+O projeto agora utiliza `express-session` e um middleware de autenticação.
+
+### Fluxo
+- `GET /auth/login`: tela pública de login.
+- `POST /auth/login`: valida usuário e senha e cria a sessão.
+- `POST /auth/logout`: encerra a sessão.
+- `/users`, `/produtos` e `/categorias`: protegidos pelo middleware `requireAuth`.
+- Senhas de novos usuários são armazenadas com `bcryptjs`.
+- Usuários antigos com senha em texto puro continuam funcionando durante a migração; após um login válido, a senha é convertida automaticamente para bcrypt.
+
+### Instalação
+```bash
+npm install
+npm start
+```
+
+Acesse:
+`http://localhost:3000/auth/login`
+
+Defina uma chave forte em `SESSION_SECRET` no `.env` antes de usar em produção.
