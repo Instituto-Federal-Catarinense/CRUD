@@ -1,9 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+// Rota principal
+router.get('/', (req, res) => {
+    res.render('index', { 
+        title: 'Create Read Update Delete System'
+    });
 });
 
 module.exports = router;
