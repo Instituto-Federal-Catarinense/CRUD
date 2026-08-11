@@ -1,18 +1,27 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 
 const userController = {
     createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+        const { username, password, role } = req.body;
 
-        User.create(newUser, (err, userId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+            if (hashErr) {
+                return res.status(500).json({ error: hashErr });
             }
-            res.redirect('/users');
+
+            const newUser = {
+                username,
+                password: hashedPassword,
+                role,
+            };
+
+            User.create(newUser, (err, userId) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
         });
     },
 
@@ -59,17 +68,25 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+        const { username, password, role } = req.body;
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+            if (hashErr) {
+                return res.status(500).json({ error: hashErr });
             }
-            res.redirect('/users');
+
+            const updatedUser = {
+                username,
+                password: hashedPassword,
+                role,
+            };
+
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
         });
     },
 

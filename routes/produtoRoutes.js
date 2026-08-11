@@ -1,6 +1,9 @@
 const express = require('express');
 const produtoController = require('../controllers/produtoController');
+const { ensureAuthenticated } = require('../middlewares/authMiddleware');
 const router = express.Router();
+
+router.use(ensureAuthenticated);
 
 router.get('/', produtoController.getAllProdutos);
 router.get('/new', produtoController.renderCreateForm);
