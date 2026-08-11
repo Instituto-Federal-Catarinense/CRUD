@@ -1,9 +1,16 @@
 const Produto = require('../models/produtoModel');
 const Categoria = require('../models/categoriaModel');
+const { validateProdutoPayload } = require('../utils/validators');
 
 const produtoController = {
 
     createProduto: (req, res) => {
+        const errors = validateProdutoPayload(req.body);
+
+        if (errors.length) {
+            req.flash('danger', errors[0]);
+            return res.redirect('/produtos/new');
+        }
 
         const newProduto = {
             nome: req.body.nome,
@@ -13,10 +20,12 @@ const produtoController = {
             categoria: req.body.categoria
         };
 
-        Produto.create(newProduto, (err, produtoId) => {
+        Produto.create(newProduto, (err) => {
             if (err) {
-                return res.status(500).json({ error: err });
+                req.flash('danger', 'Não foi possível criar o produto.');
+                return res.redirect('/produtos/new');
             }
+            req.flash('success', 'Produto criado com sucesso.');
             res.redirect('/produtos');
         });
     },

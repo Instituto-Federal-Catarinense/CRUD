@@ -1,5 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">CRUD</a>
+    <% if (locals.session && session.logado) { %>
+        <span class="navbar-text mr-3">Olá, <%= session.user.username %> (<%= session.user.role %>)</span>
+    <% } %>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
