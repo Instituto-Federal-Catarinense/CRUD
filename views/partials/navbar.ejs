@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
@@ -17,8 +17,23 @@
                     Usuários
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
+                    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+                        <div class="dropdown-header">
+                            Logado como: <strong><%= currentUser.username %></strong> (<%= currentUser.role %>)
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <% if (currentUser.role === 'admin') { %>
+                            <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
+                            <a class="dropdown-item" href="/users">Listar Usuários</a>
+                            <div class="dropdown-divider"></div>
+                        <% } %>
+                        <form action="/logout" method="POST" class="px-2 py-1">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-sm">Logout</button>
+                        </form>
+                    <% } else { %>
+                        <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
+                        <a class="dropdown-item text-primary font-weight-bold" href="/login">Login</a>
+                    <% } %>
                 </div>
             </li>
 
@@ -29,7 +44,9 @@
                     Categorias
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'admin') { %>
+                        <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    <% } %>
                     <a class="dropdown-item" href="/categorias">Listar Categorias</a>
                 </div>
             </li>
@@ -41,7 +58,9 @@
                     Produtos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
-                    <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    <% if (typeof currentUser !== 'undefined' && currentUser && currentUser.role === 'admin') { %>
+                        <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    <% } %>
                     <a class="dropdown-item" href="/produtos">Listar Produtos</a>
                 </div>
             </li>

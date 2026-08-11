@@ -1,18 +1,26 @@
 const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
 
 const userController = {
     createUser: (req, res) => {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        const role = req.body.role || 'user';
+
         const newUser = {
             username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
+            password: hashedPassword,
+            role: role,
         };
 
         User.create(newUser, (err, userId) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.redirect('/users');
+            if (req.user && req.user.role === 'admin') {
+                res.redirect('/users');
+            } else {
+                res.redirect('/login');
+            }
         });
     },
 
@@ -59,10 +67,15 @@ const userController = {
 
     updateUser: (req, res) => {
         const userId = req.params.id;
+        let hashedPassword = req.body.password;
+        if (req.body.password && !req.body.password.startsWith('$2a$') && !req.body.password.startsWith('$2b$')) {
+            hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        }
+
         const updatedUser = {
             username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
+            password: hashedPassword,
+            role: req.body.role || 'user',
         };
 
         User.update(userId, updatedUser, (err) => {
