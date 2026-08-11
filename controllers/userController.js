@@ -1,19 +1,38 @@
 const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
+
+const hashPasswordIfNeeded = async (password, existingPassword = null) => {
+    if (!password) {
+        return existingPassword;
+    }
+
+    if (password.startsWith('$2')) {
+        return password;
+    }
+
+    return bcrypt.hash(password, 10);
+};
 
 const userController = {
-    createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+    createUser: async (req, res) => {
+        try {
+            const hashedPassword = await hashPasswordIfNeeded(req.body.password);
 
-        User.create(newUser, (err, userId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+            const newUser = {
+                username: req.body.username,
+                password: hashedPassword,
+                role: req.body.role,
+            };
+
+            User.create(newUser, (err, userId) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
+        } catch (error) {
+            return res.status(500).json({ error });
+        }
     },
 
     getUserById: (req, res) => {
@@ -57,20 +76,37 @@ const userController = {
         });
     },
 
-    updateUser: (req, res) => {
+    updateUser: async (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+        try {
+            User.findById(userId, async (err, user) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+
+                if (!user) {
+                    return res.status(404).json({ message: 'User not found' });
+                }
+
+                const hashedPassword = await hashPasswordIfNeeded(req.body.password, user.password);
+
+                const updatedUser = {
+                    username: req.body.username,
+                    password: hashedPassword,
+                    role: req.body.role,
+                };
+
+                User.update(userId, updatedUser, (updateErr) => {
+                    if (updateErr) {
+                        return res.status(500).json({ error: updateErr });
+                    }
+                    res.redirect('/users');
+                });
+            });
+        } catch (error) {
+            return res.status(500).json({ error });
+        }
     },
 
     deleteUser: (req, res) => {
