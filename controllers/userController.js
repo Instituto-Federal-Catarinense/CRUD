@@ -1,17 +1,27 @@
 const User = require('../models/userModel');
+const { validateUserPayload } = require('../utils/validators');
 
 const userController = {
     createUser: (req, res) => {
+        const errors = validateUserPayload(req.body);
+
+        if (errors.length) {
+            req.flash('danger', errors[0]);
+            return res.redirect('/users/new');
+        }
+
         const newUser = {
             username: req.body.username,
             password: req.body.password,
             role: req.body.role,
         };
 
-        User.create(newUser, (err, userId) => {
+        User.create(newUser, (err) => {
             if (err) {
-                return res.status(500).json({ error: err });
+                req.flash('danger', 'Não foi possível criar o usuário.');
+                return res.redirect('/users/new');
             }
+            req.flash('success', 'Usuário criado com sucesso.');
             res.redirect('/users');
         });
     },

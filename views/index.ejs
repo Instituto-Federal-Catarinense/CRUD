@@ -1,8 +1,17 @@
 <div class="jumbotron text-center">
     <h1>Bem-vindo ao Sistema de Gerenciamento de Usuários</h1>
     <p class="lead">Gerencie seus usuários e produtos sem esforço.</p>
-    <a href="/users" class="btn btn-custom">Gerenciar usuários</a>
-    <a href="/produtos" class="btn btn-custom ml-2">Gerenciar produtos</a>
+    <% if (locals.flash) { %>
+        <div class="alert alert-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <% if (locals.session && session.logado) { %>
+        <a href="/users" class="btn btn-custom">Gerenciar usuários</a>
+        <a href="/produtos" class="btn btn-custom ml-2">Gerenciar produtos</a>
+        <a href="/logout" class="btn btn-outline-light ml-2">Sair</a>
+    <% } else { %>
+        <a href="/login" class="btn btn-custom">Entrar</a>
+        <a href="/register" class="btn btn-outline-light ml-2">Criar conta</a>
+    <% } %>
 </div>
 
 <div class="row">
