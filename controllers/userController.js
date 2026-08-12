@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../middlewares/authMiddleware');
 
 const userController = {
     createUser: (req, res) => {
@@ -82,6 +84,41 @@ const userController = {
             }
             res.redirect('/users');
         });
+    },
+
+    renderLoginForm: (req, res) => {
+        res.render('users/login');
+    },
+
+    login: (req, res) => {
+        const { username, password } = req.body;
+
+        User.findByUsername(username, (err, user) => {
+            if (err) {
+                return res.status(500).json({ error: err });
+            }
+            if (!user || user.password !== password) {
+                return res.render('users/login', { erro: 'Usuário ou senha inválidos' });
+            }
+
+            const token = jwt.sign(
+                { id: user.id, username: user.username, role: user.role },
+                JWT_SECRET,
+                { expiresIn: '2h' }
+            );
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                maxAge: 1000 * 60 * 60 * 2 // 2 horas
+            });
+
+            res.redirect('/produtos');
+        });
+    },
+
+    logout: (req, res) => {
+        res.clearCookie('token');
+        res.redirect('/users/login');
     },
 
     searchUsers: (req, res) => {
