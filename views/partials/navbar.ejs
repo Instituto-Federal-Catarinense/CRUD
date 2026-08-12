@@ -10,7 +10,7 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
 
-            <% if (user) { %>
+            <% if (isAuthenticated) { %>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,17 +46,19 @@
             <% } %>
         </ul>
 
-        <ul class="navbar-nav">
-            <% if (user) { %>
-                <li class="nav-item">
-                    <span class="navbar-text mr-3">Olá, <%= user.username %></span>
+        <ul class="navbar-nav ml-auto align-items-lg-center">
+            <% if (isAuthenticated) { %>
+                <li class="nav-item mr-2 text-muted small d-none d-lg-block">
+                    Logado como <strong><%= currentUser && currentUser.username ? currentUser.username : 'usuário' %></strong>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
+                    <form action="/logout" method="POST" class="m-0">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Sair</button>
+                    </form>
                 </li>
             <% } else { %>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="btn btn-outline-primary btn-sm" href="/login">Entrar</a>
                 </li>
             <% } %>
         </ul>

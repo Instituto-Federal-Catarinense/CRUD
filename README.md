@@ -5,6 +5,8 @@ Este é um sistema de gerenciamento de usuários desenvolvido com Node.js, Expre
 ## Funcionalidades
 
 - Cadastro e login de usuários
+- Logout com destruição da sessão
+- Controle de acesso por middleware com sessão autenticada
 - Listagem de usuários
 - Criação, edição e exclusão de usuários
 - Diferenciação entre administradores e usuários comuns
@@ -28,6 +30,13 @@ Certifique-se de que você tem o Node.js e o MySQL instalados. Em seguida, execu
 ### 3. Configure o Banco de Dados
 
 Crie um banco de dados no MySQL, por exemplo, user_management.
+
+O arquivo `database.sql` já inclui um usuário administrador inicial para o primeiro acesso:
+
+- usuário: `admin`
+- senha: `admin123`
+
+Após o primeiro login, a senha é armazenada com hash automaticamente.
 
 ### 4. Execute o Aplicativo
 
