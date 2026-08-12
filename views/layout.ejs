@@ -49,12 +49,26 @@
             font-size: 1.5rem;
             font-weight: bold;
         }
+        .auth-bar {
+            text-align: right;
+            padding: 0.5rem 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <%- include('partials/navbar') %>
+
+        <% if (usuario) { %>
+        <div class="auth-bar">
+            <span class="text-muted">Logado como <strong><%= usuario.username %></strong></span>
+            <a href="/users/logout" class="btn btn-sm btn-outline-danger ml-2">Sair</a>
+        </div>
+        <% } %>
+
         <%- body %>
+
+     
 
     <footer class="footer mt-auto py-3 bg-light text-center">
         <div class="container">

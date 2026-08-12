@@ -1,0 +1,31 @@
+<% if (usuario) { %>
+    <div class="jumbotron text-center">
+        <h1>Bem-vindo, <%= usuario.username %>!</h1>
+        <p class="lead">Consulte produtos e categorias disponíveis no sistema.</p>
+        <a href="/produtos" class="btn btn-custom">Ver produtos</a>
+        <a href="/categorias" class="btn btn-custom ml-2">Ver categorias</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="feature-card">
+                <h3>Produtos</h3>
+                <p>Consulte a lista de produtos cadastrados no sistema.</p>
+                <a href="/produtos" class="btn btn-primary">Ir para produtos</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="feature-card">
+                <h3>Categorias</h3>
+                <p>Consulte as categorias de produtos disponíveis.</p>
+                <a href="/categorias" class="btn btn-primary">Ir para categorias</a>
+            </div>
+        </div>
+    </div>
+<% } else { %>
+    <div class="jumbotron text-center">
+        <h1>Bem-vindo ao Sistema</h1>
+        <p class="lead">Faça login para acessar produtos e categorias.</p>
+        <a href="/users/login" class="btn btn-custom">Fazer login</a>
+    </div>
+<% } %>
