@@ -1,6 +1,9 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const { isAdmin } = require('../middleware/authMiddleware');
 const router = express.Router();
+
+router.use(isAdmin);
 
 router.get('/', userController.getAllUsers);
 router.get('/search', userController.searchUsers); // Adicione esta rota

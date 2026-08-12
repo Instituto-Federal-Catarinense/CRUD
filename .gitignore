@@ -1,3 +1,7 @@
+# Environment variables (credentials — NEVER commit)
+.env
+.env.local
+
 # Logs
 logs
 *.log

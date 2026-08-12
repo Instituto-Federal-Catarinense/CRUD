@@ -46,18 +46,42 @@
 
                 data.users.forEach(user => {
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.username}</td>
-                        <td>${user.role}</td>
-                        <td>
-                            <a href="/users/${user.id}" class="btn btn-primary">View</a>
-                            <a href="/users/${user.id}/edit" class="btn btn-warning">Edit</a>
-                            <form action="/users/${user.id}?_method=DELETE" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    `;
+                    const tdId = document.createElement('td');
+                    tdId.textContent = user.id;
+                    const tdUser = document.createElement('td');
+                    tdUser.textContent = user.username;
+                    const tdRole = document.createElement('td');
+                    tdRole.textContent = user.role;
+                    const tdActions = document.createElement('td');
+
+                    const viewBtn = document.createElement('a');
+                    viewBtn.href = `/users/${user.id}`;
+                    viewBtn.className = 'btn btn-primary';
+                    viewBtn.textContent = 'View';
+
+                    const editBtn = document.createElement('a');
+                    editBtn.href = `/users/${user.id}/edit`;
+                    editBtn.className = 'btn btn-warning';
+                    editBtn.textContent = 'Edit';
+
+                    const delForm = document.createElement('form');
+                    delForm.action = `/users/${user.id}?_method=DELETE`;
+                    delForm.method = 'POST';
+                    delForm.style.display = 'inline';
+                    const delBtn = document.createElement('button');
+                    delBtn.type = 'submit';
+                    delBtn.className = 'btn btn-danger';
+                    delBtn.textContent = 'Delete';
+                    delForm.appendChild(delBtn);
+
+                    tdActions.appendChild(viewBtn);
+                    tdActions.appendChild(editBtn);
+                    tdActions.appendChild(delForm);
+
+                    tr.appendChild(tdId);
+                    tr.appendChild(tdUser);
+                    tr.appendChild(tdRole);
+                    tr.appendChild(tdActions);
                     tbody.appendChild(tr);
                 });
             })
