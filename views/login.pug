@@ -1,0 +1,20 @@
+section.container.mt-5
+  .row.justify-content-center
+    .col-md-6
+      .card.shadow-sm
+        .card-body
+          h2.card-title.text-center.mb-4 Login
+          if error
+            .alert.alert-danger= error
+          form(action="/login" method="POST")
+            .form-group
+              label(for="username") Usuário
+              input.form-control(type="text" id="username" name="username" required)
+            .form-group
+              label(for="password") Senha
+              input.form-control(type="password" id="password" name="password" required)
+            button.btn.btn-primary.btn-block(type="submit") Entrar
+          hr
+          p.text-center.mb-0
+            | Ainda não tem conta?
+            a(href="/register")  Cadastre-se

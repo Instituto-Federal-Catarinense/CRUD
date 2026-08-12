@@ -1,19 +1,25 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 
 const userController = {
-    createUser: (req, res) => {
-        const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+    createUser: async (req, res) => {
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const newUser = {
+                username: req.body.username,
+                password: hashedPassword,
+                role: req.body.role || 'user',
+            };
 
-        User.create(newUser, (err, userId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+            User.create(newUser, (err, userId) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     },
 
     getUserById: (req, res) => {
@@ -57,20 +63,25 @@ const userController = {
         });
     },
 
-    updateUser: (req, res) => {
-        const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+    updateUser: async (req, res) => {
+        try {
+            const userId = req.params.id;
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            const updatedUser = {
+                username: req.body.username,
+                password: hashedPassword,
+                role: req.body.role,
+            };
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     },
 
     deleteUser: (req, res) => {
