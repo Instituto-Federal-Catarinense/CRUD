@@ -46,5 +46,16 @@
                 </div>
             </li>
         </ul>
+
+        <% if (user) { %>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <span class="navbar-text mr-3">Olá, <%= user.username %></span>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-danger" href="/logout">Sair</a>
+                </li>
+            </ul>
+        <% } %>
     </div>
 </nav>

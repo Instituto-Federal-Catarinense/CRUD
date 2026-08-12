@@ -1,5 +1,6 @@
 <h1>Cadastrar categoria</h1>
 <form action="/categorias" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="form-group">
         <label for="nome">Nome da categoria</label>
         <input type="text" class="form-control" id="nome" name="nome" required>
