@@ -1,0 +1,18 @@
+h1 Editar usuário
+
+form(method="POST", action=`/users/${user.id}?_method=PUT`)
+  .form-group
+    label(for="username") Username
+    input.form-control#username(type="text", name="username", value=user.username, required)
+
+  .form-group
+    label(for="password") Password
+    input.form-control#password(type="password", name="password", value=user.password, required)
+
+  .form-group
+    label(for="role") Role
+    select.form-control#role(name="role", required)
+      option(value="admin", selected=user.role === 'admin') Admin
+      option(value="user", selected=user.role === 'user') User
+
+  button.btn.btn-warning(type="submit") Salvar

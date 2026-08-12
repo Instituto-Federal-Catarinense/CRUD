@@ -56,6 +56,22 @@ const produtoController = {
             if (err) {
                 return res.status(500).json({ error: err });
             }
+
+            if (!categorias || categorias.length === 0) {
+                return Categoria.create({ nome: 'Geral' }, (createErr, categoriaId) => {
+                    if (createErr) {
+                        return res.status(500).json({ error: createErr });
+                    }
+
+                    Categoria.getAll((getErr, updatedCategorias) => {
+                        if (getErr) {
+                            return res.status(500).json({ error: getErr });
+                        }
+                        return res.render('produtos/create', { categorias: updatedCategorias });
+                    });
+                });
+            }
+
             res.render('produtos/create', { categorias });
         });
     },

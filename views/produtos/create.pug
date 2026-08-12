@@ -1,0 +1,26 @@
+h1 Cadastrar novo produto
+
+form(method="POST", action="/produtos")
+  .form-group
+    label(for="nome") Nome do Produto:
+    input.form-control#nome(type="text", name="nome", required)
+
+  .form-group
+    label(for="descricao") Descrição:
+    textarea.form-control#descricao(name="descricao", required)
+
+  .form-group
+    label(for="preco") Preço:
+    input.form-control#preco(type="number", name="preco", required)
+
+  .form-group
+    label(for="quantidade") Quantidade:
+    input.form-control#quantidade(type="number", name="quantidade", required)
+
+  .form-group
+    label(for="categoria") Categoria:
+    select.form-control#categoria(name="categoria", required)
+      each categoria in categorias
+        option(value=categoria.id) #{categoria.nome}
+
+  button.btn.btn-primary(type="submit") Cadastrar

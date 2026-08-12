@@ -1,0 +1,8 @@
+h1 Editar categoria
+
+form(action=`/categorias/${categoria.id}?_method=PUT`, method="POST")
+  .form-group
+    label(for="nome") Categoria
+    input.form-control(type="text", id="nome", name="nome", value=categoria.nome, required)
+  
+  button.btn.btn-warning(type="submit") Salvar
