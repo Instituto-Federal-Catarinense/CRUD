@@ -1,0 +1,55 @@
+<div class="container mt-5" style="max-width: 500px;">
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h2 class="text-center mb-4">Login</h2>
+
+            <% if (error) { %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">
+                        Usuário
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        name="username"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        Senha
+                    </label>
+
+                    <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Entrar
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
