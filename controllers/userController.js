@@ -31,11 +31,27 @@ const userController = {
     },
 
     getAllUsers: (req, res) => {
+        const search = req.query.search || '';
+
+        const renderUsers = (users) => {
+            res.render('users/index', { users });
+        };
+
+        if (search) {
+            User.searchByName(search, (err, users) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                renderUsers(users);
+            });
+            return;
+        }
+
         User.getAll((err, users) => {
             if (err) {
                 return res.status(500).json({ error: err });
             }
-            res.render('users/index', { users });
+            renderUsers(users);
         });
     },
 

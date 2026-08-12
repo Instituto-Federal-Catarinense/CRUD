@@ -11,6 +11,7 @@
             </li>
 
             <!-- Dropdown Users -->
+            <% if (currentUser && currentUser.role === 'admin') { %>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,6 +22,7 @@
                     <a class="dropdown-item" href="/users">Listar Usuários</a>
                 </div>
             </li>
+            <% } %>
 
             <!-- Dropdown Categorias -->
             <li class="nav-item dropdown">
@@ -29,7 +31,9 @@
                     Categorias
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
+                    <% if (currentUser && currentUser.role === 'admin') { %>
                     <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    <% } %>
                     <a class="dropdown-item" href="/categorias">Listar Categorias</a>
                 </div>
             </li>
@@ -41,10 +45,31 @@
                     Produtos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
+                    <% if (currentUser && currentUser.role === 'admin') { %>
                     <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    <% } %>
                     <a class="dropdown-item" href="/produtos">Listar Produtos</a>
                 </div>
             </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <% if (currentUser) { %>
+                <li class="nav-item">
+                    <span class="navbar-text mr-3">
+                        Olá, <strong><%= currentUser.username %></strong> (<%= currentUser.role %>)
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <form action="/auth/logout" method="POST" class="form-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Sair</button>
+                    </form>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/login">Entrar</a>
+                </li>
+            <% } %>
         </ul>
     </div>
 </nav>

@@ -1,14 +1,19 @@
 const db = require('../config/db');
+const argon2 = require('argon2');
 
 const User = {
     create: (user, callback) => {
-        const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
-        db.query(query, [user.username, user.password, user.role], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results.insertId);
-        });
+        argon2.hash(user.password, { type: argon2.argon2id })
+            .then((hash) => {
+                const query = 'INSERT INTO users (username, password, role) VALUES (?, ?, ?)';
+                db.query(query, [user.username, hash, user.role], (err, results) => {
+                    if (err) {
+                        return callback(err);
+                    }
+                    callback(null, results.insertId);
+                });
+            })
+            .catch((err) => callback(err));
     },
 
     findById: (id, callback) => {
@@ -31,14 +36,34 @@ const User = {
         });
     },
 
+    verifyPassword: (password, hash, callback) => {
+        argon2.verify(hash, password)
+            .then((match) => callback(null, match))
+            .catch(() => callback(null, false));
+    },
+
     update: (id, user, callback) => {
-        const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
-        db.query(query, [user.username, user.password, user.role, id], (err, results) => {
-            if (err) {
-                return callback(err);
-            }
-            callback(null, results);
-        });
+        if (user.password) {
+            argon2.hash(user.password, { type: argon2.argon2id })
+                .then((hash) => {
+                    const query = 'UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?';
+                    db.query(query, [user.username, hash, user.role, id], (err, results) => {
+                        if (err) {
+                            return callback(err);
+                        }
+                        callback(null, results);
+                    });
+                })
+                .catch((err) => callback(err));
+        } else {
+            const query = 'UPDATE users SET username = ?, role = ? WHERE id = ?';
+            db.query(query, [user.username, user.role, id], (err, results) => {
+                if (err) {
+                    return callback(err);
+                }
+                callback(null, results);
+            });
+        }
     },
 
     delete: (id, callback) => {
