@@ -1,0 +1,20 @@
+<!-- views/login.ejs -->
+<div class="container mt-5 text-center" style="max-width: 400px;">
+  <h2 class="mb-4">Login</h2>
+
+  <% if (aviso) { %>
+    <div class="alert alert-warning"><%= aviso %></div>
+  <% } %>
+
+  <form method="POST" action="/login">
+    <div class="mb-3 text-start">
+      <label class="form-label">Usuário</label>
+      <input type="text" name="usuario" class="form-control" required>
+    </div>
+    <div class="mb-3 text-start">
+      <label class="form-label">Senha</label>
+      <input type="password" name="senha" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+  </form>
+</div>
