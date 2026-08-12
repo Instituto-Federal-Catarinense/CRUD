@@ -1,11 +1,16 @@
 const express = require('express');
 const produtoController = require('../controllers/produtoController');
-const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
-// Protege todas as rotas de produtos
+const authMiddleware = require('../middlewares/authMiddleware');
+const adminMiddleware = require('../middlewares/adminMiddleware');
+
 router.use(authMiddleware);
+router.use(adminMiddleware);
+
+
+// Protege todas as rotas de produtos
 
 router.get('/', produtoController.getAllProdutos);
 

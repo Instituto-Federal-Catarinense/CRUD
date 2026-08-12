@@ -2,6 +2,12 @@ const express = require('express');
 const categoriaController = require('../controllers/categoriaController');
 const router = express.Router();
 
+const authMiddleware = require('../middlewares/authMiddleware');
+const adminMiddleware = require('../middlewares/adminMiddleware');
+
+router.use(authMiddleware);
+router.use(adminMiddleware);
+
 router.get('/', categoriaController.getAllCategorias);
 router.get('/new', categoriaController.renderCreateForm);
 router.post('/', categoriaController.createCategoria);
