@@ -1,20 +1,36 @@
+const bcrypt = require("bcrypt");
 const User = require('../models/userModel');
 
 const userController = {
-    createUser: (req, res) => {
+   createUser: async (req, res) => {
+    try {
+        const { username, password, role } = req.body;
+
+        // Criptografa a senha antes de salvar
+        const senhaHash = await bcrypt.hash(password, 10);
+
         const newUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
+            username: username,
+            password: senhaHash,
+            role: role
         };
 
         User.create(newUser, (err, userId) => {
             if (err) {
-                return res.status(500).json({ error: err });
+                console.error("Erro ao criar usuário:", err);
+                return res.status(500).send("Erro ao cadastrar usuário.");
             }
+
+            console.log("Usuário criado:", userId);
+
             res.redirect('/users');
         });
-    },
+
+    } catch (err) {
+        console.error("Erro:", err);
+        res.status(500).send("Erro ao cadastrar usuário.");
+    }
+},
 
     getUserById: (req, res) => {
         const userId = req.params.id;
@@ -57,20 +73,27 @@ const userController = {
         });
     },
 
-    updateUser: (req, res) => {
-        const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
+    updateUser: async (req, res) => {
+        try {
+            const userId = req.params.id;
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+            const senhaHash = await bcrypt.hash(req.body.password, 10);
+
+            const updatedUser = {
+                username: req.body.username,
+                password: senhaHash,
+                role: req.body.role,
+            };
+
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
     deleteUser: (req, res) => {
