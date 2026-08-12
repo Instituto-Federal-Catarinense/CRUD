@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS CRUD;
 CREATE DATABASE CRUD;
 
 USE CRUD;
@@ -23,3 +24,21 @@ CREATE TABLE produtos (
     categoria INT NOT NULL,
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
+
+-- Inserir 3 usuários
+INSERT INTO users (username, password, role) VALUES
+('admin', 'admin123', 'admin'),
+('user1', 'pass1', 'user'),
+('user2', 'pass2', 'user');
+
+-- Inserir 3 categorias
+INSERT INTO categorias (nome) VALUES
+('Eletrônicos'),
+('Roupas'),
+('Alimentos');
+
+-- Inserir 3 produtos
+INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES
+('Smartphone', 'Um smartphone moderno', 999.99, 10, 1),
+('Camiseta', 'Camiseta de algodão', 29.99, 50, 2),
+('Maçã', 'Maçã fresca', 2.50, 100, 3);

@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  h1 Cadastrar novo usuário
+
+  form(action="/users", method="POST")
+      .form-group
+          label(for="username") Nome
+          input.form-control(type="text", id="username", name="username", required)
+
+      .form-group
+          label(for="password") Senha
+          input.form-control(type="password", id="password", name="password", required)
+
+      .form-group
+          label(for="role") Regra
+          select.form-control(id="role", name="role", required)
+              option(value="admin") Admin
+              option(value="user") User
+
+      button.btn.btn-primary(type="submit") Cadastrar

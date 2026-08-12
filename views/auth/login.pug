@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  .row.justify-content-center
+    .col-md-6.col-lg-5
+      .feature-card
+        h2.text-center.mb-4 Entrar
+
+        if error
+          .alert.alert-danger(role='alert')= error
+
+        form(action='/auth/login', method='POST')
+          .form-group
+            label(for='username') Usuário
+            input#username.form-control(type='text', name='username', value=username, required, autocomplete='username')
+
+          .form-group
+            label(for='password') Senha
+            input#password.form-control(type='password', name='password', required, autocomplete='current-password')
+
+          button.btn.btn-primary.btn-block(type='submit') Entrar
