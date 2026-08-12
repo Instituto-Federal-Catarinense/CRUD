@@ -1,0 +1,40 @@
+extends ../layout
+
+block content
+    h1 Lista de produtos
+
+    // Formulário de filtro por categoria
+    form(method="GET", action="/produtos")
+        .form-group
+            label(for="categoria") Filtrar por Categoria:
+            select.form-control(id="categoria", name="categoria")
+                option(value="") Todas as Categorias
+                each categoria in categorias
+                    option(value=categoria.id, selected=(categoriaSelecionada == categoria.id))
+                        = categoria.nome
+        button.btn.btn-primary(type="submit") Filtrar
+
+    table.table
+        thead
+            tr
+                th ID
+                th Nome
+                th Descrição
+                th Preço
+                th Quantidade
+                th Categoria
+                th Ações
+        tbody
+            each produto in produtos
+                tr
+                    td= produto.id
+                    td= produto.nome
+                    td= produto.descricao
+                    td= produto.preco
+                    td= produto.quantidade
+                    td= produto.categoria_nome
+                    td
+                        a.btn.btn-primary(href=`/produtos/${produto.id}`) View
+                        a.btn.btn-warning(href=`/produtos/${produto.id}/edit`) Edit
+                        form(action=`/produtos/${produto.id}?_method=DELETE`, method="POST", style="display: inline;")
+                            button.btn.btn-danger(type="submit") Delete

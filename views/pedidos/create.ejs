@@ -1,0 +1,608 @@
+<h1>Criar pedido</h1>
+
+<form id="formPedido" action="/pedidos" method="POST">
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Informações do pedido</strong>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group">
+                <label for="id_cliente">
+                    Cliente
+                </label>
+
+                <select
+                    id="id_cliente"
+                    name="id_cliente"
+                    class="form-control"
+                    required
+                >
+                    <option value="">
+                        Selecione um cliente
+                    </option>
+
+                    <% clientes.forEach(function(cliente) { %>
+                        <option
+                            value="<%= cliente.id %>"
+                            data-tem-endereco="<%= cliente.id_endereco ? '1' : '0' %>"
+                        >
+                            <%= cliente.nome %>
+
+                            <%= cliente.id_endereco
+                                ? ''
+                                : ' — sem endereço' %>
+                        </option>
+                    <% }) %>
+                </select>
+
+                <small
+                    id="avisoEndereco"
+                    class="form-text"
+                ></small>
+            </div>
+
+            <div class="form-group">
+                <label for="id_forma_pagamento">
+                    Forma de pagamento
+                </label>
+
+                <select
+                    id="id_forma_pagamento"
+                    name="id_forma_pagamento"
+                    class="form-control"
+                >
+                    <option value="">
+                        Selecione uma forma de pagamento
+                    </option>
+
+                    <% formas.forEach(function(forma) { %>
+                        <option value="<%= forma.id %>">
+                            <%= forma.descricao %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tipo_entrega">
+                    Tipo de entrega
+                </label>
+
+                <select
+                    id="tipo_entrega"
+                    name="tipo_entrega"
+                    class="form-control"
+                    required
+                >
+                    <option value="RETIRADA">
+                        Retirada na cantina
+                    </option>
+
+                    <option value="ENTREGA">
+                        Entrega
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group mb-0">
+                <label for="observacao">
+                    Observação
+                </label>
+
+                <textarea
+                    id="observacao"
+                    name="observacao"
+                    class="form-control"
+                    maxlength="150"
+                    rows="3"
+                    placeholder="Exemplo: sem cebola"
+                ></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Itens do pedido</h3>
+
+        <button
+            type="button"
+            id="adicionarItem"
+            class="btn btn-success"
+        >
+            Adicionar produto
+        </button>
+    </div>
+
+    <div id="listaItens" class="mt-3"></div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>
+                Total estimado:
+                <span id="valorTotal">
+                    R$ 0,00
+                </span>
+            </h4>
+
+            <small class="text-muted">
+                O valor definitivo será calculado pelo
+                servidor usando os preços cadastrados
+                no banco.
+            </small>
+        </div>
+    </div>
+
+    <div class="mt-4 mb-4">
+        <button
+            type="submit"
+            id="botaoCriarPedido"
+            class="btn btn-primary"
+        >
+            Criar pedido
+        </button>
+
+        <a
+            href="/pedidos"
+            class="btn btn-secondary"
+        >
+            Cancelar
+        </a>
+    </div>
+</form>
+
+<script id="dadosProdutos" type="application/json">
+    <%- JSON.stringify(produtos).replace(/</g, '\\u003c') %>
+</script>
+
+<script>
+    const clienteSelect =
+        document.getElementById('id_cliente');
+
+    const tipoEntregaSelect =
+        document.getElementById('tipo_entrega');
+
+    const avisoEndereco =
+        document.getElementById('avisoEndereco');
+
+    const elementoDadosProdutos =
+        document.getElementById('dadosProdutos');
+
+    const produtos = JSON.parse(
+        elementoDadosProdutos.textContent
+    );
+
+    const listaItens =
+        document.getElementById('listaItens');
+
+    const botaoAdicionar =
+        document.getElementById('adicionarItem');
+
+    const botaoCriarPedido =
+        document.getElementById('botaoCriarPedido');
+
+    const valorTotal =
+        document.getElementById('valorTotal');
+
+    const formPedido =
+        document.getElementById('formPedido');
+
+    const formatadorMoeda =
+        new Intl.NumberFormat(
+            'pt-BR',
+            {
+                style: 'currency',
+                currency: 'BRL'
+            }
+        );
+
+    function obterOpcaoCliente() {
+        return clienteSelect.options[
+            clienteSelect.selectedIndex
+        ];
+    }
+
+    function clientePossuiEndereco() {
+        const opcaoCliente =
+            obterOpcaoCliente();
+
+        return (
+            opcaoCliente &&
+            opcaoCliente.value &&
+            opcaoCliente.dataset.temEndereco === '1'
+        );
+    }
+
+    function atualizarAvisoEndereco() {
+        const opcaoCliente =
+            obterOpcaoCliente();
+
+        avisoEndereco.className =
+            'form-text';
+
+        if (
+            tipoEntregaSelect.value !==
+            'ENTREGA'
+        ) {
+            avisoEndereco.textContent =
+                'O pedido será retirado na cantina.';
+
+            avisoEndereco.classList.add(
+                'text-muted'
+            );
+
+            return;
+        }
+
+        if (
+            !opcaoCliente ||
+            !opcaoCliente.value
+        ) {
+            avisoEndereco.textContent =
+                'Selecione um cliente para verificar o endereço.';
+
+            avisoEndereco.classList.add(
+                'text-muted'
+            );
+
+            return;
+        }
+
+        if (clientePossuiEndereco()) {
+            avisoEndereco.textContent =
+                'O cliente possui endereço cadastrado.';
+
+            avisoEndereco.classList.add(
+                'text-success'
+            );
+        } else {
+            avisoEndereco.textContent =
+                'Este cliente não possui endereço cadastrado e não pode receber uma entrega.';
+
+            avisoEndereco.classList.add(
+                'text-danger'
+            );
+        }
+    }
+
+    function criarOpcoesProdutos() {
+        let opcoes = `
+            <option value="">
+                Selecione um produto
+            </option>
+        `;
+
+        produtos.forEach((produto) => {
+            const tamanho =
+                produto.tamanho
+                    ? ` - ${produto.tamanho}`
+                    : '';
+
+            const preco =
+                formatadorMoeda.format(
+                    Number(produto.preco)
+                );
+
+            opcoes += `
+                <option
+                    value="${produto.id}"
+                    data-preco="${produto.preco}"
+                >
+                    ${produto.nome}${tamanho} - ${preco}
+                </option>
+            `;
+        });
+
+        return opcoes;
+    }
+
+    function adicionarItem() {
+        const indice =
+            listaItens.children.length;
+
+        const item =
+            document.createElement('div');
+
+        item.className =
+            'item-pedido card mb-3';
+
+        item.innerHTML = `
+            <div class="card-body">
+                <div class="form-row align-items-end">
+
+                    <div class="form-group col-md-6">
+                        <label>
+                            Produto
+                        </label>
+
+                        <select
+                            name="itens[${indice}][id_produto]"
+                            class="form-control produto-select"
+                            required
+                        >
+                            ${criarOpcoesProdutos()}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label>
+                            Quantidade
+                        </label>
+
+                        <input
+                            type="number"
+                            name="itens[${indice}][quantidade]"
+                            class="form-control quantidade-input"
+                            min="1"
+                            step="1"
+                            value="1"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label>
+                            Subtotal
+                        </label>
+
+                        <input
+                            type="text"
+                            class="form-control subtotal-item"
+                            value="R$ 0,00"
+                            readonly
+                        >
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-block remover-item"
+                        >
+                            Remover
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        `;
+
+        listaItens.appendChild(item);
+
+        configurarEventosItem(item);
+        atualizarBotoesRemover();
+        atualizarTotal();
+    }
+
+    function configurarEventosItem(item) {
+        const produtoSelect =
+            item.querySelector(
+                '.produto-select'
+            );
+
+        const quantidadeInput =
+            item.querySelector(
+                '.quantidade-input'
+            );
+
+        const botaoRemover =
+            item.querySelector(
+                '.remover-item'
+            );
+
+        produtoSelect.addEventListener(
+            'change',
+            atualizarTotal
+        );
+
+        quantidadeInput.addEventListener(
+            'input',
+            atualizarTotal
+        );
+
+        botaoRemover.addEventListener(
+            'click',
+            () => {
+                item.remove();
+
+                reindexarItens();
+                atualizarBotoesRemover();
+                atualizarTotal();
+            }
+        );
+    }
+
+    function reindexarItens() {
+        const itens =
+            listaItens.querySelectorAll(
+                '.item-pedido'
+            );
+
+        itens.forEach((item, indice) => {
+            const produtoSelect =
+                item.querySelector(
+                    '.produto-select'
+                );
+
+            const quantidadeInput =
+                item.querySelector(
+                    '.quantidade-input'
+                );
+
+            produtoSelect.name =
+                `itens[${indice}][id_produto]`;
+
+            quantidadeInput.name =
+                `itens[${indice}][quantidade]`;
+        });
+    }
+
+    function atualizarBotoesRemover() {
+        const botoes =
+            listaItens.querySelectorAll(
+                '.remover-item'
+            );
+
+        botoes.forEach((botao) => {
+            botao.disabled =
+                botoes.length === 1;
+        });
+    }
+
+    function atualizarTotal() {
+        let total = 0;
+
+        const itens =
+            listaItens.querySelectorAll(
+                '.item-pedido'
+            );
+
+        itens.forEach((item) => {
+            const select =
+                item.querySelector(
+                    '.produto-select'
+                );
+
+            const quantidadeInput =
+                item.querySelector(
+                    '.quantidade-input'
+                );
+
+            const subtotalInput =
+                item.querySelector(
+                    '.subtotal-item'
+                );
+
+            const opcao =
+                select.options[
+                    select.selectedIndex
+                ];
+
+            const preco = Number(
+                opcao?.dataset.preco || 0
+            );
+
+            const quantidade = Number(
+                quantidadeInput.value || 0
+            );
+
+            const subtotal =
+                preco * quantidade;
+
+            subtotalInput.value =
+                formatadorMoeda.format(
+                    subtotal
+                );
+
+            total += subtotal;
+        });
+
+        valorTotal.textContent =
+            formatadorMoeda.format(total);
+    }
+
+    function verificarProdutosRepetidos() {
+        const itens =
+            listaItens.querySelectorAll(
+                '.item-pedido'
+            );
+
+        const produtosSelecionados = [];
+
+        itens.forEach((item) => {
+            const idProduto =
+                item.querySelector(
+                    '.produto-select'
+                ).value;
+
+            if (idProduto) {
+                produtosSelecionados.push(
+                    idProduto
+                );
+            }
+        });
+
+        return (
+            new Set(produtosSelecionados).size !==
+            produtosSelecionados.length
+        );
+    }
+
+    clienteSelect.addEventListener(
+        'change',
+        atualizarAvisoEndereco
+    );
+
+    tipoEntregaSelect.addEventListener(
+        'change',
+        atualizarAvisoEndereco
+    );
+
+    botaoAdicionar.addEventListener(
+        'click',
+        adicionarItem
+    );
+
+    formPedido.addEventListener(
+        'submit',
+        (event) => {
+            const itens =
+                listaItens.querySelectorAll(
+                    '.item-pedido'
+                );
+
+            if (itens.length === 0) {
+                event.preventDefault();
+
+                alert(
+                    'Adicione pelo menos um produto ao pedido.'
+                );
+
+                return;
+            }
+
+            if (
+                tipoEntregaSelect.value ===
+                    'ENTREGA' &&
+                !clientePossuiEndereco()
+            ) {
+                event.preventDefault();
+
+                alert(
+                    'O cliente selecionado não possui endereço cadastrado.'
+                );
+
+                return;
+            }
+
+            if (verificarProdutosRepetidos()) {
+                const confirmar =
+                    confirm(
+                        'Existem produtos repetidos. ' +
+                        'As quantidades serão somadas. ' +
+                        'Deseja continuar?'
+                    );
+
+                if (!confirmar) {
+                    event.preventDefault();
+                }
+            }
+        }
+    );
+
+    if (produtos.length === 0) {
+        botaoAdicionar.disabled = true;
+        botaoCriarPedido.disabled = true;
+
+        listaItens.innerHTML = `
+            <div class="alert alert-warning">
+                Não existem produtos disponíveis
+                para criar o pedido.
+            </div>
+        `;
+    } else {
+        adicionarItem();
+    }
+
+    atualizarAvisoEndereco();
+</script>

@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Cliente #<%= cliente.id %></h1>
+
+    <a
+        href="/clientes/<%= cliente.id %>/edit"
+        class="btn btn-primary"
+    >
+        Editar cliente
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Dados pessoais</strong>
+    </div>
+
+    <div class="card-body">
+        <p>
+            <strong>Nome:</strong>
+            <%= cliente.nome %>
+        </p>
+
+        <p>
+            <strong>E-mail:</strong>
+            <%= cliente.email || 'Não informado' %>
+        </p>
+
+        <p>
+            <strong>Telefone:</strong>
+            <%= cliente.telefone || 'Não informado' %>
+        </p>
+
+        <p>
+            <strong>CPF:</strong>
+            <%= cliente.cpf || 'Não informado' %>
+        </p>
+
+        <p class="mb-0">
+            <strong>Instituição:</strong>
+            <%= cliente.instituicao || 'Não informada' %>
+        </p>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Endereço</strong>
+    </div>
+
+    <div class="card-body">
+        <% if (!cliente.id_endereco) { %>
+            <div class="alert alert-info mb-0">
+                Este cliente ainda não possui endereço cadastrado.
+            </div>
+        <% } else { %>
+            <p>
+                <strong>Rua:</strong>
+                <%= cliente.rua %>
+
+                <% if (cliente.numero) { %>
+                    , <%= cliente.numero %>
+                <% } %>
+            </p>
+
+            <p>
+                <strong>Bairro:</strong>
+                <%= cliente.bairro %>
+            </p>
+
+            <p>
+                <strong>Município:</strong>
+                <%= cliente.municipio %>
+            </p>
+
+            <p>
+                <strong>CEP:</strong>
+                <%= cliente.cep || 'Não informado' %>
+            </p>
+
+            <p class="mb-0">
+                <strong>Ponto de referência:</strong>
+
+                <%= cliente.ponto_referencia
+                    || 'Não informado' %>
+            </p>
+        <% } %>
+    </div>
+</div>
+
+<a href="/clientes" class="btn btn-secondary">
+    Voltar
+</a>

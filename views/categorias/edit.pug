@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h1 Editar categoria
+    // Usamos template literals (crases) para atributos dinâmicos complexos
+    form(action=`/categorias/${categoria.id}?_method=PUT`, method="POST")
+        div.form-group
+            label(for="nome") Categoria
+            input.form-control(type="text", id="nome", name="nome", value=categoria.nome, required)
+        button.btn.btn-warning(type="submit") Salvar

@@ -1,111 +1,179 @@
 const Produto = require('../models/produtoModel');
-const Categoria = require('../models/categoriaModel');
+
+function montarProduto(body) {
+    return {
+        nome: body.nome ? body.nome.trim() : '',
+        descricao: body.descricao
+            ? body.descricao.trim()
+            : null,
+        preco: Number(body.preco),
+        tamanho: body.tamanho
+            ? body.tamanho.trim()
+            : null,
+        imagem_url: body.imagem_url
+            ? body.imagem_url.trim()
+            : null,
+        obs: body.obs
+            ? body.obs.trim()
+            : null,
+        disponivel: body.disponivel === '1'
+    };
+}
+
+function validarProduto(produto) {
+    if (!produto.nome) {
+        return 'O nome do produto é obrigatório.';
+    }
+
+    if (
+        !Number.isFinite(produto.preco) ||
+        produto.preco <= 0
+    ) {
+        return 'O preço deve ser maior que zero.';
+    }
+
+    return null;
+}
 
 const produtoController = {
-
-    createProduto: (req, res) => {
-
-        const newProduto = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-            preco: req.body.preco,
-            quantidade: req.body.quantidade,
-            categoria: req.body.categoria
-        };
-
-        Produto.create(newProduto, (err, produtoId) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+    listarProdutos: (req, res) => {
+        Produto.listarTodos((erro, produtos) => {
+            if (erro) {
+                return res.status(500).json({
+                    mensagem: 'Erro ao buscar produtos',
+                    erro: erro.message
+                });
             }
+
+            res.render('produtos/index', { produtos });
+        });
+    },
+
+    pesquisarProdutos: (req, res) => {
+        const pesquisa = req.query.search || '';
+
+        Produto.pesquisarPorNome(
+            pesquisa,
+            (erro, produtos) => {
+                if (erro) {
+                    return res.status(500).json({
+                        mensagem: 'Erro ao pesquisar produtos',
+                        erro: erro.message
+                    });
+                }
+
+                res.json({ produtos });
+            }
+        );
+    },
+
+    buscarProdutoPorId: (req, res) => {
+        Produto.buscarPorId(
+            req.params.id,
+            (erro, produto) => {
+                if (erro) {
+                    return res.status(500).json({
+                        mensagem: 'Erro ao buscar produto',
+                        erro: erro.message
+                    });
+                }
+
+                if (!produto) {
+                    return res
+                        .status(404)
+                        .send('Produto não encontrado');
+                }
+
+                res.render('produtos/show', { produto });
+            }
+        );
+    },
+
+    exibirFormularioCadastro: (req, res) => {
+        res.render('produtos/create');
+    },
+
+    cadastrarProduto: (req, res) => {
+        const produto = montarProduto(req.body);
+        const erroValidacao = validarProduto(produto);
+
+        if (erroValidacao) {
+            return res.status(400).send(erroValidacao);
+        }
+
+        Produto.cadastrar(produto, (erro) => {
+            if (erro) {
+                return res.status(500).json({
+                    mensagem: 'Erro ao cadastrar produto',
+                    erro: erro.message
+                });
+            }
+
             res.redirect('/produtos');
         });
     },
 
-    getProdutoById: (req, res) => {
-        const produtoId = req.params.id;
-
-        Produto.findById(produtoId, (err, produto) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!produto) {
-                return res.status(404).json({ message: 'Produto not found' });
-            }
-            res.render('produtos/show', { produto });
-        });
-    },
-    
-    getAllProdutos: (req, res) => {
-        const categoria = req.query.categoria || null;
-        
-        Produto.getAll(categoria, (err, produtos) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            Categoria.getAll((err, categorias) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
+    exibirFormularioEdicao: (req, res) => {
+        Produto.buscarPorId(
+            req.params.id,
+            (erro, produto) => {
+                if (erro) {
+                    return res.status(500).json({
+                        mensagem: 'Erro ao buscar produto',
+                        erro: erro.message
+                    });
                 }
-                res.render('produtos/index', { produtos, categorias, categoriaSelecionada: categoria });
-            });
-        });
-    },
 
-    renderCreateForm: (req, res) => {
-        Categoria.getAll((err, categorias) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.render('produtos/create', { categorias });
-        });
-    },
-
-    renderEditForm: (req, res) => {
-        const produtoId = req.params.id;
-
-        Produto.findById(produtoId, (err, produto) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            if (!produto) {
-                return res.status(404).json({ message: 'Produto not found' });
-            }
-
-            Categoria.getAll((err, categorias) => {
-                if (err) {
-                    return res.status(500).json({ error: err });
+                if (!produto) {
+                    return res
+                        .status(404)
+                        .send('Produto não encontrado');
                 }
-                res.render('produtos/edit', { produto, categorias });
-            });
-        });
+
+                res.render('produtos/edit', { produto });
+            }
+        );
     },
 
-    updateProduto: (req, res) => {
-        const produtoId = req.params.id;
-        
-        const updatedProduto = {
-            nome: req.body.nome,
-            descricao: req.body.descricao,
-            preco: req.body.preco,
-            quantidade: req.body.quantidade,
-            categoria: req.body.categoria
-        };
+    atualizarProduto: (req, res) => {
+        const produto = montarProduto(req.body);
+        const erroValidacao = validarProduto(produto);
 
-        Produto.update(produtoId, updatedProduto, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+        if (erroValidacao) {
+            return res.status(400).send(erroValidacao);
+        }
+
+        Produto.atualizar(
+            req.params.id,
+            produto,
+            (erro) => {
+                if (erro) {
+                    return res.status(500).json({
+                        mensagem: 'Erro ao atualizar produto',
+                        erro: erro.message
+                    });
+                }
+
+                res.redirect('/produtos');
             }
-            res.redirect('/produtos');
-        });
+        );
     },
 
-    deleteProduto: (req, res) => {
-        const produtoId = req.params.id;
+    excluirProduto: (req, res) => {
+        Produto.excluir(req.params.id, (erro) => {
+            if (erro) {
+                if (erro.code === 'ER_ROW_IS_REFERENCED_2') {
+                    return res.status(409).send(
+                        'Este produto está ligado a um pedido e não pode ser excluído.'
+                    );
+                }
 
-        Produto.delete(produtoId, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
+                return res.status(500).json({
+                    mensagem: 'Erro ao excluir produto',
+                    erro: erro.message
+                });
             }
+
             res.redirect('/produtos');
         });
     }

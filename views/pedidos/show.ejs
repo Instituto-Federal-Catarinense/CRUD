@@ -1,0 +1,239 @@
+<%
+    const nomesStatus = {
+        NOVO: 'Novo',
+        EM_PREPARO: 'Em preparo',
+        PRONTO: 'Pronto',
+        EM_ENTREGA: 'Em entrega',
+        ENTREGUE: 'Entregue',
+        CANCELADO: 'Cancelado'
+    };
+
+    const classesStatus = {
+        NOVO: 'badge-primary',
+        EM_PREPARO: 'badge-warning',
+        PRONTO: 'badge-info',
+        EM_ENTREGA: 'badge-secondary',
+        ENTREGUE: 'badge-success',
+        CANCELADO: 'badge-danger'
+    };
+
+    const formatadorMoeda = new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style: 'currency',
+            currency: 'BRL'
+        }
+    );
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Pedido #<%= pedido.id %></h1>
+
+    <span
+        class="badge badge-pill <%= classesStatus[pedido.status] || 'badge-dark' %>"
+        style="font-size: 1rem;"
+    >
+        <%= nomesStatus[pedido.status] || pedido.status %>
+    </span>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Informações do pedido</strong>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <strong>Cliente:</strong>
+                    <%= pedido.cliente_nome %>
+                </p>
+
+                <p>
+                    <strong>E-mail:</strong>
+                    <%= pedido.cliente_email
+                        || 'Não informado' %>
+                </p>
+
+                <p>
+                    <strong>Telefone:</strong>
+                    <%= pedido.cliente_telefone
+                        || 'Não informado' %>
+                </p>
+
+                <p>
+                    <strong>Forma de pagamento:</strong>
+                    <%= pedido.forma_descricao
+                        || 'Não informada' %>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <p>
+                    <strong>Tipo de entrega:</strong>
+
+                    <%= pedido.tipo_entrega === 'ENTREGA'
+                        ? 'Entrega'
+                        : 'Retirada na cantina' %>
+                </p>
+
+                <p>
+                    <strong>Data do pedido:</strong>
+
+                    <%= new Date(
+                        pedido.data_pedido
+                    ).toLocaleString('pt-BR') %>
+                </p>
+
+                <p>
+                    <strong>Valor total:</strong>
+
+                    <span class="font-weight-bold text-success">
+                        <%= formatadorMoeda.format(
+                            Number(pedido.valor_total)
+                        ) %>
+                    </span>
+                </p>
+
+                <p>
+                    <strong>Observação:</strong>
+                    <%= pedido.observacao
+                        || 'Nenhuma observação' %>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Atualizar status</strong>
+    </div>
+
+    <div class="card-body">
+        <form
+            action="/pedidos/<%= pedido.id %>/status?_method=PUT"
+            method="POST"
+        >
+            <div class="form-row align-items-end">
+                <div class="form-group col-md-8">
+                    <label for="status">
+                        Status do pedido
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                        class="form-control"
+                        required
+                    >
+                        <% Object.keys(nomesStatus).forEach(function(status) { %>
+                            <option
+                                value="<%= status %>"
+                                <%= pedido.status === status
+                                    ? 'selected'
+                                    : '' %>
+                            >
+                                <%= nomesStatus[status] %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <button
+                        type="submit"
+                        class="btn btn-success btn-block"
+                    >
+                        Atualizar status
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Itens do pedido</strong>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-bordered mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço unitário</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% itens.forEach(function(item) { %>
+                        <tr>
+                            <td>
+                                <%= item.produto_nome %>
+                            </td>
+
+                            <td>
+                                <%= item.quantidade %>
+                            </td>
+
+                            <td>
+                                <%= formatadorMoeda.format(
+                                    Number(item.preco_unitario)
+                                ) %>
+                            </td>
+
+                            <td>
+                                <%= formatadorMoeda.format(
+                                    Number(item.subtotal)
+                                ) %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-right">
+                            Total:
+                        </th>
+
+                        <th>
+                            <%= formatadorMoeda.format(
+                                Number(pedido.valor_total)
+                            ) %>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="mb-4">
+    <a
+        class="btn btn-secondary"
+        href="/pedidos"
+    >
+        Voltar
+    </a>
+
+    <form
+        action="/pedidos/<%= pedido.id %>?_method=DELETE"
+        method="POST"
+        class="d-inline"
+        onsubmit="return confirm('Deseja realmente excluir este pedido?')"
+    >
+        <button
+            type="submit"
+            class="btn btn-danger"
+        >
+            Excluir pedido
+        </button>
+    </form>
+</div>

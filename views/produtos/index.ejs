@@ -1,48 +1,163 @@
 <h1>Lista de produtos</h1>
 
-<!-- Formulário de filtro por categoria -->
-<form method="GET" action="/produtos">
-    <div class="form-group">
-        <label for="categoria">Filtrar por Categoria:</label>
-        <select id="categoria" name="categoria" class="form-control">
-            <option value="">Todas as Categorias</option>
-            <% categorias.forEach(categoria => { %>
-                <option value="<%= categoria.id %>" <%= categoriaSelecionada == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
-            <% }) %>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
-</form>
+<div>
+    <label for="search">Buscar produto:</label>
 
-<table class="table">
+    <input
+        type="text"
+        id="search"
+        placeholder="Digite o nome do produto"
+        autocomplete="off"
+    >
+</div>
+
+<p>
+    <a href="/produtos/new">
+        Cadastrar novo produto
+    </a>
+</p>
+
+<table>
     <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
             <th>Descrição</th>
             <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Categoria</th>
+            <th>Tamanho</th>
+            <th>Disponível</th>
             <th>Ações</th>
         </tr>
     </thead>
-    <tbody>
-        <% produtos.forEach(produto => { %>
+
+    <tbody id="tabelaProdutos">
+        <% produtos.forEach(function(produto) { %>
             <tr>
                 <td><%= produto.id %></td>
+
                 <td><%= produto.nome %></td>
-                <td><%= produto.descricao %></td>
-                <td><%= produto.preco %></td>
-                <td><%= produto.quantidade %></td>
-                <td><%= produto.categoria_nome %></td>
+
                 <td>
-                    <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
-                    <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                    <%= produto.descricao || '' %>
+                </td>
+
+                <td>
+                    <%= Number(produto.preco).toLocaleString(
+                        'pt-BR',
+                        {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }
+                    ) %>
+                </td>
+
+                <td><%= produto.tamanho || '' %></td>
+
+                <td>
+                    <%= produto.disponivel ? 'Sim' : 'Não' %>
+                </td>
+
+                <td>
+                    <a href="/produtos/<%= produto.id %>">
+                        Visualizar
+                    </a>
+
+                    <a href="/produtos/<%= produto.id %>/edit">
+                        Editar
+                    </a>
+
+                    <form
+                        action="/produtos/<%= produto.id %>?_method=DELETE"
+                        method="POST"
+                        style="display: inline;"
+                        onsubmit="return confirm('Deseja excluir este produto?')"
+                    >
+                        <button type="submit">
+                            Excluir
+                        </button>
                     </form>
                 </td>
             </tr>
         <% }) %>
     </tbody>
 </table>
+
+<script>
+    const campoPesquisa = document.getElementById('search');
+    const tabelaProdutos = document.getElementById(
+        'tabelaProdutos'
+    );
+
+    const formatadorMoeda = new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style: 'currency',
+            currency: 'BRL'
+        }
+    );
+
+    campoPesquisa.addEventListener('input', async () => {
+        try {
+            const pesquisa = encodeURIComponent(
+                campoPesquisa.value
+            );
+
+            const resposta = await fetch(
+                `/produtos/search?search=${pesquisa}`
+            );
+
+            if (!resposta.ok) {
+                throw new Error(
+                    'Não foi possível pesquisar produtos'
+                );
+            }
+
+            const dados = await resposta.json();
+
+            tabelaProdutos.innerHTML = '';
+
+            dados.produtos.forEach((produto) => {
+                const linha = document.createElement('tr');
+
+                linha.innerHTML = `
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>${produto.descricao || ''}</td>
+                    <td>
+                        ${formatadorMoeda.format(
+                            Number(produto.preco)
+                        )}
+                    </td>
+                    <td>${produto.tamanho || ''}</td>
+                    <td>
+                        ${produto.disponivel ? 'Sim' : 'Não'}
+                    </td>
+                    <td>
+                        <a href="/produtos/${produto.id}">
+                            Visualizar
+                        </a>
+
+                        <a href="/produtos/${produto.id}/edit">
+                            Editar
+                        </a>
+
+                        <form
+                            action="/produtos/${produto.id}?_method=DELETE"
+                            method="POST"
+                            style="display: inline;"
+                            onsubmit="return confirm('Deseja excluir este produto?')"
+                        >
+                            <button type="submit">
+                                Excluir
+                            </button>
+                        </form>
+                    </td>
+                `;
+
+                tabelaProdutos.appendChild(linha);
+            });
+        } catch (erro) {
+            console.error(erro);
+        }
+    });
+</script>

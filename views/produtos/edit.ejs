@@ -1,28 +1,88 @@
 <h1>Editar produto</h1>
 
-<form action="/produtos/<%= produto.id %>?_method=PUT" method="POST">
-    <div class="form-group">
+<form
+    action="/produtos/<%= produto.id %>?_method=PUT"
+    method="POST"
+>
+    <div>
         <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" name="nome" value="<%= produto.nome %>" required>
+
+        <input
+            id="nome"
+            name="nome"
+            value="<%= produto.nome %>"
+            required
+        >
     </div>
-    <div class="form-group">
+
+    <div>
         <label for="descricao">Descrição</label>
-        <input type="text" class="form-control" id="descricao" name="descricao" value="<%= produto.descricao %>" required>
+
+        <textarea
+            id="descricao"
+            name="descricao"
+        ><%= produto.descricao || '' %></textarea>
     </div>
-    <div class="form-group">
+
+    <div>
         <label for="preco">Preço</label>
-        <input type="number" class="form-control" id="preco" name="preco" value="<%= produto.preco %>" required>
+
+        <input
+            id="preco"
+            name="preco"
+            type="number"
+            min="0.01"
+            step="0.01"
+            value="<%= produto.preco %>"
+            required
+        >
     </div>
-    <div class="form-group">
-        <label for="quantidade">Quantidade</label>
-        <input type="number" class="form-control" id="quantidade" name="quantidade" value="<%= produto.quantidade %>" required>
+
+    <div>
+        <label for="tamanho">Tamanho</label>
+
+        <input
+            id="tamanho"
+            name="tamanho"
+            value="<%= produto.tamanho || '' %>"
+        >
     </div>
-    <div class="form-group">
-        <label for="categoria_id">Categoria</label>
-        <select class="form-control" id="categoria" name="categoria" required>
-            <% categorias.forEach(function(categoria) { %>
-                <option value="<%= categoria.id %>" <%= produto.categoria == categoria.id ? 'selected' : '' %>><%= categoria.nome %></option>
-            <% }); %>
-        </select>
+
+    <div>
+        <label for="imagem_url">URL da imagem</label>
+
+        <input
+            id="imagem_url"
+            name="imagem_url"
+            type="url"
+            value="<%= produto.imagem_url || '' %>"
+        >
     </div>
-    <button type="submit" class="btn btn-warning">Salvar</button>
+
+    <div>
+        <label for="obs">Observação</label>
+
+        <textarea
+            id="obs"
+            name="obs"
+        ><%= produto.obs || '' %></textarea>
+    </div>
+
+    <div>
+        <label for="disponivel">
+            <input
+                id="disponivel"
+                name="disponivel"
+                type="checkbox"
+                value="1"
+                <%= produto.disponivel ? 'checked' : '' %>
+            >
+
+            Produto disponível
+        </label>
+    </div>
+
+    <button type="submit">Salvar</button>
+
+    <a href="/produtos">Cancelar</a>
+</form>

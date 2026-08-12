@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+    h1 Lista de categorias
+    table.table
+        thead
+            tr
+                th ID
+                th Categoria
+        tbody
+            // Sintaxe de loop do Pug
+            each categoria in categorias
+                tr
+                    td= categoria.id
+                    td= categoria.nome
+                    td
+                        a.btn.btn-primary(href=`/categorias/${categoria.id}`) View
+                        a.btn.btn-warning(href=`/categorias/${categoria.id}/edit`) Edit
+                        form(action=`/categorias/${categoria.id}?_method=DELETE`, method="POST", style="display: inline;")
+                            button.btn.btn-danger(type="submit") Delete

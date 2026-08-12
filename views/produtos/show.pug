@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+    h1 produto Details
+    p ID: #{produto.id}
+    p Nome: #{produto.nome}
+    p Descrição: #{produto.descricao}
+    p Preço: #{produto.preco}
+    p Quantidade: #{produto.quantidade}
+    p Categoria: #{produto.categoria_nome}
+    a.btn.btn-primary(href="/produtos") Back to List

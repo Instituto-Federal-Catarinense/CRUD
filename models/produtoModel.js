@@ -1,61 +1,137 @@
 const db = require('../config/db');
 
 const Produto = {
-    create: (produto, callback) => {
-        const query = 'INSERT INTO produtos (nome, descricao, preco, quantidade, categoria) VALUES (?, ?, ?, ?, ?)';
-        db.query(query, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.categoria], (err, results) => {
-            if (err) {
-                return callback(err);
+    listarTodos: (callback) => {
+        const query = `
+            SELECT *
+            FROM produtos
+            ORDER BY nome ASC
+        `;
+
+        db.query(query, (erro, produtos) => {
+            if (erro) {
+                return callback(erro);
             }
-            callback(null, results.insertId);
+
+            callback(null, produtos);
         });
     },
 
-    findById: (id, callback) => {
-        const query = 'SELECT produtos.*, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id WHERE produtos.id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
+    pesquisarPorNome: (nome, callback) => {
+        const query = `
+            SELECT *
+            FROM produtos
+            WHERE nome LIKE ?
+            ORDER BY nome ASC
+        `;
+
+        db.query(query, [`%${nome}%`], (erro, produtos) => {
+            if (erro) {
+                return callback(erro);
             }
-            callback(null, results[0]);
+
+            callback(null, produtos);
         });
     },
 
-    update: (id, produto, callback) => {
-        const query = 'UPDATE produtos SET nome = ?, preco = ?, descricao = ?, quantidade = ?, categoria = ? WHERE id = ?';
-        db.query(query, [produto.nome, produto.preco, produto.descricao, produto.quantidade, produto.categoria, id], (err, results) => {
-            if (err) {
-                return callback(err);
+    buscarPorId: (id, callback) => {
+        const query = `
+            SELECT *
+            FROM produtos
+            WHERE id = ?
+        `;
+
+        db.query(query, [id], (erro, resultados) => {
+            if (erro) {
+                return callback(erro);
             }
-            callback(null, results);
+
+            callback(null, resultados[0]);
         });
     },
 
-    delete: (id, callback) => {
-        const query = 'DELETE FROM produtos WHERE id = ?';
-        db.query(query, [id], (err, results) => {
-            if (err) {
-                return callback(err);
+    cadastrar: (produto, callback) => {
+        const query = `
+            INSERT INTO produtos
+            (
+                nome,
+                descricao,
+                preco,
+                tamanho,
+                imagem_url,
+                obs,
+                disponivel
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const valores = [
+            produto.nome,
+            produto.descricao || null,
+            produto.preco,
+            produto.tamanho || null,
+            produto.imagem_url || null,
+            produto.obs || null,
+            produto.disponivel ? 1 : 0
+        ];
+
+        db.query(query, valores, (erro, resultado) => {
+            if (erro) {
+                return callback(erro);
             }
-            callback(null, results);
+
+            callback(null, resultado.insertId);
         });
     },
 
-    getAll: (categoria, callback) => {
-        let query = 'SELECT produtos.id, produtos.nome, produtos.descricao, produtos.preco, produtos.quantidade, categorias.nome AS categoria_nome FROM produtos JOIN categorias ON produtos.categoria = categorias.id';
-        
-        if (categoria) {
-            query += ' WHERE produtos.categoria = ?';
-        }
-    
-        db.query(query, [categoria], (err, results) => {
-            if (err) {
-                return callback(err);
+    atualizar: (id, produto, callback) => {
+        const query = `
+            UPDATE produtos
+            SET
+                nome = ?,
+                descricao = ?,
+                preco = ?,
+                tamanho = ?,
+                imagem_url = ?,
+                obs = ?,
+                disponivel = ?
+            WHERE id = ?
+        `;
+
+        const valores = [
+            produto.nome,
+            produto.descricao || null,
+            produto.preco,
+            produto.tamanho || null,
+            produto.imagem_url || null,
+            produto.obs || null,
+            produto.disponivel ? 1 : 0,
+            id
+        ];
+
+        db.query(query, valores, (erro, resultado) => {
+            if (erro) {
+                return callback(erro);
             }
-            callback(null, results);
+
+            callback(null, resultado);
         });
     },
-    
+
+    excluir: (id, callback) => {
+        const query = `
+            DELETE FROM produtos
+            WHERE id = ?
+        `;
+
+        db.query(query, [id], (erro, resultado) => {
+            if (erro) {
+                return callback(erro);
+            }
+
+            callback(null, resultado);
+        });
+    }
 };
 
 module.exports = Produto;

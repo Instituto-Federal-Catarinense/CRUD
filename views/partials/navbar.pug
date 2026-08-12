@@ -1,0 +1,32 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    a.navbar-brand(href="/") CRUD
+    button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+            li.nav-item
+                a.nav-link(href="/") Home
+            
+            // Dropdown Users
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href="#", id="navbarDropdownUsers", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                    | Usuários
+                .dropdown-menu(aria-labelledby="navbarDropdownUsers")
+                    a.dropdown-item(href="/users/new") Cadastrar Usuário
+                    a.dropdown-item(href="/users") Listar Usuários
+            
+            // Dropdown Categorias
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href="#", id="navbarDropdownCategorias", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                    | Categorias
+                .dropdown-menu(aria-labelledby="navbarDropdownCategorias")
+                    a.dropdown-item(href="/categorias/new") Cadastrar Categoria
+                    a.dropdown-item(href="/categorias") Listar Categorias
+            
+            // Dropdown Produtos
+            li.nav-item.dropdown
+                a.nav-link.dropdown-toggle(href="#", id="navbarDropdownProdutos", role="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
+                    | Produtos
+                .dropdown-menu(aria-labelledby="navbarDropdownProdutos")
+                    a.dropdown-item(href="/produtos/new") Cadastrar Produto
+                    a.dropdown-item(href="/produtos") Listar Produtos

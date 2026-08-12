@@ -1,13 +1,31 @@
 const express = require('express');
-const produtoController = require('../controllers/produtoController');
+const produtoController = require(
+    '../controllers/produtoController'
+);
+
 const router = express.Router();
 
-router.get('/', produtoController.getAllProdutos);
-router.get('/new', produtoController.renderCreateForm);
-router.post('/', produtoController.createProduto);
-router.get('/:id', produtoController.getProdutoById);
-router.get('/:id/edit', produtoController.renderEditForm);
-router.put('/:id', produtoController.updateProduto);
-router.delete('/:id', produtoController.deleteProduto);
+router.get('/', produtoController.listarProdutos);
+router.get('/search', produtoController.pesquisarProdutos);
+
+router.get(
+    '/new',
+    produtoController.exibirFormularioCadastro
+);
+
+router.post('/', produtoController.cadastrarProduto);
+
+router.get(
+    '/:id/edit',
+    produtoController.exibirFormularioEdicao
+);
+
+router.get(
+    '/:id',
+    produtoController.buscarProdutoPorId
+);
+
+router.put('/:id', produtoController.atualizarProduto);
+router.delete('/:id', produtoController.excluirProduto);
 
 module.exports = router;

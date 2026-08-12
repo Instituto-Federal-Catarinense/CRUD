@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    h1 Editar produto
+    form(action=`/produtos/${produto.id}?_method=PUT`, method="POST")
+        .form-group
+            label(for="nome") Nome
+            input.form-control(type="text", id="nome", name="nome", value=produto.nome, required)
+        .form-group
+            label(for="descricao") Descrição
+            input.form-control(type="text", id="descricao", name="descricao", value=produto.descricao, required)
+        .form-group
+            label(for="preco") Preço
+            input.form-control(type="number", id="preco", name="preco", value=produto.preco, required)
+        .form-group
+            label(for="quantidade") Quantidade
+            input.form-control(type="number", id="quantidade", name="quantidade", value=produto.quantidade, required)
+        .form-group
+            label(for="categoria_id") Categoria
+            select.form-control(id="categoria", name="categoria", required)
+                each categoria in categorias
+                    // Lógica condicional em atributos Pug
+                    option(value=categoria.id, selected=(produto.categoria == categoria.id))
+                        = categoria.nome
+        button.btn.btn-warning(type="submit") Salvar

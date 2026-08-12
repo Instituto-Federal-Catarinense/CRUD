@@ -1,0 +1,137 @@
+<%
+    const nomesStatus = {
+        NOVO: 'Novo',
+        EM_PREPARO: 'Em preparo',
+        PRONTO: 'Pronto',
+        EM_ENTREGA: 'Em entrega',
+        ENTREGUE: 'Entregue',
+        CANCELADO: 'Cancelado'
+    };
+
+    const classesStatus = {
+        NOVO: 'badge-primary',
+        EM_PREPARO: 'badge-warning',
+        PRONTO: 'badge-info',
+        EM_ENTREGA: 'badge-secondary',
+        ENTREGUE: 'badge-success',
+        CANCELADO: 'badge-danger'
+    };
+
+    const formatadorMoeda = new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style: 'currency',
+            currency: 'BRL'
+        }
+    );
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Pedidos</h1>
+
+    <a
+        href="/pedidos/new"
+        class="btn btn-primary"
+    >
+        Criar novo pedido
+    </a>
+</div>
+
+<% if (!pedidos || pedidos.length === 0) { %>
+    <div class="alert alert-info">
+        Nenhum pedido foi cadastrado.
+    </div>
+<% } else { %>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Número</th>
+                    <th>Cliente</th>
+                    <th>Itens</th>
+                    <th>Entrega</th>
+                    <th>Pagamento</th>
+                    <th>Status</th>
+                    <th>Valor total</th>
+                    <th>Data</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% pedidos.forEach(function(pedido) { %>
+                    <tr>
+                        <td>
+                            #<%= pedido.id %>
+                        </td>
+
+                        <td>
+                            <%= pedido.cliente_nome %>
+                        </td>
+
+                        <td>
+                            <%= pedido.quantidade_itens %>
+                        </td>
+
+                        <td>
+                            <%= pedido.tipo_entrega === 'ENTREGA'
+                                ? 'Entrega'
+                                : 'Retirada' %>
+                        </td>
+
+                        <td>
+                            <%= pedido.forma_descricao
+                                || 'Não informada' %>
+                        </td>
+
+                        <td>
+                            <span
+                                class="badge <%= classesStatus[pedido.status] || 'badge-dark' %>"
+                            >
+                                <%= nomesStatus[pedido.status]
+                                    || pedido.status %>
+                            </span>
+                        </td>
+
+                        <td>
+                            <%= formatadorMoeda.format(
+                                Number(pedido.valor_total)
+                            ) %>
+                        </td>
+
+                        <td>
+                            <%= new Date(
+                                pedido.data_pedido
+                            ).toLocaleString('pt-BR') %>
+                        </td>
+
+                        <td>
+                            <a
+                                class="btn btn-sm btn-primary"
+                                href="/pedidos/<%= pedido.id %>"
+                            >
+                                Visualizar
+                            </a>
+
+                            <form
+                                action="/pedidos/<%= pedido.id %>?_method=DELETE"
+                                method="POST"
+                                class="d-inline"
+                                onsubmit="return confirm('Deseja realmente excluir este pedido?')"
+                            >
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    type="submit"
+                                >
+                                    Excluir
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+<% } %>

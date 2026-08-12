@@ -1,0 +1,307 @@
+<%
+    const configuracoes = {
+        AGUARDANDO: {
+            titulo: 'Aguardando saída',
+            classe: 'warning'
+        },
+
+        SAIU_PARA_ENTREGA: {
+            titulo: 'Em rota',
+            classe: 'primary'
+        },
+
+        ENTREGUE: {
+            titulo: 'Entregues hoje',
+            classe: 'success'
+        }
+    };
+
+    const formatarHora = function(data) {
+        if (!data) {
+            return 'Não informada';
+        }
+
+        return new Date(data).toLocaleTimeString(
+            'pt-BR',
+            {
+                hour: '2-digit',
+                minute: '2-digit'
+            }
+        );
+    };
+
+    const formatadorMoeda = new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style: 'currency',
+            currency: 'BRL'
+        }
+    );
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Painel de entregas</h1>
+
+        <p class="text-muted mb-0">
+            Acompanhe os pedidos que serão entregues.
+        </p>
+    </div>
+
+    <button
+        type="button"
+        class="btn btn-secondary"
+        onclick="window.location.reload()"
+    >
+        Atualizar
+    </button>
+</div>
+
+<div class="row">
+    <% Object.keys(configuracoes).forEach(function(status) { %>
+        <% const configuracao = configuracoes[status]; %>
+
+        <div class="col-lg-4 mb-4">
+            <div
+                class="card border-<%= configuracao.classe %>"
+                style="min-height: 500px;"
+            >
+                <div
+                    class="card-header bg-<%= configuracao.classe %> text-white d-flex justify-content-between"
+                >
+                    <strong>
+                        <%= configuracao.titulo %>
+                    </strong>
+
+                    <span class="badge badge-light">
+                        <%= colunas[status].length %>
+                    </span>
+                </div>
+
+                <div class="card-body bg-light">
+                    <% if (colunas[status].length === 0) { %>
+                        <div class="text-center text-muted py-5">
+                            Nenhuma entrega nesta etapa.
+                        </div>
+                    <% } %>
+
+                    <% colunas[status].forEach(function(entrega) { %>
+                        <%
+                            const enderecoCompleto = [
+                                entrega.rua,
+                                entrega.numero,
+                                entrega.bairro,
+                                entrega.municipio,
+                                entrega.cep
+                            ]
+                                .filter(Boolean)
+                                .join(', ');
+
+                            const linkMapa =
+                                'https://www.google.com/maps/search/?api=1&query=' +
+                                encodeURIComponent(
+                                    enderecoCompleto
+                                );
+                        %>
+
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-header d-flex justify-content-between">
+                                <strong>
+                                    Pedido #<%= entrega.id_pedido %>
+                                </strong>
+
+                                <span>
+                                    <%= formatarHora(
+                                        entrega.data_pedido
+                                    ) %>
+                                </span>
+                            </div>
+
+                            <div class="card-body">
+                                <p>
+                                    <strong>Cliente:</strong>
+                                    <%= entrega.cliente_nome %>
+                                </p>
+
+                                <p>
+                                    <strong>Telefone:</strong>
+                                    <%= entrega.cliente_telefone
+                                        || 'Não informado' %>
+                                </p>
+
+                                <p>
+                                    <strong>Endereço:</strong><br>
+
+                                    <%= entrega.rua %>
+
+                                    <% if (entrega.numero) { %>
+                                        , <%= entrega.numero %>
+                                    <% } %>
+
+                                    <br>
+
+                                    <%= entrega.bairro %> —
+                                    <%= entrega.municipio %>
+
+                                    <% if (entrega.cep) { %>
+                                        <br>
+                                        CEP: <%= entrega.cep %>
+                                    <% } %>
+                                </p>
+
+                                <% if (entrega.ponto_referencia) { %>
+                                    <div class="alert alert-info py-2">
+                                        <strong>Referência:</strong>
+                                        <%= entrega.ponto_referencia %>
+                                    </div>
+                                <% } %>
+
+                                <strong>Itens:</strong>
+
+                                <ul class="pl-4 mt-2">
+                                    <% entrega.itens.forEach(function(item) { %>
+                                        <li>
+                                            <strong>
+                                                <%= item.quantidade %>x
+                                            </strong>
+
+                                            <%= item.produto_nome %>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+
+                                <p>
+                                    <strong>Total:</strong>
+
+                                    <%= formatadorMoeda.format(
+                                        Number(entrega.valor_total)
+                                    ) %>
+                                </p>
+
+                                <% if (status === 'SAIU_PARA_ENTREGA') { %>
+                                    <p>
+                                        <strong>Saída:</strong>
+                                        <%= formatarHora(
+                                            entrega.data_saida
+                                        ) %>
+                                    </p>
+                                <% } %>
+
+                                <% if (status === 'ENTREGUE') { %>
+                                    <p>
+                                        <strong>Entregue:</strong>
+                                        <%= formatarHora(
+                                            entrega.data_entrega
+                                        ) %>
+                                    </p>
+                                <% } %>
+
+                                <a
+                                    href="<%= linkMapa %>"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-outline-primary btn-sm btn-block mb-2"
+                                >
+                                    Abrir endereço no mapa
+                                </a>
+
+                                <a
+                                    href="/pedidos/<%= entrega.id_pedido %>"
+                                    class="btn btn-outline-secondary btn-sm btn-block mb-2"
+                                >
+                                    Ver pedido
+                                </a>
+
+                                <% if (status === 'AGUARDANDO') { %>
+                                    <form
+                                        action="/pedidos/<%= entrega.id_pedido %>/status?_method=PUT"
+                                        method="POST"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="EM_ENTREGA"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="redirecionar_para"
+                                            value="/entregas"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary btn-block"
+                                        >
+                                            Saiu para entrega
+                                        </button>
+                                    </form>
+                                <% } %>
+
+                                <% if (status === 'SAIU_PARA_ENTREGA') { %>
+                                    <form
+                                        action="/pedidos/<%= entrega.id_pedido %>/status?_method=PUT"
+                                        method="POST"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="ENTREGUE"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="redirecionar_para"
+                                            value="/entregas"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success btn-block"
+                                        >
+                                            Marcar como entregue
+                                        </button>
+                                    </form>
+                                <% } %>
+
+                                <% if (status !== 'ENTREGUE') { %>
+                                    <form
+                                        action="/pedidos/<%= entrega.id_pedido %>/status?_method=PUT"
+                                        method="POST"
+                                        class="mt-2"
+                                        onsubmit="return confirm('Deseja cancelar esta entrega?')"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="CANCELADO"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="redirecionar_para"
+                                            value="/entregas"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-outline-danger btn-sm btn-block"
+                                        >
+                                            Cancelar
+                                        </button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.reload();
+    }, 30000);
+</script>

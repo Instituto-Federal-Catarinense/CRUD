@@ -1,24 +1,304 @@
-<div class="jumbotron text-center">
-    <h1>Bem-vindo ao Sistema de Gerenciamento de Usuários</h1>
-    <p class="lead">Gerencie seus usuários e produtos sem esforço.</p>
-    <a href="/users" class="btn btn-custom">Gerenciar usuários</a>
-    <a href="/produtos" class="btn btn-custom ml-2">Gerenciar produtos</a>
+<%
+    const nomesStatus = {
+        NOVO: 'Novo',
+        EM_PREPARO: 'Em preparo',
+        PRONTO: 'Pronto',
+        EM_ENTREGA: 'Em entrega',
+        ENTREGUE: 'Entregue',
+        CANCELADO: 'Cancelado'
+    };
+
+    const classesStatus = {
+        NOVO: 'badge-primary',
+        EM_PREPARO: 'badge-warning',
+        PRONTO: 'badge-info',
+        EM_ENTREGA: 'badge-secondary',
+        ENTREGUE: 'badge-success',
+        CANCELADO: 'badge-danger'
+    };
+
+    const formatadorMoeda = new Intl.NumberFormat(
+        'pt-BR',
+        {
+            style: 'currency',
+            currency: 'BRL'
+        }
+    );
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Painel da Cantina Federal</h1>
+
+        <p class="text-muted mb-0">
+            Resumo do funcionamento da cantina.
+        </p>
+    </div>
+
+    <a
+        href="/pedidos/new"
+        class="btn btn-primary"
+    >
+        Criar novo pedido
+    </a>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <div class="feature-card">
-            <h3>Gerenciamento de usuários</h3>
-            <p>Adicione, edite e exclua usuários facilmente com nossa interface intuitiva.</p>
-            <a href="/users" class="btn btn-primary">Ir para usuários</a>
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Clientes cadastrados
+                </h6>
+
+                <h2>
+                    <%= resumo.totalClientes %>
+                </h2>
+
+                <a href="/clientes">
+                    Ver clientes
+                </a>
+            </div>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="feature-card">
-            <h3>Gerenciamento de produtos</h3>
-            <p>Acompanhe seus produtos e seus detalhes perfeitamente.</p>
-            <a href="/produtos" class="btn btn-primary">Is para produtos</a>
+
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 border-success">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Produtos disponíveis
+                </h6>
+
+                <h2>
+                    <%= resumo.produtosDisponiveis %>
+                </h2>
+
+                <small class="text-muted">
+                    <%= resumo.totalProdutos %>
+                    produtos cadastrados
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 border-warning">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Pedidos de hoje
+                </h6>
+
+                <h2>
+                    <%= resumo.pedidosHoje %>
+                </h2>
+
+                <a href="/pedidos">
+                    Ver pedidos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <h6 class="text-muted">
+                    Faturamento de hoje
+                </h6>
+
+                <h2>
+                    <%= formatadorMoeda.format(
+                        resumo.faturamentoHoje
+                    ) %>
+                </h2>
+
+                <small class="text-muted">
+                    Pedidos cancelados não são somados
+                </small>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <strong>Pedidos por status</strong>
+    </div>
+
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-primary">
+                    Novo
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.NOVO %>
+                </h3>
+            </div>
+
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-warning">
+                    Em preparo
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.EM_PREPARO %>
+                </h3>
+            </div>
+
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-info">
+                    Pronto
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.PRONTO %>
+                </h3>
+            </div>
+
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-secondary">
+                    Em entrega
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.EM_ENTREGA %>
+                </h3>
+            </div>
+
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-success">
+                    Entregue
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.ENTREGUE %>
+                </h3>
+            </div>
+
+            <div class="col-md-2 col-6 mb-3">
+                <span class="badge badge-danger">
+                    Cancelado
+                </span>
+
+                <h3 class="mt-2">
+                    <%= resumo.status.CANCELADO %>
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between">
+        <strong>Pedidos recentes</strong>
+
+        <a href="/pedidos">
+            Ver todos
+        </a>
+    </div>
+
+    <div class="card-body p-0">
+        <% if (resumo.pedidosRecentes.length === 0) { %>
+            <div class="alert alert-info m-3">
+                Nenhum pedido foi cadastrado.
+            </div>
+        <% } else { %>
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Cliente</th>
+                            <th>Entrega</th>
+                            <th>Status</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% resumo.pedidosRecentes.forEach(function(pedido) { %>
+                            <tr>
+                                <td>
+                                    #<%= pedido.id %>
+                                </td>
+
+                                <td>
+                                    <%= pedido.cliente_nome %>
+                                </td>
+
+                                <td>
+                                    <%= pedido.tipo_entrega === 'ENTREGA'
+                                        ? 'Entrega'
+                                        : 'Retirada' %>
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="badge <%= classesStatus[pedido.status] || 'badge-dark' %>"
+                                    >
+                                        <%= nomesStatus[pedido.status]
+                                            || pedido.status %>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <%= formatadorMoeda.format(
+                                        Number(pedido.valor_total)
+                                    ) %>
+                                </td>
+
+                                <td>
+                                    <%= new Date(
+                                        pedido.data_pedido
+                                    ).toLocaleString('pt-BR') %>
+                                </td>
+
+                                <td>
+                                    <a
+                                        href="/pedidos/<%= pedido.id %>"
+                                        class="btn btn-sm btn-primary"
+                                    >
+                                        Abrir
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <a
+            href="/clientes"
+            class="btn btn-outline-primary btn-block"
+        >
+            Gerenciar clientes
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a
+            href="/produtos"
+            class="btn btn-outline-success btn-block"
+        >
+            Gerenciar produtos
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a
+            href="/pedidos"
+            class="btn btn-outline-warning btn-block"
+        >
+            Gerenciar pedidos
+        </a>
+    </div>
 </div>

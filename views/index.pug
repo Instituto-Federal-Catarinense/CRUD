@@ -1,0 +1,21 @@
+// Ajuste o caminho para o seu layout.pug se necessário
+extends layout 
+
+block content
+    .jumbotron.text-center
+        h1 Bem-vindo ao Sistema de Gerenciamento de Usuários
+        p.lead Gerencie seus usuários e produtos sem esforço.
+        a.btn.btn-custom(href="/users") Gerenciar usuários
+        a.btn.btn-custom.ml-2(href="/produtos") Gerenciar produtos
+
+    .row
+        .col-md-6
+            .feature-card
+                h3 Gerenciamento de usuários
+                p Adicione, edite e exclua usuários facilmente com nossa interface intuitiva.
+                a.btn.btn-primary(href="/users") Ir para usuários
+        .col-md-6
+            .feature-card
+                h3 Gerenciamento de produtos
+                p Acompanhe seus produtos e seus detalhes perfeitamente.
+                a.btn.btn-primary(href="/produtos") Is para produtos

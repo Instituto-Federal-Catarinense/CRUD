@@ -1,24 +1,27 @@
 <h1>Lista de categorias</h1>
+<a href="/categorias/new" class="btn btn-primary mb-2">Cadastrar Categoria</a>
 <table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Categoria</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% categorias.forEach(categoria => { %>
-            <tr>
-                <td><%= categoria.id %></td>
-                <td><%= categoria.nome %></td>
-                <td>
-                    <a href="/categorias/<%= categoria.id %>" class="btn btn-primary">View</a>
-                    <a href="/categorias/<%= categoria.id %>/edit" class="btn btn-warning">Edit</a>
-                    <form action="/categorias/<%= categoria.id %>?_method=DELETE" method="POST" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        <% }) %>
-    </tbody>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Categoria</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% (categorias||[]).forEach(function(categoria){ %>
+      <tr>
+        <td><%= categoria.id %></td>
+        <td><%= categoria.nome %></td>
+        <td>
+          <a class="btn btn-primary" href="/categorias/<%= categoria.id %>">View</a>
+          <a class="btn btn-warning" href="/categorias/<%= categoria.id %>/edit">Edit</a>
+          <form action="/categorias/<%= categoria.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
 </table>
+

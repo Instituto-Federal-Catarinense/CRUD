@@ -1,0 +1,239 @@
+<%
+    const formatarHora = function(data) {
+        return new Date(data).toLocaleTimeString(
+            'pt-BR',
+            {
+                hour: '2-digit',
+                minute: '2-digit'
+            }
+        );
+    };
+
+    const configuracoes = {
+        NOVO: {
+            titulo: 'Novos pedidos',
+            classe: 'primary',
+            proximoStatus: 'EM_PREPARO',
+            textoBotao: 'Iniciar preparo'
+        },
+
+        EM_PREPARO: {
+            titulo: 'Em preparo',
+            classe: 'warning',
+            proximoStatus: 'PRONTO',
+            textoBotao: 'Marcar como pronto'
+        },
+
+        PRONTO: {
+            titulo: 'Pedidos prontos',
+            classe: 'success'
+        }
+    };
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Painel da cozinha</h1>
+
+        <p class="text-muted mb-0">
+            Acompanhe e atualize os pedidos em produção.
+        </p>
+    </div>
+
+    <div>
+        <a
+            href="/pedidos/new"
+            class="btn btn-primary"
+        >
+            Criar pedido
+        </a>
+
+        <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="window.location.reload()"
+        >
+            Atualizar
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <% Object.keys(configuracoes).forEach(function(status) { %>
+        <% const configuracao = configuracoes[status]; %>
+
+        <div class="col-lg-4 mb-4">
+            <div
+                class="card border-<%= configuracao.classe %>"
+                style="min-height: 500px;"
+            >
+                <div
+                    class="card-header bg-<%= configuracao.classe %> text-white d-flex justify-content-between"
+                >
+                    <strong>
+                        <%= configuracao.titulo %>
+                    </strong>
+
+                    <span class="badge badge-light">
+                        <%= colunas[status].length %>
+                    </span>
+                </div>
+
+                <div class="card-body bg-light">
+                    <% if (colunas[status].length === 0) { %>
+                        <div class="text-center text-muted py-5">
+                            Nenhum pedido nesta etapa.
+                        </div>
+                    <% } %>
+
+                    <% colunas[status].forEach(function(pedido) { %>
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-header d-flex justify-content-between">
+                                <strong>
+                                    Pedido #<%= pedido.id %>
+                                </strong>
+
+                                <span>
+                                    <%= formatarHora(
+                                        pedido.data_pedido
+                                    ) %>
+                                </span>
+                            </div>
+
+                            <div class="card-body">
+                                <p class="mb-2">
+                                    <strong>Cliente:</strong>
+                                    <%= pedido.cliente_nome %>
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Entrega:</strong>
+
+                                    <%= pedido.tipo_entrega === 'ENTREGA'
+                                        ? 'Entrega'
+                                        : 'Retirada' %>
+                                </p>
+
+                                <hr>
+
+                                <strong>Itens:</strong>
+
+                                <ul class="pl-4 mt-2">
+                                    <% pedido.itens.forEach(function(item) { %>
+                                        <li>
+                                            <strong>
+                                                <%= item.quantidade %>x
+                                            </strong>
+
+                                            <%= item.produto_nome %>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+
+                                <% if (pedido.observacao) { %>
+                                    <div class="alert alert-warning py-2">
+                                        <strong>Observação:</strong>
+                                        <%= pedido.observacao %>
+                                    </div>
+                                <% } %>
+
+                                <a
+                                    href="/pedidos/<%= pedido.id %>"
+                                    class="btn btn-outline-secondary btn-sm btn-block mb-2"
+                                >
+                                    Ver detalhes
+                                </a>
+
+                                <% if (status !== 'PRONTO') { %>
+                                    <form
+                                        action="/pedidos/<%= pedido.id %>/status?_method=PUT"
+                                        method="POST"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="<%= configuracao.proximoStatus %>"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="redirecionar_para"
+                                            value="/cozinha"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-<%= configuracao.classe %> btn-block"
+                                        >
+                                            <%= configuracao.textoBotao %>
+                                        </button>
+                                    </form>
+                                <% } else { %>
+                                    <form
+                                        action="/pedidos/<%= pedido.id %>/status?_method=PUT"
+                                        method="POST"
+                                    >
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="<%= pedido.tipo_entrega === 'ENTREGA'
+                                                ? 'EM_ENTREGA'
+                                                : 'ENTREGUE' %>"
+                                        >
+
+                                        <input
+                                            type="hidden"
+                                            name="redirecionar_para"
+                                            value="/cozinha"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success btn-block"
+                                        >
+                                            <%= pedido.tipo_entrega === 'ENTREGA'
+                                                ? 'Enviar para entrega'
+                                                : 'Pedido retirado' %>
+                                        </button>
+                                    </form>
+                                <% } %>
+
+                                <form
+                                    action="/pedidos/<%= pedido.id %>/status?_method=PUT"
+                                    method="POST"
+                                    class="mt-2"
+                                    onsubmit="return confirm('Deseja cancelar este pedido?')"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="CANCELADO"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="redirecionar_para"
+                                        value="/cozinha"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-outline-danger btn-sm btn-block"
+                                    >
+                                        Cancelar pedido
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+<script>
+    setTimeout(() => {
+        window.location.reload();
+    }, 30000);
+</script>
