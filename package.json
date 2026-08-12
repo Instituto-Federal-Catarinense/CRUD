@@ -1,25 +1,25 @@
 {
-  "name": "crud",
+  "name": "crud-system",
   "version": "1.0.0",
-  "description": "Sistema de cadastro de usuários.",
+  "description": "Sistema CRUD com autenticação",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "create-admin": "node scripts/createAdmin.js"
   },
-  "keywords": [],
-  "author": "Joédio Borges Júnior",
-  "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.4.5",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.6",
+    "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
-    "express": "^4.19.2",
+    "express": "^4.22.2",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
     "method-override": "^3.0.0",
-    "mysql2": "^3.11.0"
+    "mysql2": "^3.23.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.0.1"
   }
 }

@@ -1,0 +1,29 @@
+<div class="jumbotron text-center">
+    <h1>Dashboard</h1>
+    <p class="lead">Bem-vindo ao sistema, <strong><%= user.username %></strong>!</p>
+    <p>Você está logado como <span class="badge badge-<%= user.role === 'admin' ? 'danger' : 'info' %>"><%= user.role %></span></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h3>👥 Usuários</h3>
+            <p>Gerencie todos os usuários do sistema</p>
+            <a href="/users" class="btn btn-primary">Gerenciar</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h3>📦 Produtos</h3>
+            <p>Gerencie o catálogo de produtos</p>
+            <a href="/produtos" class="btn btn-primary">Gerenciar</a>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="feature-card">
+            <h3>🏷️ Categorias</h3>
+            <p>Gerencie as categorias de produtos</p>
+            <a href="/categorias" class="btn btn-primary">Gerenciar</a>
+        </div>
+    </div>
+</div>
