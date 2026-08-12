@@ -1,50 +1,216 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">CRUD</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
 
-            <!-- Dropdown Users -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Usuários
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
-                </div>
-            </li>
+    <div class="container">
 
-            <!-- Dropdown Categorias -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorias" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categorias
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
-                    <a class="dropdown-item" href="/categorias">Listar Categorias</a>
-                </div>
-            </li>
+        <!-- Nome do sistema -->
+        <a class="navbar-brand" href="/">
+            CRUD
+        </a>
 
-            <!-- Dropdown Produtos -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProdutos" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Produtos
+        <!-- Botão para telas menores -->
+        <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Abrir menu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav mr-auto">
+
+                <% if (session && session.role === 'admin') { %>
+
+                    <!-- USUÁRIOS -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle menu-admin"
+                           href="#"
+                           id="navbarDropdownUsers"
+                           role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+
+                            Usuários
+
+                        </a>
+
+                        <div class="dropdown-menu menu-dropdown"
+                             aria-labelledby="navbarDropdownUsers">
+
+                            <a class="dropdown-item"
+                               href="/users/new">
+
+                                Cadastrar Usuário
+
+                            </a>
+
+                            <a class="dropdown-item"
+                               href="/users">
+
+                                Listar Usuários
+
+                            </a>
+
+                        </div>
+
+                    </li>
+
+
+                    <!-- CATEGORIAS -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle menu-admin"
+                           href="#"
+                           id="navbarDropdownCategorias"
+                           role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+
+                            Categorias
+
+                        </a>
+
+                        <div class="dropdown-menu menu-dropdown"
+                             aria-labelledby="navbarDropdownCategorias">
+
+                            <a class="dropdown-item"
+                               href="/categorias/new">
+
+                                Cadastrar Categoria
+
+                            </a>
+
+                            <a class="dropdown-item"
+                               href="/categorias">
+
+                                Listar Categorias
+
+                            </a>
+
+                        </div>
+
+                    </li>
+
+
+                    <!-- PRODUTOS -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link dropdown-toggle menu-admin"
+                           href="#"
+                           id="navbarDropdownProdutos"
+                           role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+
+                            Produtos
+
+                        </a>
+
+                        <div class="dropdown-menu menu-dropdown"
+                             aria-labelledby="navbarDropdownProdutos">
+
+                            <a class="dropdown-item"
+                               href="/produtos/new">
+
+                                Cadastrar Produto
+
+                            </a>
+
+                            <a class="dropdown-item"
+                               href="/produtos">
+
+                                Listar Produtos
+
+                            </a>
+
+                        </div>
+
+                    </li>
+
+                <% } %>
+
+            </ul>
+
+
+            <!-- BOTÃO SAIR -->
+            <% if (session && session.userId) { %>
+
+                <a href="/logout"
+                   class="btn btn-danger btn-sair">
+
+                    Sair
+
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
-                    <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
-                    <a class="dropdown-item" href="/produtos">Listar Produtos</a>
-                </div>
-            </li>
-        </ul>
+
+            <% } %>
+
+        </div>
+
     </div>
+
 </nav>
+
+
+<style>
+
+    /* Menu principal */
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+    }
+
+    /* Opções do administrador */
+    .menu-admin {
+        font-weight: 500;
+        padding: 8px 15px !important;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+
+    .menu-admin:hover {
+        background-color: #e9ecef;
+    }
+
+    /* Dropdown */
+    .menu-dropdown {
+        border: none;
+        border-radius: 8px;
+        padding: 8px 0;
+        margin-top: 5px;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Opções dentro do dropdown */
+    .menu-dropdown .dropdown-item {
+        padding: 10px 18px;
+        font-size: 14px;
+        transition: 0.2s;
+    }
+
+    .menu-dropdown .dropdown-item:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Botão sair */
+    .btn-sair {
+        margin-left: 15px;
+        padding: 7px 18px;
+        border-radius: 6px;
+    }
+
+</style>
