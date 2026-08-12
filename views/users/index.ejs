@@ -26,6 +26,7 @@
                     <a href="/users/<%= user.id %>" class="btn btn-primary">View</a>
                     <a href="/users/<%= user.id %>/edit" class="btn btn-warning">Edit</a>
                     <form action="/users/<%= user.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
@@ -35,6 +36,12 @@
 </table>
 
 <script>
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.appendChild(document.createTextNode(value == null ? '' : String(value)));
+        return div.innerHTML;
+    }
+
     document.getElementById('search').addEventListener('input', function() {
         const searchValue = this.value;
 
@@ -47,13 +54,14 @@
                 data.users.forEach(user => {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td>${user.id}</td>
-                        <td>${user.username}</td>
-                        <td>${user.role}</td>
+                        <td>${escapeHtml(user.id)}</td>
+                        <td>${escapeHtml(user.username)}</td>
+                        <td>${escapeHtml(user.role)}</td>
                         <td>
-                            <a href="/users/${user.id}" class="btn btn-primary">View</a>
-                            <a href="/users/${user.id}/edit" class="btn btn-warning">Edit</a>
-                            <form action="/users/${user.id}?_method=DELETE" method="POST" style="display: inline;">
+                            <a href="/users/${encodeURIComponent(user.id)}" class="btn btn-primary">View</a>
+                            <a href="/users/${encodeURIComponent(user.id)}/edit" class="btn btn-warning">Edit</a>
+                            <form action="/users/${encodeURIComponent(user.id)}?_method=DELETE" method="POST" style="display: inline;">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>

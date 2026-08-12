@@ -1,6 +1,7 @@
 <h1>Editar produto</h1>
 
 <form action="/produtos/<%= produto.id %>?_method=PUT" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="form-group">
         <label for="nome">Nome</label>
         <input type="text" class="form-control" id="nome" name="nome" value="<%= produto.nome %>" required>

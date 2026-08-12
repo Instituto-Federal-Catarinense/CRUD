@@ -1,5 +1,6 @@
 <h1>Editar categoria</h1>
 <form action="/categorias/<%= categoria.id %>?_method=PUT" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="form-group">
         <label for="nome">Categoria</label>
         <input type="text" class="form-control" id="nome" name="nome" value="<%= categoria.nome %>" required>

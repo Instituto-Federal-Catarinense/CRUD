@@ -41,6 +41,16 @@ const User = {
         });
     },
 
+    updatePassword: (id, password, callback) => {
+        const query = 'UPDATE users SET password = ? WHERE id = ?';
+        db.query(query, [password, id], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
+        });
+    },
+
     delete: (id, callback) => {
         const query = 'DELETE FROM users WHERE id = ?';
         db.query(query, [id], (err, results) => {
@@ -52,7 +62,7 @@ const User = {
     },
 
     getAll: (callback) => {
-        const query = 'SELECT * FROM users';
+        const query = 'SELECT id, username, role FROM users';
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -62,14 +72,14 @@ const User = {
     },
 
     searchByName: (name, callback) => {
-        const query = 'SELECT * FROM users WHERE username LIKE ?';
+        const query = 'SELECT id, username, role FROM users WHERE username LIKE ?';
         db.query(query, [`%${name}%`], (err, results) => {
             if (err) {
                 return callback(err);
             }
             callback(null, results);
         });
-    },    
+    },
 };
 
 module.exports = User;

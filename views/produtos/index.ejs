@@ -39,6 +39,7 @@
                     <a href="/produtos/<%= produto.id %>" class="btn btn-primary">View</a>
                     <a href="/produtos/<%= produto.id %>/edit" class="btn btn-warning">Edit</a>
                     <form action="/produtos/<%= produto.id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
