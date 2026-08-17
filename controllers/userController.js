@@ -51,7 +51,7 @@ const userController = {
                 return res.status(500).send(err);
 
             if (!user)
-                return res.send("Usuário não encontrado");
+                return res.status(401).send("Credenciais inválidas");
 
             bcrypt.compare(password, user.password, (err, same) => {
 
@@ -59,9 +59,13 @@ const userController = {
                     return res.status(500).send(err);
 
                 if (!same)
-                    return res.send("Senha incorreta");
+                    return res.status(401).send("Credenciais inválidas");
 
-                req.session.usuario = user;
+                req.session.usuario = {
+                    id: user.id,
+                    username: user.username,
+                    role: user.role
+                };
 
                 res.redirect('/');
 
@@ -72,13 +76,13 @@ const userController = {
     },
 
     logout: (req, res) => {
-
-        req.session.destroy(() => {
-
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).send("Erro ao fazer logout");
+            }
+            res.clearCookie('connect.sid');
             res.redirect('/users/login');
-
         });
-
     },
     registerForm: (req, res) => {
     res.render("users/register");
@@ -87,8 +91,6 @@ const userController = {
 register: async (req, res) => {
 
     try {
-
-        const bcrypt = require("bcrypt");
 
         const senha = await bcrypt.hash(req.body.password, 10);
 
@@ -138,10 +140,6 @@ register: async (req, res) => {
         });
     },
 
-    renderCreateForm: (req, res) => {
-        res.render('users/create');
-    },
-
     renderEditForm: (req, res) => {
         const userId = req.params.id;
 
@@ -156,20 +154,25 @@ register: async (req, res) => {
         });
     },
 
-    updateUser: (req, res) => {
+    updateUser: async (req, res) => {
         const userId = req.params.id;
-        const updatedUser = {
-            username: req.body.username,
-            password: req.body.password,
-            role: req.body.role,
-        };
 
-        User.update(userId, updatedUser, (err) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
-            res.redirect('/users');
-        });
+        try {
+            const updatedUser = {
+                username: req.body.username,
+                password: await bcrypt.hash(req.body.password, 10),
+                role: req.body.role,
+            };
+
+            User.update(userId, updatedUser, (err) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                }
+                res.redirect('/users');
+            });
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
     },
 
     deleteUser: (req, res) => {
