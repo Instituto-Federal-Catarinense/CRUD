@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
+const { gerarToken } = require('../config/jwt');
 
 const userController = {
 
@@ -61,11 +62,14 @@ const userController = {
                 if (!same)
                     return res.status(401).send("Credenciais inválidas");
 
-                req.session.usuario = {
-                    id: user.id,
-                    username: user.username,
-                    role: user.role
-                };
+                const token = gerarToken(user);
+
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                    maxAge: 30 * 60 * 1000
+                });
 
                 res.redirect('/');
 
@@ -76,13 +80,8 @@ const userController = {
     },
 
     logout: (req, res) => {
-        req.session.destroy((err) => {
-            if (err) {
-                return res.status(500).send("Erro ao fazer logout");
-            }
-            res.clearCookie('connect.sid');
-            res.redirect('/users/login');
-        });
+        res.clearCookie('token');
+        res.redirect('/users/login');
     },
     registerForm: (req, res) => {
     res.render("users/register");
