@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 {
   "name": "crud",
   "version": "1.0.0",
@@ -23,3 +24,32 @@
     "nodemon": "^3.1.4"
   }
 }
+=======
+{
+  "name": "crud",
+  "version": "1.0.0",
+  "description": "Sistema de cadastro de usuários.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Joédio Borges Júnior",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.19.0",
+    "method-override": "^3.0.0",
+    "mysql2": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
+>>>>>>> Stashed changes
