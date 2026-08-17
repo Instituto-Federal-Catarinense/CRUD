@@ -46,5 +46,20 @@
                 </div>
             </li>
         </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <% if (currentUser) { %>
+                <li class="nav-item">
+                    <span class="navbar-text mr-3">Olá, <%= currentUser.username %></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Sair</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/login">Entrar</a>
+                </li>
+            <% } %>
+        </ul>
     </div>
 </nav>
