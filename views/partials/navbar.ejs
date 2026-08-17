@@ -10,41 +10,63 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
 
-            <!-- Dropdown Users -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Usuários
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
-                </div>
-            </li>
+            <% if (usuario) { %>
 
-            <!-- Dropdown Categorias -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorias" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Categorias
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
-                    <a class="dropdown-item" href="/categorias">Listar Categorias</a>
-                </div>
-            </li>
+                <% if (usuario.role === 'admin') { %>
+                <!-- Dropdown Users (Admin) -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Usuários
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
+                        <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
+                        <a class="dropdown-item" href="/users">Listar Usuários</a>
+                    </div>
+                </li>
+                <% } %>
 
-            <!-- Dropdown Produtos -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProdutos" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Produtos
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
-                    <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
-                    <a class="dropdown-item" href="/produtos">Listar Produtos</a>
-                </div>
-            </li>
+                <!-- Dropdown Categorias -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategorias" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
+                        <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                        <a class="dropdown-item" href="/categorias">Listar Categorias</a>
+                    </div>
+                </li>
+
+                <!-- Dropdown Produtos -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProdutos" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Produtos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
+                        <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                        <a class="dropdown-item" href="/produtos">Listar Produtos</a>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <span class="nav-link"><%= usuario.username %></span>
+                </li>
+                <li class="nav-item">
+                    <form action="/users/logout" method="POST" style="display:inline">
+                        <button type="submit" class="nav-link btn btn-link">Sair</button>
+                    </form>
+                </li>
+
+            <% } else { %>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/users/login">Entrar</a>
+                </li>
+
+            <% } %>
+
         </ul>
     </div>
 </nav>
