@@ -1,5 +1,5 @@
 const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
+const argon2 = require('argon2');
 const { gerarToken } = require('../config/jwt');
 
 const userController = {
@@ -12,7 +12,7 @@ const userController = {
 
         try {
 
-            const senhaHash = await bcrypt.hash(req.body.password, 10);
+            const senhaHash = await argon2.hash(req.body.password);
 
             const newUser = {
                 username: req.body.username,
@@ -42,40 +42,39 @@ const userController = {
 
     },
 
-    login: (req, res) => {
+    login: async (req, res) => {
 
         const { username, password } = req.body;
 
-        User.findByUsername(username, (err, user) => {
-
-            if (err)
-                return res.status(500).send(err);
+        try {
+            const user = await new Promise((resolve, reject) => {
+                User.findByUsername(username, (err, user) => {
+                    if (err) return reject(err);
+                    resolve(user);
+                });
+            });
 
             if (!user)
                 return res.status(401).send("Credenciais inválidas");
 
-            bcrypt.compare(password, user.password, (err, same) => {
+            const same = await argon2.verify(user.password, password);
 
-                if (err)
-                    return res.status(500).send(err);
+            if (!same)
+                return res.status(401).send("Credenciais inválidas");
 
-                if (!same)
-                    return res.status(401).send("Credenciais inválidas");
+            const token = gerarToken(user);
 
-                const token = gerarToken(user);
-
-                res.cookie('token', token, {
-                    httpOnly: true,
-                    secure: false,
-                    sameSite: 'strict',
-                    maxAge: 30 * 60 * 1000
-                });
-
-                res.redirect('/');
-
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'strict',
+                maxAge: 30 * 60 * 1000
             });
 
-        });
+            res.redirect('/');
+        } catch (err) {
+            return res.status(500).send(err);
+        }
 
     },
 
@@ -91,7 +90,7 @@ register: async (req, res) => {
 
     try {
 
-        const senha = await bcrypt.hash(req.body.password, 10);
+        const senha = await argon2.hash(req.body.password);
 
         const novoUsuario = {
             username: req.body.username,
@@ -159,7 +158,7 @@ register: async (req, res) => {
         try {
             const updatedUser = {
                 username: req.body.username,
-                password: await bcrypt.hash(req.body.password, 10),
+                password: await argon2.hash(req.body.password),
                 role: req.body.role,
             };
 
