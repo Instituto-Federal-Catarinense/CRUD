@@ -1,13 +1,27 @@
 const express = require('express');
 const produtoController = require('../controllers/produtoController');
+const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
 const router = express.Router();
 
+// Listar produtos (disponível para todos)
 router.get('/', produtoController.getAllProdutos);
-router.get('/new', produtoController.renderCreateForm);
-router.post('/', produtoController.createProduto);
+
+// Exibir formulário de criação (restrito a Administradores) - DEVE vir antes de /:id
+router.get('/new', requireAuth, requireAdmin, produtoController.renderCreateForm);
+
+// Processar criação de produto (restrito a Administradores)
+router.post('/', requireAuth, requireAdmin, produtoController.createProduto);
+
+// Exibir detalhes do produto (disponível para todos)
 router.get('/:id', produtoController.getProdutoById);
-router.get('/:id/edit', produtoController.renderEditForm);
-router.put('/:id', produtoController.updateProduto);
-router.delete('/:id', produtoController.deleteProduto);
+
+// Formulário de edição (restrito a Administradores)
+router.get('/:id/edit', requireAuth, requireAdmin, produtoController.renderEditForm);
+
+// Atualizar produto (restrito a Administradores)
+router.put('/:id', requireAuth, requireAdmin, produtoController.updateProduto);
+
+// Excluir produto (restrito a Administradores)
+router.delete('/:id', requireAuth, requireAdmin, produtoController.deleteProduto);
 
 module.exports = router;

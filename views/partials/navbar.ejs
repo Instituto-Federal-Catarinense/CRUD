@@ -5,21 +5,9 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
-            </li>
-
-            <!-- Dropdown Users -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsers" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Usuários
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownUsers">
-                    <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
-                    <a class="dropdown-item" href="/users">Listar Usuários</a>
-                </div>
             </li>
 
             <!-- Dropdown Categorias -->
@@ -29,7 +17,9 @@
                     Categorias
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCategorias">
-                    <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                        <a class="dropdown-item" href="/categorias/new">Cadastrar Categoria</a>
+                    <% } %>
                     <a class="dropdown-item" href="/categorias">Listar Categorias</a>
                 </div>
             </li>
@@ -41,8 +31,39 @@
                     Produtos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownProdutos">
-                    <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                        <a class="dropdown-item" href="/produtos/new">Cadastrar Produto</a>
+                    <% } %>
                     <a class="dropdown-item" href="/produtos">Listar Produtos</a>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            <!-- Dropdown Usuários com Login / Logout -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbarDropdownUsers" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <span class="text-primary">👤 <%= user.username %> (<%= user.role %>)</span>
+                    <% } else { %>
+                        <span>👤 Usuário</span>
+                    <% } %>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownUsers">
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <h6 class="dropdown-header">Olá, <%= user.username %></h6>
+                        <% if (user.role === 'admin') { %>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/users/new">Cadastrar Usuário</a>
+                            <a class="dropdown-item" href="/users">Listar Usuários</a>
+                        <% } %>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger font-weight-bold" href="/auth/logout">Logout</a>
+                    <% } else { %>
+                        <a class="dropdown-item text-primary font-weight-bold" href="/auth/login">Login</a>
+                        <a class="dropdown-item" href="/users/new">Cadastrar-se</a>
+                    <% } %>
                 </div>
             </li>
         </ul>

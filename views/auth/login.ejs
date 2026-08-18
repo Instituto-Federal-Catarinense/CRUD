@@ -1,0 +1,34 @@
+<div class="row justify-content-center mt-4 mb-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 rounded-lg">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 font-weight-bold">Acessar o Sistema</h4>
+            </div>
+            <div class="card-body p-4">
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <%= error %>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <% } %>
+
+                <form action="/auth/login" method="POST">
+                    <div class="form-group">
+                        <label for="username" class="font-weight-bold">Nome de Usuário</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário" required autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="font-weight-bold">Senha</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block font-weight-bold py-2 mt-4">Entrar</button>
+                </form>
+            </div>
+            <div class="card-footer text-muted text-center py-3 bg-light">
+                <small>Sistema CRUD &copy; 2026</small>
+            </div>
+        </div>
+    </div>
+</div>
