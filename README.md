@@ -1,16 +1,18 @@
-# CRUD adapted to Cantina Federal schema
+CRUD adaptado ao esquema Cantina Federal
 
-This project was refactored to work with the `cantina_federal` migration (see `migration_script.sql`).
+Este projeto foi refatorado para funcionar com a migration cantina_federal (consulte migration_script.sql).
 
-Quick start:
-1. Copy `.env.example` to `.env` and set DB credentials.
-2. Run `npm install`.
-3. Run `npm run dev`.
-4. Visit http://localhost:3000/
+Início rápido:
 
-Key routes:
-- /users -> clientes CRUD
-- /produtos -> produtos CRUD
-- /pedidos -> pedidos CRUD (includes items)
+Copie .env.example para .env e configure as credenciais do banco de dados.
+Execute npm install.
+Execute npm run dev.
+Acesse http://localhost:3000/
 
-If you see SQL errors about missing tables, run the migration SQL in your MySQL server or adjust DB_NAME in `.env`.
+Principais rotas:
+
+/users → CRUD de clientes
+/produtos → CRUD de produtos
+/pedidos → CRUD de pedidos (inclui os itens)
+
+Se você encontrar erros de SQL relacionados a tabelas inexistentes, execute o SQL da migration no seu servidor MySQL ou ajuste DB_NAME no arquivo .env.
